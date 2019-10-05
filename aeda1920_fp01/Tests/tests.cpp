@@ -3,7 +3,9 @@
 #include "parque.h"
 #include <string>
 
+
 using testing::Eq;
+
 
 TEST(test_1, a_AbrirParque){
     ParqueEstacionamento p1(4, 6);
@@ -37,9 +39,9 @@ TEST(test_1, c_EntrarParque){
     p1.adicionaCliente("Rui");
     // Testa se deixa entrar no parque um cliente existente
     ASSERT_EQ(true, p1.entrar("Maria"));
-    // Testa se não deixa entrar no parque um cliente que n�o existe
+    // Testa se n�o deixa entrar no parque um cliente que n�o existe
     ASSERT_EQ(false, p1.entrar("Paula"));
-    // Testa se não deixa entrar em cliente que já lá está
+    // Testa se n�o dexia entrar em cliente que j� l� est�
     ASSERT_EQ(false, p1.entrar("Maria"));
     p1.entrar("Joao");
     p1.entrar("Antonio");
@@ -57,7 +59,7 @@ TEST(test_1, d_RetirarCliente){
     ASSERT_EQ(false, p1.retiraCliente("Maria"));
     // Testa se deixa remover cliente que est� fora do parque
     ASSERT_EQ(true, p1.retiraCliente("Antonio"));
-    // Testa se não deixa remover cliente que nao existe
+    // Testa se nao deixa remover cliente que nao existe
     ASSERT_EQ(false, p1.retiraCliente("Ana"));
 }
 
