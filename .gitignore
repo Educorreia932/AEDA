@@ -30,3 +30,12 @@
 *.exe
 *.out
 *.app
+
+#others
+*.pdf
+
+#Folders
+cmake-build-debug/
+.idea
+
+Untitled.mdj
