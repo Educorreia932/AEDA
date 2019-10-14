@@ -1,20 +1,7 @@
-
-aeda1920_fp01/.idea/
-
-aeda1920_fp01/cmake-build-debug/
-
-aeda1920_fp01/lib/googletest-master/
-
-aeda1920_fp02/cmake-build-debug/
-
-aeda1920_fp02/lib/googletest-master/
-aeda1920_fp02/Untitled.mdj
-
+lib/
 .idea/
-
-aeda1920_fp02_extra/cmake-build-debug/
-aeda1920_fp02_extra/lib/
+cmake-build-debug/
 
 *.zip
-
 *.exe
+*.mdj
