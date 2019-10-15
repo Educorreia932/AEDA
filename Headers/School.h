@@ -12,7 +12,7 @@ class School {
     private:
         vector<Client> Clients;
     public:
-        School();
+        School(vector<Client> Clients);
 };
 
 #endif //SUP_SCHOOL_SCHOOL_H

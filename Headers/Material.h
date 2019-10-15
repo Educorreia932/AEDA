@@ -2,6 +2,8 @@
 #define SUP_SCHOOL_MATERIAL_H
 
 class Material {
+    private:
+    public:
 };
 
 class Boat : protected Material {
