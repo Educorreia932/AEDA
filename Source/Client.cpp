@@ -2,7 +2,7 @@
 
 using namespace std;
 
-static unsigned int id = 0;
+unsigned int Client::id = 0;
 
 Client::Client(unsigned int id, string name, bool gold_member) {
     this->id = id;
