@@ -4,6 +4,7 @@
 
 using namespace std;
 
+//Implement as class
 void Menu(School SUPSchool) {
     cout << "1) Consultar aluguer material" << endl
          << "2) Consultar conta cliente" << endl
@@ -18,7 +19,7 @@ int main() {
 
     School PortoSUPSchool(Clients, Materials);
 
-    Menu(PortoSUPSchool);
+    //Menu(PortoSUPSchool);
 
     return 0;
 }

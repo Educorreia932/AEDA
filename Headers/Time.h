@@ -1,20 +1,36 @@
 #ifndef AEDA_SUPSCHOOL_MASTER_TIME_H
 #define AEDA_SUPSCHOOL_MASTER_TIME_H
 
+#define stringify(name) # name
+
 #include <iomanip>
 #include <iostream>
 
-enum Weekday {
+using namespace std;
 
+enum Weekday {
+    Monday,
+    Tuesday,
+    Wednesday,
+    Thursday,
+    Friday,
+    Saturday,
+    Sunday
 };
 
 class Time{
     public:
-        Time(unsigned short hours, unsigned short minutes);
-        unsigned short GetHours() const;
-        unsigned short GetMinutes() const;
-        void SetHours(const unsigned short hours);
-        void SetMinutes(const unsigned short minutes);
+        Time(Weekday day, unsigned short hours, unsigned short minutes);
+
+        //Getters
+        unsigned short getHours() const;
+        unsigned short getMinutes() const;
+        Weekday getDay() const;
+        string getDayString() const;
+
+        //Setters
+        void setHours(const unsigned short hours);
+        void setMinutes(const unsigned short minutes);
     private:
         unsigned short hours, minutes;
         Weekday day;
@@ -23,10 +39,4 @@ class Time{
         friend bool operator <(Time const t1, Time const t2);
 };
 
-bool operator >(Time const t1, Time const t2){
-    return 60 * t1.GetHours() + t1.GetMinutes() > 60 * t2.GetHours() + t2.GetMinutes();
-}
-
-bool operator <(Time const t1, Time const t2){
-    return 60 * t1.GetHours() + t1.GetMinutes() < 60 * t2.GetHours() + t2.GetMinutes();
-}
+#endif
