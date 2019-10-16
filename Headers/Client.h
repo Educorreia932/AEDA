@@ -3,12 +3,15 @@
 
 #include <string>
 #include <iostream>
+#include <vector>
+
+#include "Activity.h"
 
 using namespace std;
 
 class Client {
     private:
-
+        //vector<*Activity> activities;
         static unsigned int id;
         string name;
         bool gold_member;
@@ -16,8 +19,16 @@ class Client {
     public:
         Client(unsigned int id, string name, bool has_gold_card);
 
-        bool isGoldMember() const;
+
         void purchaseGold();
+
+        string getName() const;
+        unsigned int getId() const;
+        bool isGoldMember() const;
+
+        void setName(string newName);
+
+
 };
 
 

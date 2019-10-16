@@ -5,6 +5,7 @@ using namespace std;
 unsigned int Client::id = 0;
 
 Client::Client(unsigned int id, string name, bool gold_member) {
+
     this->id = id;
     this->name = name;
     this->gold_member = gold_member;
@@ -22,6 +23,18 @@ void Client::purchaseGold() {
         gold_member = true;
     }
 
+}
+
+string Client::getName() const {
+    return this->name;
+}
+
+unsigned int Client::getId() const {
+    return this->id;
+}
+
+void Client::setName(string newName) {
+    this->name = newName;
 }
 
 ostream &operator<<(ostream &out, const alreadyGoldMember &member) {
