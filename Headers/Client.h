@@ -11,7 +11,7 @@ using namespace std;
 
 class Client {
     private:
-        //vector<*Activity> activities;
+        vector<Activity*> Activities;
         static unsigned int id;
         string name;
         bool gold_member;

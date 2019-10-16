@@ -13,9 +13,20 @@ class School {
     public:
         School();
         School(vector<Client> Clients, vector<Material> Materials);
+
+        void removeClient(unsigned int id);
     private:
         vector<Client> Clients;
         vector<Material> Materials;
 };
+
+
+class NonExistantClient : std::exception{
+public:
+    unsigned int id;
+    NonExistantClient(unsigned int id){this->id = id;};
+};
+
+std::ostream & operator <<(std::ostream &out,const NonExistantClient &client);
 
 #endif //SUP_SCHOOL_SCHOOL_H
