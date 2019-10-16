@@ -15,7 +15,6 @@ class Client {
         static unsigned int id;
         string name;
         bool gold_member;
-
     public:
         Client(unsigned int id, string name, bool has_gold_card);
 
