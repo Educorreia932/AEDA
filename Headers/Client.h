@@ -8,7 +8,7 @@ using namespace std;
 
 class Client {
     private:
-        unsigned int id;
+        static unsigned int id;
         string name;
         bool gold_member;
     public:
