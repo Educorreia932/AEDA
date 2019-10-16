@@ -40,4 +40,16 @@ class Time{
         friend bool operator <(Time const t1, Time const t2);
 };
 
+class ImpossibleTimeDiference : std::exception {
+public:
+    Time startTime;
+    Time endTime;
+    ImpossibleTimeDiference(Time startTime, Time endTime){
+        startTime = startTime;
+        endTime = endTime;
+    }
+};
+
+ostream &operator<<(ostream &out, const ImpossibleTimeDiference &times);
+
 #endif

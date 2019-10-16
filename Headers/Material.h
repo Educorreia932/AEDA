@@ -1,9 +1,11 @@
 #ifndef SUP_SCHOOL_MATERIAL_H
 #define SUP_SCHOOL_MATERIAL_H
-
+#include "Activity.h"
 class Material {
-    private:
     public:
+        bool BeingUsed(Time startTime, Time endTime);
+    private:
+        Activity* activity;
 };
 
 class Boat : protected Material {

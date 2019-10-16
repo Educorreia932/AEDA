@@ -59,3 +59,8 @@ ostream &operator<<(ostream &out, Time t) {
 
     return out;
 }
+
+ostream &operator<<(ostream &out, const ImpossibleTimeDiference &times) {
+    out << "The starting time of " << times.startTime << " is after " << times.endTime << endl;
+    return out;
+}

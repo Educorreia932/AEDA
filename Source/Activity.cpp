@@ -7,3 +7,11 @@ Activity::Activity(Time startTime, Time endTime) {
     this->startTime = startTime;
     this->endTime = endTime;
 }
+
+Time Activity::GetStartTime() {
+    return startTime;
+}
+
+Time Activity::GetEndTime() {
+    return endTime;
+}
