@@ -2,8 +2,9 @@
 
 using namespace std;
 
-Client::Client(unsigned int id, string name, bool gold_member) {
+unsigned int Client::id = 0;
 
+Client::Client(unsigned int id, string name, bool gold_member) {
     this->id = id;
     this->name = name;
     this->gold_member = gold_member;

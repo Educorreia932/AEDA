@@ -10,34 +10,18 @@
 using namespace std;
 
 class Client {
-<<<<<<< Updated upstream
     private:
         //vector<*Activity> activities;
         static unsigned int id;
         string name;
         bool gold_member;
-=======
->>>>>>> Stashed changes
     public:
         Client(unsigned int id, string name, bool has_gold_card);
-
-
         void purchaseGold();
-<<<<<<< Updated upstream
-
         string getName() const;
         unsigned int getId() const;
         bool isGoldMember() const;
-
         void setName(string newName);
-
-
-=======
-    private:
-        unsigned int id;
-        string name;
-        bool gold_member;
->>>>>>> Stashed changes
 };
 
 
