@@ -10,16 +10,20 @@
 using namespace std;
 
 class Client {
+<<<<<<< Updated upstream
     private:
         //vector<*Activity> activities;
         static unsigned int id;
         string name;
         bool gold_member;
+=======
+>>>>>>> Stashed changes
     public:
         Client(unsigned int id, string name, bool has_gold_card);
 
 
         void purchaseGold();
+<<<<<<< Updated upstream
 
         string getName() const;
         unsigned int getId() const;
@@ -28,13 +32,19 @@ class Client {
         void setName(string newName);
 
 
+=======
+    private:
+        unsigned int id;
+        string name;
+        bool gold_member;
+>>>>>>> Stashed changes
 };
 
 
 class alreadyGoldMember : std::exception {
-public:
-    unsigned int id;
-    alreadyGoldMember(unsigned int id){id = id;};
+    public:
+        unsigned int id;
+        alreadyGoldMember(unsigned int id){id = id;};
 };
 
 std::ostream & operator <<(std::ostream &out,const alreadyGoldMember &member);

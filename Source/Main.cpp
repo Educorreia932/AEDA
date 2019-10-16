@@ -1,10 +1,10 @@
-#include "../Headers/School.h"
+#include "../Headers/Menu.h"
 
 #include <iostream>
 
 using namespace std;
 
-//Implement as class
+/*
 void Menu(School SUPSchool) {
     cout << "1) Consultar aluguer material" << endl
          << "2) Consultar conta cliente" << endl
@@ -12,6 +12,7 @@ void Menu(School SUPSchool) {
          << "4) Horário de aulas, horário de professores" << endl
          << "0) Sair" << endl;
 };
+*/
 
 int main() {
     vector<Client> Clients;
@@ -19,7 +20,7 @@ int main() {
 
     School PortoSUPSchool(Clients, Materials);
 
-    //Menu(PortoSUPSchool);
+    Menu SUPMenu(PortoSUPSchool);
 
     return 0;
 }
