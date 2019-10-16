@@ -14,6 +14,8 @@ class School {
         School();
         School(vector<Client> Clients, vector<Material> Materials);
 
+        void addClient(Client client);
+        int clientIndex(unsigned int id);
         void removeClient(unsigned int id);
     private:
         vector<Client> Clients;
@@ -29,4 +31,12 @@ public:
 
 std::ostream & operator <<(std::ostream &out,const NonExistantClient &client);
 
+
+class ClientAlreadyExists : std::exception{
+public:
+    unsigned int id;
+    ClientAlreadyExists(unsigned int id){this->id = id;};
+};
+
+std::ostream & operator <<(std::ostream &out,const ClientAlreadyExists &client);
 #endif //SUP_SCHOOL_SCHOOL_H

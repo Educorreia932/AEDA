@@ -16,7 +16,7 @@ class Client {
         string name;
         bool gold_member;
     public:
-        Client(unsigned int id, string name, bool has_gold_card);
+        Client(string name, bool has_gold_card);
         void purchaseGold();
         string getName() const;
         unsigned int getId() const;

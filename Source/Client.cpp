@@ -4,8 +4,8 @@ using namespace std;
 
 unsigned int Client::id = 0;
 
-Client::Client(unsigned int id, string name, bool gold_member) {
-    this->id = id;
+Client::Client(string name, bool gold_member) {
+    this->id = Client::id++;
     this->name = name;
     this->gold_member = gold_member;
 }

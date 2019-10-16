@@ -26,7 +26,30 @@ void School::removeClient(unsigned int id) {
     }
 }
 
+void School::addClient(Client client) {
+
+    if(clientIndex(client.getId()) != -1){
+        throw ClientAlreadyExists(client.getId());
+    }
+    Clients.push_back(client);
+}
+
+int School::clientIndex(unsigned int id) {
+
+    for (size_t i = 0; i < Clients.size();i++){
+        if(Clients.at(i).getId() == id){
+            return i;
+        }
+    }
+    return -1;
+}
+
 std::ostream &operator<<(std::ostream &out, const NonExistantClient &client) {
     out << "Client with ID " << client.id << " does not exist in school." << endl;
+    return out;
+}
+
+std::ostream &operator<<(std::ostream &out, const ClientAlreadyExists &client) {
+    out << "Client with ID " << client.id << " already exists in school." << endl;
     return out;
 }
