@@ -11,10 +11,9 @@
 class School {
     private:
         vector<Client> Clients;
-
         vector<Material> Materials;
     public:
-        School(vector<Client> Clients, vector<Material> Materials;);
+        School(vector<Client> Clients, vector<Material> Materials);
 };
 
 #endif //SUP_SCHOOL_SCHOOL_H

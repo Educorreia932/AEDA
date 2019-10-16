@@ -1,0 +1,31 @@
+Eduardo da Costa Correia
+1     
+true
+----------
+Ana Ines Oliveira Barros
+2
+false
+----------
+Rodrigo Campos Reis
+3
+true
+----------
+Joao Alexandre Lobo Cardoso
+4
+false
+----------
+Henrique Melo Ribeiro
+5
+false
+----------
+Davide Castro
+6
+false
+----------
+Ricardo Fontao
+7
+false
+----------
+Tiago Duarte Silva
+8
+true

@@ -14,7 +14,10 @@ void Menu(School SUPSchool) {
 
 int main() {
     vector<Client> Clients;
-    School PortoSUPSchool(Clients);
+    vector<Material> Materials;
+
+    School PortoSUPSchool(Clients, Materials);
+
     Menu(PortoSUPSchool);
 
     return 0;
