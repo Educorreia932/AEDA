@@ -20,6 +20,7 @@ enum Weekday {
 
 class Time{
     public:
+        Time();
         Time(Weekday day, unsigned short hours, unsigned short minutes);
 
         //Getters

@@ -1,7 +1,14 @@
 #ifndef SUP_SCHOOL_ACTIVITY_H
 #define SUP_SCHOOL_ACTIVITY_H
 
+#include "Time.h"
+
 class Activity {
+private:
+    Time startTime;
+    Time endTime;
+public:
+    Activity(Time startTime,Time endTime);
 };
 
 class Ride : protected Activity {
