@@ -8,11 +8,9 @@ using namespace std;
 
 class Client {
     private:
-
-        static unsigned int id;
+        unsigned int id;
         string name;
         bool gold_member;
-
     public:
         Client(unsigned int id, string name, bool has_gold_card);
 
