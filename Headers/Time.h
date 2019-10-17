@@ -18,6 +18,7 @@ enum Weekday {
     Sunday
 };
 
+//Include day
 class Time{
     public:
         Time(); //Monday at midnight

@@ -3,7 +3,7 @@
 int readOption(int min, int max) {
     int option;
 
-    do {
+    while (true) {
         cout << endl << "Choose your option:  ";
 
         if (cin >> option && option >= min && option <= max) {
@@ -16,6 +16,9 @@ int readOption(int min, int max) {
             cin.ignore(1000, '\n');
             cerr << "\nERROR: Invalid input. Please try again:\n"; //Throw exception
         }
+    }
+}
 
-    } while (true);
+bool stob(const string& s) {
+    return s == "true";
 }

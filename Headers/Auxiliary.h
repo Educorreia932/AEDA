@@ -6,5 +6,6 @@
 using namespace std;
 
 int readOption(int min, int max);
+bool stob(const string &s);
 
 #endif //SUP_SCHOOL_AUXILIARY_H

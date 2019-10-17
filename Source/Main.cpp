@@ -6,10 +6,7 @@ using namespace std;
 int selection = 1;
 
 int main() {
-    vector<Client> Clients; //Read from file
-    vector<Material> Materials; //Read from file
-
-    School PortoSUPSchool(Clients, Materials);
+    School PortoSUPSchool("School.txt");
     Menu SUPMenu(PortoSUPSchool);
 
     while (selection) {

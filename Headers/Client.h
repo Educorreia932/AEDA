@@ -1,13 +1,13 @@
 #ifndef SUP_SCHOOL_CLIENT_H
 #define SUP_SCHOOL_CLIENT_H
 
-#include <string>
+#include <fstream>
 #include <iostream>
+#include <string>
 #include <vector>
 
 #include "Activity.h"
-
-using namespace std;
+#include "Auxiliary.h"
 
 class Client {
     private:
@@ -16,14 +16,16 @@ class Client {
         string name;
         bool gold_member;
     public:
+        //Constructors
+        Client(const string& filename, int line_number);
         Client(string name, bool has_gold_card);
+
         void purchaseGold();
         string getName() const;
         unsigned int getId() const;
         bool isGoldMember() const;
         void setName(string newName);
 };
-
 
 class alreadyGoldMember : std::exception {
     public:
@@ -32,6 +34,5 @@ class alreadyGoldMember : std::exception {
 };
 
 std::ostream & operator <<(std::ostream &out,const alreadyGoldMember &member);
-
 
 #endif //SUP_SCHOOL_CLIENT_H
