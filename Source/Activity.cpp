@@ -8,10 +8,10 @@ Activity::Activity(Time startTime, Time endTime) {
     this->endTime = endTime;
 }
 
-Time Activity::GetStartTime() {
+Time Activity::getStartTime() {
     return startTime;
 }
 
-Time Activity::GetEndTime() {
+Time Activity::getEndTime() {
     return endTime;
 }

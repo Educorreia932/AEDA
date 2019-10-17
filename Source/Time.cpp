@@ -1,5 +1,11 @@
 #include "../Headers/Time.h"
 
+Time::Time(){ //Monday at midnight
+    this->hours = 0;
+    this->minutes = 0;
+    this->day = Weekday(0);
+}
+
 Time::Time(Weekday day, unsigned short hours, unsigned short minutes) {
     this->hours = hours;
     this->minutes = minutes;
@@ -35,6 +41,8 @@ string Time::getDayString() const {
             return "Saturday";
         case Sunday:
             return "Sunday";
+        default:
+            return "";
     }
 }
 
@@ -60,7 +68,16 @@ ostream &operator<<(ostream &out, Time t) {
     return out;
 }
 
+
+
+ImpossibleTimeDiference::ImpossibleTimeDiference(Time startTime, Time endTime){
+    startTime = startTime;
+    endTime = endTime;
+}
+
 ostream &operator<<(ostream &out, const ImpossibleTimeDiference &times) {
     out << "The starting time of " << times.startTime << " is after " << times.endTime << endl;
     return out;
 }
+
+

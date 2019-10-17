@@ -20,7 +20,7 @@ enum Weekday {
 
 class Time{
     public:
-        Time();
+        Time(); //Monday at midnight
         Time(Weekday day, unsigned short hours, unsigned short minutes);
 
         //Getters
@@ -44,10 +44,7 @@ class ImpossibleTimeDiference : std::exception {
 public:
     Time startTime;
     Time endTime;
-    ImpossibleTimeDiference(Time startTime, Time endTime){
-        startTime = startTime;
-        endTime = endTime;
-    }
+    ImpossibleTimeDiference(Time startTime, Time endTime);
 };
 
 ostream &operator<<(ostream &out, const ImpossibleTimeDiference &times);

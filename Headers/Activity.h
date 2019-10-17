@@ -9,8 +9,8 @@ private:
     Time endTime;
 public:
     Activity(Time startTime,Time endTime);
-    Time GetStartTime();
-    Time GetEndTime():
+    Time getStartTime();
+    Time getEndTime();
 };
 
 class Ride : protected Activity {
