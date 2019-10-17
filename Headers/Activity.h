@@ -4,28 +4,28 @@
 #include "Time.h"
 
 class Activity {
-private:
-    Time startTime;
-    Time endTime;
-public:
-    Activity(Time startTime,Time endTime);
-    Time getStartTime();
-    Time getEndTime();
+    private:
+        Time startTime;
+        Time endTime;
+    public:
+        Activity(Time startTime,Time endTime);
+        Time getStartTime();
+        Time getEndTime();
 };
 
-class Ride : protected Activity {
+class Ride : public Activity {
 };
 
-class Lesson : protected Activity {
+class Lesson : public Activity {
 };
 
-class StandUpPaddle : protected Lesson {
+class StandUpPaddle : public Lesson {
 };
 
-class Surf : protected Lesson {
+class Surf : public Lesson {
 };
 
-class Windsurf : protected Lesson {
+class Windsurf : public Lesson {
 };
 
 #endif //SUP_SCHOOL_ACTIVITY_H

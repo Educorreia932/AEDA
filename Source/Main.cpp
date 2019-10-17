@@ -1,26 +1,21 @@
 #include "../Headers/Menu.h"
 
-#include <iostream>
-
 using namespace std;
 
-/*
-void Menu(School SUPSchool) {
-    cout << "1) Consultar aluguer material" << endl
-         << "2) Consultar conta cliente" << endl
-         << "3) Marcar aulas" << endl
-         << "4) Horário de aulas, horário de professores" << endl
-         << "0) Sair" << endl;
-};
-*/
+//Implement as class with exception for out of range/invalid or implement function to check
+int selection = 1;
 
 int main() {
-    vector<Client> Clients;
-    vector<Material> Materials;
+    vector<Client> Clients; //Read from file
+    vector<Material> Materials; //Read from file
 
     School PortoSUPSchool(Clients, Materials);
-
     Menu SUPMenu(PortoSUPSchool);
+
+    while (selection) {
+        Menu::clearScreen();
+        SUPMenu.mainMenu();
+    }
 
     return 0;
 }

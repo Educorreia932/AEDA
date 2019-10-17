@@ -1,7 +1,7 @@
 #include "../Headers/Material.h"
 
 bool Material::beingUsed(Time startTime, Time endTime){
-    if(startTime > endTime){
+    if (startTime > endTime) { //Implement >=
         throw ImpossibleTimeDiference(startTime, endTime);
         /*
         try {
@@ -11,13 +11,9 @@ bool Material::beingUsed(Time startTime, Time endTime){
             cout << ImpossibleTimeDiference(startTime, endTime) << endl;
         }*/
     }
-    if(!activity){ //Ou == NULL
+
+    if (!activity) //Or activity == NULL
         return true;
-    }
-    else{
-        if((activity->getStartTime() < endTime) || (activity->getEndTime() > startTime)){
-            return false;
-        }
-    }
-    return true;
+
+    return !(endTime < activity->getStartTime() || startTime > activity->getEndTime());
 }

@@ -41,3 +41,11 @@ cmake-build-debug/
 Untitled.mdj
 
 *.xlsx
+
+*.mdj
+
+Doxyfile
+
+*.bak_000f
+
+*.vpp

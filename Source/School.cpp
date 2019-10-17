@@ -53,3 +53,18 @@ std::ostream &operator<<(std::ostream &out, const ClientAlreadyExists &client) {
     out << "Client with ID " << client.id << " already exists in school." << endl;
     return out;
 }
+
+void School::readClients(string filename) {
+    string line;
+    ifstream ClientsFile(filename);
+    int counter = 0;
+
+    if (ClientsFile.is_open()) {
+        while (getline(ClientsFile, line)) {
+            if (line == "----------") //Or end of file
+                ;
+        }
+    }
+
+}
+
