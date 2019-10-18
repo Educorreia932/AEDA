@@ -6,10 +6,11 @@ Time::Time(){ //Monday at midnight
     this->day = Weekday(0);
 }
 
-Time::Time(Weekday day, unsigned short hours, unsigned short minutes) {
+Time::Time(unsigned short year, Month month, unsigned short hours, unsigned short minutes) {
+    this->year = year;
+    this->month = month;
     this->hours = hours;
     this->minutes = minutes;
-    this->day = day;
 }
 
 unsigned short Time::getHours() const {
@@ -67,8 +68,6 @@ ostream &operator<<(ostream &out, Time t) {
 
     return out;
 }
-
-
 
 ImpossibleTimeDiference::ImpossibleTimeDiference(Time startTime, Time endTime){
     startTime = startTime;

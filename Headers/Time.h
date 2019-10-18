@@ -18,11 +18,25 @@ enum Weekday {
     Sunday
 };
 
-//Include day
+enum Month {
+    January,
+    February,
+    March,
+    April,
+    May,
+    June,
+    July,
+    August,
+    September,
+    October,
+    November,
+    December
+};
+
 class Time{
     public:
-        Time(); //Monday at midnight
-        Time(Weekday day, unsigned short hours, unsigned short minutes);
+        Time(); //Today's Date
+        Time(unsigned short year, Month month, unsigned short hours, unsigned short minutes);
 
         //Getters
         unsigned short getHours() const;
@@ -34,18 +48,21 @@ class Time{
         void setHours(const unsigned short hours);
         void setMinutes(const unsigned short minutes);
     private:
-        unsigned short hours, minutes;
+        unsigned short year,
+        Month month;
         Weekday day;
+        unsigned short hours, minutes;
+
         friend ostream & operator<<(ostream &out, Time t);
         friend bool operator >(Time const t1, Time const t2);
         friend bool operator <(Time const t1, Time const t2);
 };
 
 class ImpossibleTimeDiference : std::exception {
-public:
-    Time startTime;
-    Time endTime;
-    ImpossibleTimeDiference(Time startTime, Time endTime);
+        public:
+            Time startTime;
+            Time endTime;
+            ImpossibleTimeDiference(Time startTime, Time endTime);
 };
 
 ostream &operator<<(ostream &out, const ImpossibleTimeDiference &times);

@@ -24,6 +24,8 @@ School::School(const string& filename) {
                 case 3:
                     Files["Materials"] = line;
                     break;
+                default:
+                    break;
             }
 
             counter++;

@@ -49,3 +49,5 @@ Doxyfile
 *.bak_000f
 
 *.vpp
+
+*.lck
