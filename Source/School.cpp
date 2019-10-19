@@ -16,7 +16,7 @@ School::School(const string& filename) {
                     name = line;
                     break;
                 case 1:
-                    //Date
+                    currentTime = Time(line);
                     break;
                 case 2:
                     Files["Clients"] = line;
@@ -33,6 +33,9 @@ School::School(const string& filename) {
 
         File.close();
     }
+
+    else
+        cerr << "ERROR: Couldn't read file";
 }
 
 School::School(vector<Client> Clients, vector<Material> Materials) {

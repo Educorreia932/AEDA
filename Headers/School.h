@@ -23,10 +23,12 @@ class School {
         void removeClient(unsigned int id);
     private:
         string name;
+        Time currentTime;
         map<string, string> Files;
         vector<Client> Clients;
         vector<Material> Materials;
-        //Today date
+
+        friend class Menu;
 };
 
 //Exceptions

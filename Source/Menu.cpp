@@ -16,11 +16,15 @@ void Menu::mainMenu() {
          << "0) Sair" << endl
          << endl;
 
-    selection = readOption(0, 5);
+    selection = readOption(0, 6);
 
     switch (selection) {
         case 1:
             //Call function
+            return;
+        case 6:
+            cout << SUPSchool.currentTime << endl;
+            system("pause"); //Implement in function
             return;
         case 0:
             return;
