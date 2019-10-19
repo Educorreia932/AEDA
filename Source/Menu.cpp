@@ -7,13 +7,13 @@ Menu::Menu(School SUPSchool) {
 }
 
 void Menu::mainMenu() {
-    cout << "1) Manage clients." << endl
-         << "2) *Consultar conta cliente" << endl
-         << "3) *Marcar aulas" << endl
-         << "4) *Horário de aulas, horário de professores" << endl
-         << "5) *Consultar aluguer material*" << endl
+    cout << "1) Rent material." << endl
+         << "2) Manage clients." << endl
+         << "3) Manage teachers." << endl
+         << "4) Manage activities" << endl
+         << "5) Consult schedules."
          << "6) Consult school's information." << endl
-         << "0) Sair" << endl
+         << "0) Exit" << endl //And save to files
          << endl;
 
     selection = readOption(0, 6);

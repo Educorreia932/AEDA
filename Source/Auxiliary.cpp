@@ -22,3 +22,7 @@ int readOption(int min, int max) {
 bool stob(const string& s) {
     return s == "true";
 }
+
+void viewSchedule(const vector<Activity *>& Activities) {
+
+}

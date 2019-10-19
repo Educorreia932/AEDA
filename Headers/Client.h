@@ -2,7 +2,6 @@
 #define SUP_SCHOOL_CLIENT_H
 
 #include <fstream>
-#include <iostream>
 #include <string>
 #include <vector>
 
@@ -11,7 +10,8 @@
 
 class Client {
     private:
-        vector<Activity*> Activities;
+        vector<Activity*> PastActivities;
+        vector<Activity*> ScheduledActivities;
         static unsigned int id;
         string name;
         bool gold_member;
@@ -20,9 +20,12 @@ class Client {
         Client(const string& filename, int line_number);
         Client(string name, bool has_gold_card);
 
-        void purchaseGold();
+        //Getters
         string getName() const;
         unsigned int getId() const;
+
+        //Misc.
+        void purchaseGold();
         bool isGoldMember() const;
         void setName(string newName);
 };

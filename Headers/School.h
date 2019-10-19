@@ -7,9 +7,7 @@
 #include "Staff.h"
 #include "Time.h"
 
-#include <fstream>
 #include <map>
-#include <vector>
 
 class School {
     public:
@@ -27,6 +25,7 @@ class School {
         map<string, string> Files;
         vector<Client> Clients;
         vector<Material> Materials;
+        vector<Staff> Staff;
 
         friend class Menu;
 };

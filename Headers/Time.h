@@ -12,7 +12,7 @@ class Time{
     public:
         //Constructors
         Time(); //Today's Date
-        Time (const string &t); //const In for&mat DD/MM/AAAA hh:mm
+        Time (const string &t); //const In format DD/MM/AAAA hh:mm
         Time(unsigned short day, unsigned short month, unsigned short year, unsigned short hours, unsigned short minutes);
 
         //Getters

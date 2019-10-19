@@ -51,3 +51,7 @@ Doxyfile
 *.vpp
 
 *.lck
+
+*.bak_001d
+
+*.eapx
