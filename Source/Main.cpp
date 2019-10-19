@@ -6,7 +6,7 @@ using namespace std;
 int selection = 1;
 
 int main() {
-    School PortoSUPSchool("School.txt");
+    School PortoSUPSchool("../Data/School.txt");
     Menu SUPMenu(PortoSUPSchool);
 
     while (selection) {
