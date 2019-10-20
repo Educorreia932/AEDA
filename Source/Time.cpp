@@ -19,6 +19,14 @@ Time::Time(const string& t) {
     s >> day >> separator >> month >> separator >> year >> hours >> separator >> minutes;
 }
 
+Time::Time(unsigned short day, unsigned short month, unsigned short year) {
+    this->day = day;
+    this->month = month;
+    this->year = year;
+    hours = 0;
+    minutes = 0;
+}
+
 Time::Time(unsigned short day, unsigned short month, unsigned short year, unsigned short hours, unsigned short minutes) {
     this->day = day;
     this->month = month;
@@ -38,6 +46,26 @@ unsigned short Time::getMonth() const {
 
 unsigned short Time::getDay() const {
     return day;
+}
+
+//Implement as map?
+string Time::getWeekday() const {
+    switch(dayOfweek(day, month, year)) {
+        case 0:
+            return "Saturday";
+        case 1:
+            return "Sunday";
+        case 2:
+            return "Monday";
+        case 3:
+            return "Tuesday";
+        case 4:
+            return "Wednesday";
+        case 5:
+            return "Thursday";
+        case 6:
+            return "Friday";
+    }
 }
 
 unsigned short Time::getHours() const {
@@ -166,7 +194,7 @@ bool operator <(Time const t1, Time const t2) {
 
 ostream &operator<<(ostream &out, Time t) {
     out << t.getDay() << '/' << t.getMonth() << '/' << t.getYear() << ' ' << t.getHours() << ':' << t.getMinutes();
-
+                                                                            //Include leading zeros
     return out;
 }
 
@@ -176,6 +204,6 @@ ImpossibleTimeDiference::ImpossibleTimeDiference(Time startTime, Time endTime){
 }
 
 ostream &operator<<(ostream &out, const ImpossibleTimeDiference &times) {
-    out << "The starting time of " << times.startTime << " is after " << times.endTime << endl;
+    out << "ERROR: The starting time of " << times.startTime << " is after " << times.endTime << endl;
     return out;
 }

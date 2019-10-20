@@ -13,12 +13,14 @@ class Time{
         //Constructors
         Time(); //Today's Date
         Time (const string &t); //const In format DD/MM/AAAA hh:mm
+        Time(unsigned short day, unsigned short month, unsigned short year);
         Time(unsigned short day, unsigned short month, unsigned short year, unsigned short hours, unsigned short minutes);
 
         //Getters
         unsigned short getYear() const;
         unsigned short getMonth() const;
         unsigned short getDay() const;
+        string getWeekday() const;
         unsigned short getHours() const;
         unsigned short getMinutes() const;
 

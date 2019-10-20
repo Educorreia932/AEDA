@@ -7,19 +7,27 @@
 #include <vector>
 
 struct CharacterCodes {
-    unsigned char topRight = 187, topLeft = 201, downRight = 188, downLeft = 200;
-    unsigned char topDownSimple = 205, topSeparation = 203, downSeparation = 202;
-    unsigned char leftRightSimple = 186, leftSeparation = 204, rightSeparation = 185;
-    unsigned char centreSeparation = 206;
+    unsigned char topRight = 187, //╗
+                  topLeft = 201, //╔
+                  downRight = 188, //╝
+                  downLeft = 200, //╚
+                  topDownSimple = 205, //═
+                  topSeparation = 203, //╦
+                  downSeparation = 202, //╩
+                  leftRightSimple = 186, //║
+                  leftSeparation = 204, //╠
+                  rightSeparation = 185, //╣
+                  centreSeparation = 206; //╬
 };
 
 class Schedule {
     public:
         Schedule();
-        Schedule(vector <Activity*> Activities);
-        void view();
+        Schedule(const vector<Activity*> &Activities);
+        Schedule(map <Time, vector<Activity*>> Activities);
+        void view(Time Date);
     private:
-        vector<vector<unsigned short>> Activities;
+        map <Time, vector<Activity*>> Activities;
 };
 
 #endif //SUP_SCHOOL_SCHEDULE_H
