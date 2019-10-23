@@ -38,7 +38,7 @@ School::School(const string& filename) {
         cerr << "ERROR: Couldn't read file";
 }
 
-School::School(vector<Client> Clients, vector<Material> Materials) {
+School::School(vector<Client*> Clients, vector<Material*> Materials) {
     this->Clients = Clients;
     this->Materials = Materials;
 }
@@ -47,7 +47,7 @@ void School::removeClient(unsigned int id) {
     bool exists = false;
 
     for(size_t i = 0; i < Clients.size() ; i++){
-        if (Clients.at(i).getId() == id){
+        if (Clients.at(i)->getId() == id){
             Clients.erase(Clients.begin()+i);
             exists = true;
             break;
@@ -59,9 +59,9 @@ void School::removeClient(unsigned int id) {
     }
 }
 
-void School::addClient(Client client) {
-    if(clientIndex(client.getId()) != -1){
-        throw ClientAlreadyExists(client.getId());
+void School::addClient(Client* client) {
+    if(clientIndex(client->getId()) != -1){
+        throw ClientAlreadyExists(client->getId());
     }
 
     Clients.push_back(client);
@@ -69,7 +69,7 @@ void School::addClient(Client client) {
 
 int School::clientIndex(unsigned int id) {
     for (size_t i = 0; i < Clients.size();i++){
-        if (Clients.at(i).getId() == id){
+        if (Clients.at(i)->getId() == id){
             return i;
         }
     }

@@ -14,18 +14,18 @@ class School {
         //Constructors
         School();
         School(const string& filename);
-        School(vector<Client> Clients, vector<Material> Materials);
+        School(vector<Client*> Clients, vector<Material*> Materials);
 
-        void addClient(Client client);
+        void addClient(Client* client);
         int clientIndex(unsigned int id);
         void removeClient(unsigned int id);
     private:
         string name;
         Time currentTime;
         map<string, string> Files;
-        vector<Client> Clients;
-        vector<Material> Materials;
-        vector<Staff> Staff;
+        vector<Client*> Clients;
+        vector<Material*> Materials;
+        vector<Staff*> staff;
 
         friend class Menu;
 };

@@ -21,7 +21,6 @@ int main() {
     Schedule test;
     Time t(20, 10, 2019);
     test.view(t);
-    system("pause");
 
     return 0;
 }
