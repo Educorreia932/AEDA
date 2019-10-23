@@ -26,18 +26,18 @@ Schedule::Schedule(map <Time, vector<Activity*>> Activities) {
 void Schedule::view(Time Date) {
     CharacterCodes Chars;
 
-    for (int i = 0; i < 19; i++) {
+    for (int i = 0; i < 20; i++) {
         if (!i) //First row
             cout << setw(8) << Chars.topLeft << string(50, Chars.topDownSimple) << Chars.topRight << endl
-                 << setw(7) <<Times[i] << Chars.leftRightSimple << setw(50) << Date.getWeekday() << Chars.leftRightSimple << endl
+                 << setw(8) << Chars.leftRightSimple << setw(50) << Date.getWeekday() << Chars.leftRightSimple << endl
                  << setw(8) << Chars.leftSeparation << string(50, Chars.topDownSimple) << Chars.rightSeparation << endl;
 
-        else if (i < 18)
-            cout << setw(7) << Times[i] <<Chars.leftRightSimple << setw(51) << Chars.leftRightSimple << endl
+        else if (i < 19)
+            cout << setw(7) << Times[i - 1] <<Chars.leftRightSimple << setw(51) << Chars.leftRightSimple << endl
                  << setw(8) <<Chars.leftSeparation << string(50, Chars.topDownSimple) << Chars.rightSeparation << endl;
 
         else //Last row
-            cout << setw(7) << Times[i] << Chars.leftRightSimple << setw(51) << Chars.leftRightSimple << endl
+            cout << setw(7) << Times[i - 1] << Chars.leftRightSimple << setw(51) << Chars.leftRightSimple << endl
                  << setw(8) << Chars.downLeft << string(50, Chars.topDownSimple) << Chars.downRight << endl;
     }
 
