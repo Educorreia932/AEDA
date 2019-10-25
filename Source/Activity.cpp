@@ -5,7 +5,7 @@ using namespace std;
 
 unsigned int Activity::id = 0;
 
-Activity::Activity(Time startTime, Time endTime) {
+Activity::Activity(Time startTime, Time endTime,string name) {
     this->startTime = startTime;
     this->endTime = endTime;
     this->id = Activity::id++;

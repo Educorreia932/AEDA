@@ -8,8 +8,9 @@ class Activity {
         Time startTime;
         Time endTime;
         static unsigned int id;
+        string name;
     public:
-        Activity(Time startTime,Time endTime);
+        Activity(Time startTime,Time endTime,string name);
         Time getStartTime();
         Time getEndTime();
         virtual int calcCost() const = 0;
@@ -18,32 +19,32 @@ class Activity {
 
 class Ride : public Activity {
     public:
-        Ride(Time startTime,Time endTime) : Activity(startTime,endTime){};
+        Ride(Time startTime,Time endTime,string name) : Activity(startTime,endTime,name){};
         int CalcCost() const;
 };
 
 class Lesson : public Activity {
     public:
-    Lesson(Time startTime,Time endTime) : Activity(startTime,endTime){};
+    Lesson(Time startTime,Time endTime,string name) : Activity(startTime,endTime,name){};
     int CalcCost() const;
 };
 
 class StandUpPaddle : public Lesson {
     public:
         int CalcCost() const;
-        StandUpPaddle(Time startTime,Time endTime) : Lesson(startTime,endTime){};
+        StandUpPaddle(Time startTime,Time endTime,string name) : Lesson(startTime,endTime,name){};
 };
 
 class Surf : public Lesson {
     public:
         int CalcCost() const;
-        Surf(Time startTime,Time endTime) : Lesson(startTime,endTime){};
+        Surf(Time startTime,Time endTime,string name) : Lesson(startTime,endTime,name){};
 };
 
 class Windsurf : public Lesson {
     public:
         int CalcCost() const;
-        Windsurf(Time startTime,Time endTime) : Lesson(startTime,endTime){};
+        Windsurf(Time startTime,Time endTime,string name) : Lesson(startTime,endTime,name){};
 };
 
 class activityNonExistant : std::exception {
