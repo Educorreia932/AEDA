@@ -77,6 +77,10 @@ int School::clientIndex(unsigned int id) {
     return -1;
 }
 
+vector<Activity *> School::getActivities() const {
+    return this->Activities;
+}
+
 std::ostream &operator<<(std::ostream &out, const NonExistantClient &client) {
     out << "Client with ID " << client.id << " does not exist in school." << endl;
     return out;

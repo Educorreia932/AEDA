@@ -27,7 +27,9 @@ class Client {
         //Misc.
         void purchaseGold();
         bool isGoldMember() const;
-        void setName(string newName);
+        void setName(const string newName);
+        void enroll(const unsigned int activityId,const vector<Activity*> schoolActivities);
+        bool isOcuppied(Time startTime,Time endTime); //Not implemented
 };
 
 class alreadyGoldMember : std::exception {
@@ -37,5 +39,15 @@ class alreadyGoldMember : std::exception {
 };
 
 std::ostream & operator <<(std::ostream &out,const alreadyGoldMember &member);
+
+
+class hasActivityAtSameTime : std::exception {
+public:
+    unsigned clientId;
+    unsigned int activityId;
+    hasActivityAtSameTime(unsigned int clientId,unsigned int activityId){clientId = clientId;activityId = activityId;};
+};
+
+std::ostream & operator <<(std::ostream &out,const hasActivityAtSameTime &ids);
 
 #endif //SUP_SCHOOL_CLIENT_H

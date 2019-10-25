@@ -19,6 +19,9 @@ class School {
         void addClient(Client* client);
         int clientIndex(unsigned int id);
         void removeClient(unsigned int id);
+        vector<Activity*> getActivities() const;
+
+
     private:
         string name;
         Time currentTime;
@@ -26,8 +29,10 @@ class School {
         vector<Client*> Clients;
         vector<Material*> Materials;
         vector<Staff*> staff;
+        vector<Activity*> Activities;
 
         friend class Menu;
+
 };
 
 //Exceptions
