@@ -1,5 +1,4 @@
 #include "../Headers/Menu.h"
-
 #include "../Headers/Schedule.h"
 
 using namespace std;
@@ -7,9 +6,7 @@ using namespace std;
 //Implement as class with exception for out of range/invalid or implement function to check
 int selection = 1;
 
-
 int main() {
-
     School PortoSUPSchool("../Data/School.txt");
     Menu SUPMenu(PortoSUPSchool);
 
@@ -17,11 +14,11 @@ int main() {
         Menu::clearScreen();
         SUPMenu.mainMenu();
     }
-    /*
-    Schedule test;
-    Time t;
-    test.view(t, 20);
-    Menu::pause();
-    */
+
+/*    Schedule test;
+    Time t(23, 5, 2015);
+    test.view(t, 30);
+    Menu::pause();*/
+
     return 0;
 }

@@ -24,6 +24,9 @@ School::School(const string& filename) {
                 case 3:
                     Files["Materials"] = line;
                     break;
+                case 4:
+                    Files["Activities"] = line;
+                    break;
                 default:
                     break;
             }
@@ -32,15 +35,13 @@ School::School(const string& filename) {
         }
 
         File.close();
+
+        readActivities();
+        readClients();
     }
 
     else
         cerr << "ERROR: Couldn't read file";
-}
-
-School::School(vector<Client*> Clients, vector<Material*> Materials) {
-    this->Clients = Clients;
-    this->Materials = Materials;
 }
 
 void School::removeClient(unsigned int id) {
@@ -79,6 +80,64 @@ int School::clientIndex(unsigned int id) {
 
 vector<Activity *> School::getActivities() const {
     return this->Activities;
+}
+
+void School::readClients() {
+    string line;
+    ifstream File("../Data/" + Files["Clients"]);
+    int counter = 0;
+    Client* auxClient = new Client();
+
+    if (File.is_open()) {
+        while (getline(File, line)) {
+                switch (counter % 4) {
+                    case 0:
+                        auxClient->setName(line);
+                        break;
+                    case 1:
+                        auxClient->setID((stoi(line)));
+                        break;
+                    case 2:
+                        auxClient->setGoldMember(stob(line));
+                        break;
+                    case 3:
+                        Clients.push_back(auxClient);
+                        auxClient = new Client();
+                        break;
+            }
+
+            counter++;
+        }
+
+        File.close();
+    }
+}
+
+void School::readActivities() {
+    string line;
+    ifstream File("../Data/" + Files["Activities"]);
+    int counter = 0;
+
+    Activity* auxActivity = new Activity();
+
+    if (File.is_open()) {
+        while (getline(File, line)) {
+            switch (counter % 3) {
+                case 0:
+                    auxActivity->setID(stoi(line));
+                    break;
+                case 1:
+                    auxActivity->setName(line);
+                    break;
+                case 2:
+                    Activities.push_back(auxActivity);
+                    auxActivity = new Activity();
+                    break;
+            }
+
+            counter++;
+        }
+    }
 }
 
 std::ostream &operator<<(std::ostream &out, const NonExistantClient &client) {

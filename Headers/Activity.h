@@ -10,11 +10,19 @@ class Activity {
         static unsigned int id;
         string name;
     public:
+        Activity();
         Activity(Time startTime,Time endTime,string name);
+
+        //Getters
         Time getStartTime();
         Time getEndTime();
-        virtual int calcCost() const = 0;
         unsigned int getId() const;
+
+        //Setters
+        void setName(string name);
+        void setID(unsigned int id);
+
+        virtual int calcCost() const;
 };
 
 class Ride : public Activity {

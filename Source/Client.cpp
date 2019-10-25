@@ -32,38 +32,16 @@ unsigned int Client::getId() const {
     return this->id;
 }
 
+void Client::setGoldMember(const bool gold_member) {
+    this->gold_member = gold_member;
+}
+
 void Client::setName(const string newName) {
     this->name = newName;
 }
 
-Client::Client(const string &filename, int line_number) {
-    string line;
-    ifstream File(filename);
-    int counter = 0;
-
-    if (File.is_open()) {
-        while (getline(File, line)) {
-            if (counter >= line_number && line_number + 3 > counter) {
-                switch (counter % 3) {
-                    case 0:
-                        name = line;
-                        break;
-                    case 1:
-                        id = stoi(line);
-                        break;
-                    case 2:
-                        gold_member = stob(line);
-                        break;
-                }
-            }
-
-
-            counter++;
-        }
-
-        File.close();
-    }
-
+void Client::setID(const unsigned int id) {
+    this->id = id;
 }
 
 void Client::enroll(const unsigned int activityId,const vector<Activity*> schoolActivities) {
@@ -112,6 +90,10 @@ bool Client::isOcuppied(Time startTime, Time endTime) {
 
     return false;
 
+
+}
+
+Client::Client() {
 
 }
 

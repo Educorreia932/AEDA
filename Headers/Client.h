@@ -17,17 +17,21 @@ class Client {
         bool gold_member;
     public:
         //Constructors
-        Client(const string& filename, int line_number);
+        Client();
         Client(string name, bool has_gold_card);
 
         //Getters
         string getName() const;
         unsigned int getId() const;
 
+        //Setters
+        void setName(const string newName);
+        void setID(const unsigned int id);
+        void setGoldMember(const bool gold_member);
+
         //Misc.
         void purchaseGold();
         bool isGoldMember() const;
-        void setName(const string newName);
         void enroll(const unsigned int activityId,const vector<Activity*> schoolActivities);
         bool isOcuppied(Time startTime,Time endTime); //Not implemented
 };

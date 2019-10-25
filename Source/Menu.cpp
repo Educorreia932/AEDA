@@ -40,14 +40,27 @@ void Menu::mainMenu() {
 }
 
 void Menu::manageClientsMenu() {
+    clearScreen();
+
     cout << "What do you want to do? Insert the corresponding key." << endl
          << endl
          << "1) Enrole a client in an activity." << endl
-         << "0) Go back";
+         << "0) Go back" << endl;
 
     switch(readOption(0, 1)) {
         case 1:
-            cout << "NOT IMPLEMENT YET" << endl;
+            int client;
+            cout << "Which client?" << endl;
+            cout << SUPSchool.Clients[0]->getName();
+
+            try {
+                SUPSchool.Clients[0]->enroll(1, SUPSchool.Activities);
+            }
+
+            catch (exception &e) {
+                cerr << e.what();
+            }
+
             pause();
             return;
         case 0:

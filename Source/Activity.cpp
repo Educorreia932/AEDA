@@ -5,6 +5,10 @@ using namespace std;
 
 unsigned int Activity::id = 0;
 
+Activity::Activity() {
+
+}
+
 Activity::Activity(Time startTime, Time endTime,string name) {
     this->startTime = startTime;
     this->endTime = endTime;
@@ -21,6 +25,18 @@ Time Activity::getEndTime() {
 
 unsigned int Activity::getId() const {
     return this->id;
+}
+
+void Activity::setName(string name) {
+    this->name = name;
+}
+
+void Activity::setID(unsigned int id) {
+    this->id = id;
+}
+
+int Activity::calcCost() const {
+    return 0;
 }
 
 std::ostream &operator<<(std::ostream &out, const activityNonExistant &activity) {
