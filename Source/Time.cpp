@@ -4,8 +4,8 @@ Time::Time() { //Today's date and hour
     time_t now = time(0);
     tm *ltm = localtime(&now);
 
-    year = ltm->tm_year;
-    month = ltm->tm_mon;
+    year = ltm->tm_year + 1900;
+    month = ltm->tm_mon + 1;
     day = ltm->tm_mday;
     hours = ltm->tm_hour;
     minutes = ltm->tm_min;
@@ -50,7 +50,7 @@ unsigned short Time::getDay() const {
 
 //Implement as map?
 string Time::getWeekday() const {
-    switch(dayOfweek(day, month, year)) {
+    switch(dayOfweek()) {
         case 0:
             return "Saturday";
         case 1:
@@ -84,14 +84,14 @@ void Time::setMinutes(const unsigned short minutes) {
     this->minutes = minutes;
 }
 
-bool Time::isBissextile(int year) {
+bool Time::isBissextile() const {
     return (year % 4 == 0 && year % 100 != 0) || year % 400 == 0;
 }
 
-int Time::numberOfdays(int month, int year) {
+int Time::numberOfdays() const {
     switch (month) {
         case 2:
-            if (isBissextile(year))
+            if (isBissextile())
                 return 29;
             else
                 return 28;
@@ -108,12 +108,12 @@ int Time::numberOfdays(int month, int year) {
     }
 }
 
-int Time::dayOfweek(unsigned short day, unsigned short month, unsigned short year) {
+int Time::dayOfweek() const {
     int c;
 
     switch (month) {
         case 1:
-            if (isBissextile(year)) {
+            if (isBissextile()) {
                 c = 6;
                 break;
             }
@@ -124,7 +124,7 @@ int Time::dayOfweek(unsigned short day, unsigned short month, unsigned short yea
             }
 
         case 2:
-            if (isBissextile(year)) {
+            if (isBissextile()) {
                 c = 2;
                 break;
             }

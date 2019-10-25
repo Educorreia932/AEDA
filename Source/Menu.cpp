@@ -35,7 +35,7 @@ void Menu::mainMenu() {
 }
 
 void Menu::clearScreen() {
-    /*
+
     #ifdef __unix__
         system("clear");
     #endif
@@ -43,8 +43,7 @@ void Menu::clearScreen() {
     #ifdef _WIN32
         system("cls");
     #endif
-     */
 
-    cout << string( 100, '\n' );
+    //cout << string( 100, '\n' );
 }
 

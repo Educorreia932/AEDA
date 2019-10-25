@@ -30,12 +30,11 @@ class Time{
     private:
         unsigned short year, month, day, hours, minutes;
 
-        static int numberOfdays(int month, int year);
-        static bool isBissextile(int year);
-        static int dayOfweek(unsigned short day, unsigned short month, unsigned short year);
+        int numberOfdays() const;
+        bool isBissextile() const;
+        int dayOfweek() const;
 
         //Operators
-
         friend ostream & operator<<(ostream &out, Time t);
         friend bool operator >(Time const t1, Time const t2);
         friend bool operator <(Time const t1, Time const t2);
