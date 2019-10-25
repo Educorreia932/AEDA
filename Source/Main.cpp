@@ -7,10 +7,10 @@ using namespace std;
 //Implement as class with exception for out of range/invalid or implement function to check
 int selection = 1;
 
-School PortoSUPSchool("../Data/School.txt");
 
 int main() {
 
+    School PortoSUPSchool("../Data/School.txt");
     Menu SUPMenu(PortoSUPSchool);
 
     /*

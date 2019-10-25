@@ -66,6 +66,7 @@ string Time::getWeekday() const {
         case 6:
             return "Friday";
     }
+    return "";
 }
 
 unsigned short Time::getHours() const {
@@ -189,7 +190,7 @@ bool operator >(Time const t1, Time const t2) { //Include year/day/month
 }
 
 bool operator <(Time const t1, Time const t2) {
-    return (t1.getDay() < t2.getDay() || 60 * t1.getHours() + t1.getMinutes() < 60 * t2.getHours() + t2.getMinutes();
+    return t1.getDay() < t2.getDay() || 60 * t1.getHours() + t1.getMinutes() < 60 * t2.getHours() + t2.getMinutes();
 }
 
 bool operator ==(Time const t1, Time const t2) {

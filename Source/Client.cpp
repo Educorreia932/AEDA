@@ -1,5 +1,4 @@
 #include "../Headers/Client.h"
-#include "Main.cpp"
 
 using namespace std;
 
@@ -67,14 +66,14 @@ Client::Client(const string &filename, int line_number) {
 
 }
 
-void Client::enroll(const unsigned int activityId) {
+void Client::enroll(const unsigned int activityId,const vector<Activity*> schoolActivities) {
 
     //Time needs to be checked if is ahead of the set current time
 
 
     bool activityExists = false;
 
-    for (const auto &ac : PortoSUPSchool.getActivities()){
+    for (const auto &ac : schoolActivities){
 
         if(activityId == ac->getId()){
             if(isOcuppied(ac->getStartTime(),ac->getEndTime())){
@@ -95,7 +94,7 @@ void Client::enroll(const unsigned int activityId) {
 
 bool Client::isOcuppied(Time startTime, Time endTime) {
 
-    for (const auto &ac : PortoSUPSchool.getActivities()){
+    for (const auto &ac : this->ScheduledActivities){
 
         if(ac->getStartTime() == startTime){
             return true;

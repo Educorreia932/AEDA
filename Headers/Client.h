@@ -28,7 +28,7 @@ class Client {
         void purchaseGold();
         bool isGoldMember() const;
         void setName(const string newName);
-        void enroll(const unsigned int activityId);
+        void enroll(const unsigned int activityId,const vector<Activity*> schoolActivities);
         bool isOcuppied(Time startTime,Time endTime); //Not implemented
 };
 
