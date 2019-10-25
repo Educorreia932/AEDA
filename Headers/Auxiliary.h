@@ -9,6 +9,6 @@ using namespace std;
 
 int readOption(int min, int max);
 bool stob(const string &s);
-void viewSchedule(const vector <Activity>& Activities);
+string centerString(int width, const string& s);
 
 #endif //SUP_SCHOOL_AUXILIARY_H

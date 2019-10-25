@@ -66,6 +66,8 @@ string Time::getWeekday() const {
         case 6:
             return "Friday";
     }
+
+    return "N/A";
 }
 
 unsigned short Time::getHours() const {

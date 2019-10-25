@@ -7,11 +7,13 @@ Menu::Menu(School SUPSchool) {
 }
 
 void Menu::mainMenu() {
-    cout << "1) Rent material." << endl
+    cout << "What do you want to do? Insert the corresponding key." << endl
+         << endl
+         << "1) Rent material." << endl
          << "2) Manage clients." << endl
          << "3) Manage teachers." << endl
          << "4) Manage activities" << endl
-         << "5) Consult schedules."
+         << "5) Consult schedules." << endl
          << "6) Consult school's information." << endl
          << "0) Exit" << endl //And save to files
          << endl;
@@ -21,6 +23,9 @@ void Menu::mainMenu() {
     switch (selection) {
         case 1:
             //Call function
+            return;
+        case 2:
+            manageClientsMenu();
             return;
         case 6:
             cout << SUPSchool.currentTime << endl;
@@ -34,8 +39,23 @@ void Menu::mainMenu() {
     }
 }
 
-void Menu::clearScreen() {
+void Menu::manageClientsMenu() {
+    cout << "What do you want to do? Insert the corresponding key." << endl
+         << endl
+         << "1) Enrole a client in an activity." << endl
+         << "0) Go back";
 
+    switch(readOption(0, 1)) {
+        case 1:
+            cout << "NOT IMPLEMENT YET" << endl;
+            pause();
+            return;
+        case 0:
+            return;
+    }
+}
+
+void Menu::clearScreen() {
     #ifdef __unix__
         system("clear");
     #endif
@@ -45,5 +65,10 @@ void Menu::clearScreen() {
     #endif
 
     //cout << string( 100, '\n' );
+}
+
+void Menu::pause() {
+    cout << "Press any key to continue ...";
+    cin.get();
 }
 

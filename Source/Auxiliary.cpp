@@ -23,6 +23,10 @@ bool stob(const string& s) {
     return s == "true";
 }
 
-void viewSchedule(const vector<Activity *>& Activities) {
+string centerString(int width, const string& s) {
+    int length = s.length();
+    int pos = (width - length) / 2;
+    string result = string(pos, ' ') + s + string(width - pos - length, ' ');
 
-}
+    return result;
+};

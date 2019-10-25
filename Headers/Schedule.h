@@ -2,9 +2,9 @@
 #define SUP_SCHOOL_SCHEDULE_H
 
 #include "Activity.h"
+#include "Auxiliary.h"
 
 #include <map>
-#include <vector>
 
 struct CharacterCodes {
     unsigned char topRight = 187, //╗
@@ -25,7 +25,7 @@ class Schedule {
         Schedule();
         Schedule(const vector<Activity*> &Activities);
         Schedule(map <Time, vector<Activity*>> Activities);
-        void view(Time Date);
+        void view(Time Date, int width);
     private:
         map <Time, vector<Activity*>> Activities;
 };

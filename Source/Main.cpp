@@ -11,16 +11,15 @@ int main() {
     School PortoSUPSchool("../Data/School.txt");
     Menu SUPMenu(PortoSUPSchool);
 
-    /*
     while (selection) {
         Menu::clearScreen();
         SUPMenu.mainMenu();
     }
-    */
-
+    /*
     Schedule test;
-    Time t(20, 10, 2019);
-    test.view(t);
-
+    Time t;
+    test.view(t, 20);
+    Menu::pause();
+    */
     return 0;
 }

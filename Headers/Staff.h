@@ -10,6 +10,7 @@ class Staff {
         Staff();
     private:
         string name;
+        static unsigned int id;
 };
 
 class Teacher : public Staff {

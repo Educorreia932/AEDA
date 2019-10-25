@@ -6,9 +6,16 @@
 
 class Menu {
     public:
+        //Constructors
         Menu(School SUPSchool);
+
+        //Menus
         void mainMenu();
+        void manageClientsMenu();
+
+        //Utils
         static void clearScreen();
+        static void pause();
     private:
         School SUPSchool;
 };
