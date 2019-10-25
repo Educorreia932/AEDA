@@ -189,7 +189,16 @@ bool operator >(Time const t1, Time const t2) { //Include year/day/month
 }
 
 bool operator <(Time const t1, Time const t2) {
-    return t1.getDay() < t2.getDay() || 60 * t1.getHours() + t1.getMinutes() < 60 * t2.getHours() + t2.getMinutes();
+    return (t1.getDay() < t2.getDay() || 60 * t1.getHours() + t1.getMinutes() < 60 * t2.getHours() + t2.getMinutes();
+}
+
+bool operator ==(Time const t1, Time const t2) {
+    return (t1.getDay() == t2.getDay() &&
+            t1.getHours() == t2.getHours() &&
+            t1.getMinutes() == t2.getMinutes() &&
+            t1.getMonth() == t2.getMonth() &&
+            t1.getYear() == t2.getYear() &&
+            t1.getWeekday() == t2.getWeekday());
 }
 
 ostream &operator<<(ostream &out, Time t) {

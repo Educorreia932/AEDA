@@ -39,6 +39,7 @@ class Time{
         friend ostream & operator<<(ostream &out, Time t);
         friend bool operator >(Time const t1, Time const t2);
         friend bool operator <(Time const t1, Time const t2);
+        friend bool operator ==(Time const t1, Time const t2);
 };
 
 class ImpossibleTimeDiference : std::exception {
