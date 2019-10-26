@@ -12,13 +12,15 @@ class Time{
     public:
         //Constructors
         Time(); //Today's Date
-        Time (const string &t); //const In for&mat DD/MM/AAAA hh:mm
+        Time (const string &t); //const In format DD/MM/AAAA hh:mm
+        Time(unsigned short day, unsigned short month, unsigned short year);
         Time(unsigned short day, unsigned short month, unsigned short year, unsigned short hours, unsigned short minutes);
 
         //Getters
         unsigned short getYear() const;
         unsigned short getMonth() const;
         unsigned short getDay() const;
+        string getWeekday() const;
         unsigned short getHours() const;
         unsigned short getMinutes() const;
 
@@ -28,15 +30,15 @@ class Time{
     private:
         unsigned short year, month, day, hours, minutes;
 
-        static int numberOfdays(int month, int year);
-        static bool isBissextile(int year);
-        static int dayOfweek(unsigned short day, unsigned short month, unsigned short year);
+        int numberOfdays() const;
+        bool isBissextile() const;
+        int dayOfweek() const;
 
         //Operators
-
         friend ostream & operator<<(ostream &out, Time t);
         friend bool operator >(Time const t1, Time const t2);
         friend bool operator <(Time const t1, Time const t2);
+        friend bool operator ==(Time const t1, Time const t2);
 };
 
 class ImpossibleTimeDiference : std::exception {

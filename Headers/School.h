@@ -7,28 +7,35 @@
 #include "Staff.h"
 #include "Time.h"
 
-#include <fstream>
 #include <map>
-#include <vector>
 
 class School {
+    friend class Menu;
+
     public:
         //Constructors
         School();
         School(const string& filename);
-        School(vector<Client> Clients, vector<Material> Materials);
 
-        void addClient(Client client);
+        void addClient(Client* client);
         int clientIndex(unsigned int id);
         void removeClient(unsigned int id);
+
+        //Getters
+        vector<Activity*> getActivities() const;
+
+        //Read-Functions
+        void readClients();
+        void readActivities();
     private:
         string name;
+        unsigned int id;
         Time currentTime;
         map<string, string> Files;
-        vector<Client> Clients;
-        vector<Material> Materials;
-
-        friend class Menu;
+        vector<Client*> Clients;
+        vector<Material*> Materials;
+        vector<Staff*> Staff;
+        vector<Activity*> Activities;
 };
 
 //Exceptions

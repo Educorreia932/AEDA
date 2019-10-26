@@ -6,21 +6,32 @@ Menu::Menu(School SUPSchool) {
     this->SUPSchool = SUPSchool;
 }
 
-void Menu::mainMenu() {
-    cout << "1) Manage clients." << endl
-         << "2) *Consultar conta cliente" << endl
-         << "3) *Marcar aulas" << endl
-         << "4) *Horário de aulas, horário de professores" << endl
-         << "5) *Consultar aluguer material*" << endl
+int Menu::showMainMenu() {
+    clearScreen();
+
+    cout << "What do you want to do? Insert the corresponding key." << endl
+         << endl
+         << "1) Rent material." << endl
+         << "2) Manage clients." << endl
+         << "3) Manage teachers." << endl
+         << "4) Manage activities" << endl
+         << "5) Consult schedules." << endl
          << "6) Consult school's information." << endl
-         << "0) Sair" << endl
+         << "0) Exit" << endl //And save to files
          << endl;
 
-    selection = readOption(0, 6);
+    return readOption(0, 6);
+}
 
-    switch (selection) {
+void Menu::mainMenuSelection(int selected) {
+    switch (selected) {
         case 1:
             //Call function
+            return;
+        case 2:
+            manageClientsMenu();
+            return;
+        case 5:
             return;
         case 6:
             cout << SUPSchool.currentTime << endl;
@@ -34,8 +45,36 @@ void Menu::mainMenu() {
     }
 }
 
+void Menu::manageClientsMenu() {
+    clearScreen();
+
+    cout << "What do you want to do? Insert the corresponding key." << endl
+         << endl
+         << "1) Enrole a client in an activity." << endl
+         << "0) Go back" << endl;
+
+    switch(readOption(0, 1)) {
+        case 1:
+            int client;
+            cout << "Which client?" << endl;
+            cout << SUPSchool.Clients[0]->getName();
+
+            try {
+                SUPSchool.Clients[0]->enroll(1, SUPSchool.Activities);
+            }
+
+            catch (exception &e) {
+                cerr << e.what();
+            }
+
+            pause();
+            return;
+        case 0:
+            return;
+    }
+}
+
 void Menu::clearScreen() {
-    /*
     #ifdef __unix__
         system("clear");
     #endif
@@ -43,8 +82,12 @@ void Menu::clearScreen() {
     #ifdef _WIN32
         system("cls");
     #endif
-     */
 
-    cout << string( 100, '\n' );
+    //cout << string( 100, '\n' );
+}
+
+void Menu::pause() {
+    cout << "Press any key to continue ...";
+    cin.get();
 }
 

@@ -2,7 +2,6 @@
 #define SUP_SCHOOL_CLIENT_H
 
 #include <fstream>
-#include <iostream>
 #include <string>
 #include <vector>
 
@@ -11,20 +10,30 @@
 
 class Client {
     private:
-        vector<Activity*> Activities;
+        vector<Activity*> PastActivities;
+        vector<Activity*> ScheduledActivities;
         static unsigned int id;
         string name;
         bool gold_member;
     public:
         //Constructors
-        Client(const string& filename, int line_number);
+        Client();
         Client(string name, bool has_gold_card);
 
-        void purchaseGold();
+        //Getters
         string getName() const;
         unsigned int getId() const;
+
+        //Setters
+        void setName(const string newName);
+        void setID(const unsigned int id);
+        void setGoldMember(const bool gold_member);
+
+        //Misc.
+        void purchaseGold();
         bool isGoldMember() const;
-        void setName(string newName);
+        void enroll(const unsigned int activityId,const vector<Activity*> schoolActivities);
+        bool isOcuppied(Time startTime,Time endTime); //Not implemented
 };
 
 class alreadyGoldMember : std::exception {
@@ -34,5 +43,15 @@ class alreadyGoldMember : std::exception {
 };
 
 std::ostream & operator <<(std::ostream &out,const alreadyGoldMember &member);
+
+
+class hasActivityAtSameTime : std::exception {
+public:
+    unsigned clientId;
+    unsigned int activityId;
+    hasActivityAtSameTime(unsigned int clientId,unsigned int activityId){clientId = clientId;activityId = activityId;};
+};
+
+std::ostream & operator <<(std::ostream &out,const hasActivityAtSameTime &ids);
 
 #endif //SUP_SCHOOL_CLIENT_H

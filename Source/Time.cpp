@@ -4,8 +4,8 @@ Time::Time() { //Today's date and hour
     time_t now = time(0);
     tm *ltm = localtime(&now);
 
-    year = ltm->tm_year;
-    month = ltm->tm_mon;
+    year = ltm->tm_year + 1900;
+    month = ltm->tm_mon + 1;
     day = ltm->tm_mday;
     hours = ltm->tm_hour;
     minutes = ltm->tm_min;
@@ -17,6 +17,14 @@ Time::Time(const string& t) {
     stringstream s(t);
                                                     //What about space " " ?
     s >> day >> separator >> month >> separator >> year >> hours >> separator >> minutes;
+}
+
+Time::Time(unsigned short day, unsigned short month, unsigned short year) {
+    this->day = day;
+    this->month = month;
+    this->year = year;
+    hours = 0;
+    minutes = 0;
 }
 
 Time::Time(unsigned short day, unsigned short month, unsigned short year, unsigned short hours, unsigned short minutes) {
@@ -40,6 +48,28 @@ unsigned short Time::getDay() const {
     return day;
 }
 
+//Implement as map?
+string Time::getWeekday() const {
+    switch(dayOfweek()) {
+        case 0:
+            return "Saturday";
+        case 1:
+            return "Sunday";
+        case 2:
+            return "Monday";
+        case 3:
+            return "Tuesday";
+        case 4:
+            return "Wednesday";
+        case 5:
+            return "Thursday";
+        case 6:
+            return "Friday";
+    }
+
+    return "N/A";
+}
+
 unsigned short Time::getHours() const {
     return hours;
 }
@@ -56,14 +86,14 @@ void Time::setMinutes(const unsigned short minutes) {
     this->minutes = minutes;
 }
 
-bool Time::isBissextile(int year) {
+bool Time::isBissextile() const {
     return (year % 4 == 0 && year % 100 != 0) || year % 400 == 0;
 }
 
-int Time::numberOfdays(int month, int year) {
+int Time::numberOfdays() const {
     switch (month) {
         case 2:
-            if (isBissextile(year))
+            if (isBissextile())
                 return 29;
             else
                 return 28;
@@ -80,12 +110,12 @@ int Time::numberOfdays(int month, int year) {
     }
 }
 
-int Time::dayOfweek(unsigned short day, unsigned short month, unsigned short year) {
+int Time::dayOfweek() const {
     int c;
 
     switch (month) {
         case 1:
-            if (isBissextile(year)) {
+            if (isBissextile()) {
                 c = 6;
                 break;
             }
@@ -96,7 +126,7 @@ int Time::dayOfweek(unsigned short day, unsigned short month, unsigned short yea
             }
 
         case 2:
-            if (isBissextile(year)) {
+            if (isBissextile()) {
                 c = 2;
                 break;
             }
@@ -164,9 +194,18 @@ bool operator <(Time const t1, Time const t2) {
     return t1.getDay() < t2.getDay() || 60 * t1.getHours() + t1.getMinutes() < 60 * t2.getHours() + t2.getMinutes();
 }
 
+bool operator ==(Time const t1, Time const t2) {
+    return (t1.getDay() == t2.getDay() &&
+            t1.getHours() == t2.getHours() &&
+            t1.getMinutes() == t2.getMinutes() &&
+            t1.getMonth() == t2.getMonth() &&
+            t1.getYear() == t2.getYear() &&
+            t1.getWeekday() == t2.getWeekday());
+}
+
 ostream &operator<<(ostream &out, Time t) {
     out << t.getDay() << '/' << t.getMonth() << '/' << t.getYear() << ' ' << t.getHours() << ':' << t.getMinutes();
-
+                                                                            //Include leading zeros
     return out;
 }
 
@@ -176,6 +215,6 @@ ImpossibleTimeDiference::ImpossibleTimeDiference(Time startTime, Time endTime){
 }
 
 ostream &operator<<(ostream &out, const ImpossibleTimeDiference &times) {
-    out << "The starting time of " << times.startTime << " is after " << times.endTime << endl;
+    out << "ERROR: The starting time of " << times.startTime << " is after " << times.endTime << endl;
     return out;
 }

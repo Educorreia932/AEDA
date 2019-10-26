@@ -4,7 +4,7 @@ int readOption(int min, int max) {
     int option;
 
     while (true) {
-        cout << "Choose your option: ";
+        cout << "Your option: ";
 
         if (cin >> option && option >= min && option <= max) {
             cin.ignore(1000, '\n');
@@ -14,7 +14,7 @@ int readOption(int min, int max) {
         else {
             cin.clear();
             cin.ignore(1000, '\n');
-            cerr << "ERROR: Invalid input. Please try again:\n"; //Throw exception
+            cerr << "Invalid input. Please try again:\n"; //Throw exception
         }
     }
 }
@@ -22,3 +22,11 @@ int readOption(int min, int max) {
 bool stob(const string& s) {
     return s == "true";
 }
+
+string centerString(int width, const string& s) {
+    int length = s.length();
+    int pos = (width - length) / 2;
+    string result = string(pos, ' ') + s + string(width - pos - length, ' ');
+
+    return result;
+};

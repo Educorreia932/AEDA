@@ -7,41 +7,60 @@ class Activity {
     private:
         Time startTime;
         Time endTime;
+        static unsigned int id;
+        string name;
     public:
-        Activity(Time startTime,Time endTime);
+        Activity();
+        Activity(Time startTime,Time endTime,string name);
+
+        //Getters
         Time getStartTime();
         Time getEndTime();
+        unsigned int getId() const;
+
+        //Setters
+        void setName(string name);
+        void setID(unsigned int id);
+
         virtual int calcCost() const;
 };
 
 class Ride : public Activity {
-public:
-    Ride(Time startTime,Time endTime) : Activity(startTime,endTime){};
-    int CalcCost() const;
+    public:
+        Ride(Time startTime,Time endTime,string name) : Activity(startTime,endTime,name){};
+        int CalcCost() const;
 };
 
 class Lesson : public Activity {
-public:
+    public:
+    Lesson(Time startTime,Time endTime,string name) : Activity(startTime,endTime,name){};
     int CalcCost() const;
-    Lesson(Time startTime,Time endTime) : Activity(startTime,endTime){};
 };
 
 class StandUpPaddle : public Lesson {
-public:
-    int CalcCost() const;
-    StandUpPaddle(Time startTime,Time endTime) : Lesson(startTime,endTime){};
+    public:
+        int CalcCost() const;
+        StandUpPaddle(Time startTime,Time endTime,string name) : Lesson(startTime,endTime,name){};
 };
 
 class Surf : public Lesson {
-public:
-    int CalcCost() const;
-    Surf(Time startTime,Time endTime) : Lesson(startTime,endTime){};
+    public:
+        int CalcCost() const;
+        Surf(Time startTime,Time endTime,string name) : Lesson(startTime,endTime,name){};
 };
 
 class Windsurf : public Lesson {
-public:
-    int CalcCost() const;
-    Windsurf(Time startTime,Time endTime) : Lesson(startTime,endTime){};
+    public:
+        int CalcCost() const;
+        Windsurf(Time startTime,Time endTime,string name) : Lesson(startTime,endTime,name){};
 };
+
+class activityNonExistant : std::exception {
+public:
+    unsigned int id;
+    activityNonExistant(unsigned int id){id = id;};
+};
+
+std::ostream & operator <<(std::ostream &out,const activityNonExistant &activity);
 
 #endif //SUP_SCHOOL_ACTIVITY_H
