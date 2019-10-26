@@ -7,6 +7,8 @@
 
 ### João
 - [ ] Implementar calcCost()
+- [ ] Imprimir Cliente, Staff, Materials
+- [ ] Overload operador - para a Class Time
 
 ### Eduardo
 - [ ] Concluir as seleções dos menus
