@@ -6,7 +6,9 @@ Menu::Menu(School SUPSchool) {
     this->SUPSchool = SUPSchool;
 }
 
-void Menu::mainMenu() {
+int Menu::showMainMenu() {
+    clearScreen();
+
     cout << "What do you want to do? Insert the corresponding key." << endl
          << endl
          << "1) Rent material." << endl
@@ -18,14 +20,18 @@ void Menu::mainMenu() {
          << "0) Exit" << endl //And save to files
          << endl;
 
-    selection = readOption(0, 6);
+    return readOption(0, 6);
+}
 
-    switch (selection) {
+void Menu::mainMenuSelection(int selected) {
+    switch (selected) {
         case 1:
             //Call function
             return;
         case 2:
             manageClientsMenu();
+            return;
+        case 5:
             return;
         case 6:
             cout << SUPSchool.currentTime << endl;

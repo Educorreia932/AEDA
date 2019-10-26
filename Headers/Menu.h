@@ -9,8 +9,9 @@ class Menu {
         //Constructors
         Menu(School SUPSchool);
 
-        //Menus
-        void mainMenu();
+        int showMainMenu();
+        void mainMenuSelection(int selected);
+
         void manageClientsMenu();
 
         //Utils
@@ -18,6 +19,9 @@ class Menu {
         static void pause();
     private:
         School SUPSchool;
+
+        //Schedules
+
 };
 
 #endif //SUP_SCHOOL_MENU_H
