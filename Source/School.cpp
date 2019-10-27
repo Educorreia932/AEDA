@@ -165,9 +165,9 @@ void School::enroll(const unsigned int clientId,const unsigned int activityId,co
 
         if(activityId == ac->getId()){
             if(client->isOcuppied(ac->getStartTime(),ac->getEndTime())){
-                throw hasActivityAtSameTime(this->id,activityId);
+                throw hasActivityAtSameTime(clientId,activityId);
             } else {
-                client->getScheduledActivities().push_back(ac);
+                client->addActivity(ac);
                 activityExists = true;
             }
         }

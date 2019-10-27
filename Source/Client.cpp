@@ -46,7 +46,7 @@ void Client::setID(const unsigned int id) {
 
 
 
-bool Client::isOcuppied(Time startTime, Time endTime) {
+bool Client::isOcuppied(const Time startTime,const Time endTime) {
 
     for (const auto &ac : this->ScheduledActivities){
 
@@ -75,6 +75,12 @@ Client::Client() {
 
 vector<Activity *> Client::getScheduledActivities() const {
     return this->ScheduledActivities;
+}
+
+void Client::addActivity(Activity* activity) {
+
+    this->ScheduledActivities.push_back(activity);
+
 }
 
 ostream &operator<<(ostream &out, const alreadyGoldMember &member) {

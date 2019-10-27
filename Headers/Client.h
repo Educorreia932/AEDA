@@ -31,9 +31,10 @@ class Client {
         void setGoldMember(const bool gold_member);
 
         //Misc.
+        void addActivity(Activity* activity);
         void purchaseGold();
         bool isGoldMember() const;
-        bool isOcuppied(Time startTime,Time endTime); //Not implemented
+        bool isOcuppied(const Time startTime,const Time endTime);
 };
 
 class alreadyGoldMember : std::exception {
