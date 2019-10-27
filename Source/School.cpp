@@ -164,12 +164,12 @@ void School::enroll(const unsigned int clientId,const unsigned int activityId,co
     for (const auto &ac : schoolActivities){
 
         if(activityId == ac->getId()){
-            if(client->isOcuppied(ac->getStartTime(),ac->getEndTime())){
-                throw hasActivityAtSameTime(clientId,activityId);
-            } else {
+            try {
                 client->addActivity(ac);
-                activityExists = true;
+            } catch (exception &e){
+                throw;
             }
+
         }
     }
 

@@ -79,6 +79,16 @@ vector<Activity *> Client::getScheduledActivities() const {
 
 void Client::addActivity(Activity* activity) {
 
+    for (const auto &ac : this->ScheduledActivities){
+        if (ac->getId() == activity->getId()){
+            throw clientAlreadHasActivity(this->id,activity->getId());
+        }
+    }
+
+    if(isOcuppied(activity->getStartTime(),activity->getEndTime())){
+        throw hasActivityAtSameTime(this->id,activity->getId());
+    }
+
     this->ScheduledActivities.push_back(activity);
 
 }
@@ -90,5 +100,10 @@ ostream &operator<<(ostream &out, const alreadyGoldMember &member) {
 
 ostream &operator<<(ostream &out, const hasActivityAtSameTime &ids) {
     out << "Client with ID \"" << ids.clientId << "\" already has an activity at the same time as activity with ID \"" << ids.activityId << "\"." << endl;
+    return out;
+}
+
+std::ostream &operator<<(std::ostream &out, const clientAlreadHasActivity &ids) {
+    out << "Client with ID \"" << ids.clientId << "\" already is already enrolled in activity with ID \"" << ids.activityId << "\"." << endl;
     return out;
 }

@@ -55,4 +55,13 @@ public:
 
 std::ostream & operator <<(std::ostream &out,const hasActivityAtSameTime &ids);
 
+class clientAlreadHasActivity : std::exception {
+public:
+    unsigned clientId;
+    unsigned int activityId;
+    clientAlreadHasActivity(unsigned int clientId,unsigned int activityId){clientId = clientId;activityId = activityId;};
+};
+
+std::ostream & operator <<(std::ostream &out,const clientAlreadHasActivity &ids);
+
 #endif //SUP_SCHOOL_CLIENT_H
