@@ -44,33 +44,9 @@ void Client::setID(const unsigned int id) {
     this->id = id;
 }
 
-void Client::enroll(const unsigned int activityId,const vector<Activity*> schoolActivities) {
-
-    //Time needs to be checked if is ahead of the set current time
 
 
-    bool activityExists = false;
-
-    for (const auto &ac : schoolActivities){
-
-        if(activityId == ac->getId()){
-            if(isOcuppied(ac->getStartTime(),ac->getEndTime())){
-                throw hasActivityAtSameTime(this->id,activityId);
-            } else {
-                ScheduledActivities.push_back(ac);
-                activityExists = true;
-            }
-        }
-    }
-
-    if(!activityExists){
-        throw activityNonExistant(activityId);
-    }
-
-
-}
-
-bool Client::isOcuppied(Time startTime, Time endTime) {
+bool Client::isOcuppied(const Time startTime,const Time endTime) {
 
     for (const auto &ac : this->ScheduledActivities){
 
@@ -97,6 +73,26 @@ Client::Client() {
 
 }
 
+vector<Activity *> Client::getScheduledActivities() const {
+    return this->ScheduledActivities;
+}
+
+void Client::addActivity(Activity* activity) {
+
+    for (const auto &ac : this->ScheduledActivities){
+        if (ac->getId() == activity->getId()){
+            throw clientAlreadHasActivity(this->id,activity->getId());
+        }
+    }
+
+    if(isOcuppied(activity->getStartTime(),activity->getEndTime())){
+        throw hasActivityAtSameTime(this->id,activity->getId());
+    }
+
+    this->ScheduledActivities.push_back(activity);
+
+}
+
 ostream &operator<<(ostream &out, const alreadyGoldMember &member) {
     out << "Client with ID \"" << member.id << "\" already has a gold card." << endl;
     return out;
@@ -104,5 +100,10 @@ ostream &operator<<(ostream &out, const alreadyGoldMember &member) {
 
 ostream &operator<<(ostream &out, const hasActivityAtSameTime &ids) {
     out << "Client with ID \"" << ids.clientId << "\" already has an activity at the same time as activity with ID \"" << ids.activityId << "\"." << endl;
+    return out;
+}
+
+std::ostream &operator<<(std::ostream &out, const clientAlreadHasActivity &ids) {
+    out << "Client with ID \"" << ids.clientId << "\" already is already enrolled in activity with ID \"" << ids.activityId << "\"." << endl;
     return out;
 }
