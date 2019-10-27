@@ -60,7 +60,7 @@ void Menu::manageClientsMenu() {
             cout << SUPSchool.Clients[0]->getName();
 
             try {
-                SUPSchool.Clients[0]->enroll(1, SUPSchool.Activities);
+                SUPSchool.enroll(1,1, SUPSchool.Activities);
             }
 
             catch (exception &e) {

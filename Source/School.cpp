@@ -140,6 +140,46 @@ void School::readActivities() {
     }
 }
 
+void School::enroll(const unsigned int clientId,const unsigned int activityId,const vector<Activity*> schoolActivities) {
+
+    //Time needs to be checked if is ahead of the set current time
+
+    Client* client;
+    bool clientExists = false;
+
+    for(const auto &c : this->Clients){
+        if(c->getId() == clientId){
+            client = c;
+            clientExists = true;
+            break;
+        }
+    }
+
+    if(!clientExists){
+        throw NonExistantClient(clientId);
+    }
+
+    bool activityExists = false;
+
+    for (const auto &ac : schoolActivities){
+
+        if(activityId == ac->getId()){
+            if(client->isOcuppied(ac->getStartTime(),ac->getEndTime())){
+                throw hasActivityAtSameTime(this->id,activityId);
+            } else {
+                client->getScheduledActivities().push_back(ac);
+                activityExists = true;
+            }
+        }
+    }
+
+    if(!activityExists){
+        throw activityNonExistant(activityId);
+    }
+
+
+}
+
 std::ostream &operator<<(std::ostream &out, const NonExistantClient &client) {
     out << "Client with ID " << client.id << " does not exist in school." << endl;
     return out;

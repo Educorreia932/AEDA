@@ -27,14 +27,15 @@ class School {
         //Read-Functions
         void readClients();
         void readActivities();
-    private:
+        void enroll(const unsigned int clientId,const unsigned int activityId,const vector<Activity*> schoolActivities);
+private:
         string name;
         unsigned int id;
         Time currentTime;
         map<string, string> Files;
         vector<Client*> Clients;
         vector<Material*> Materials;
-        vector<Staff*> Staff;
+        vector<Staff*> staff;
         vector<Activity*> Activities;
 };
 

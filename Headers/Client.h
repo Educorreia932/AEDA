@@ -23,6 +23,7 @@ class Client {
         //Getters
         string getName() const;
         unsigned int getId() const;
+        vector<Activity*> getScheduledActivities() const;
 
         //Setters
         void setName(const string newName);
@@ -32,7 +33,6 @@ class Client {
         //Misc.
         void purchaseGold();
         bool isGoldMember() const;
-        void enroll(const unsigned int activityId,const vector<Activity*> schoolActivities);
         bool isOcuppied(Time startTime,Time endTime); //Not implemented
 };
 

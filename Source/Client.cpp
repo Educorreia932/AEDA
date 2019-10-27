@@ -44,31 +44,7 @@ void Client::setID(const unsigned int id) {
     this->id = id;
 }
 
-void Client::enroll(const unsigned int activityId,const vector<Activity*> schoolActivities) {
 
-    //Time needs to be checked if is ahead of the set current time
-
-
-    bool activityExists = false;
-
-    for (const auto &ac : schoolActivities){
-
-        if(activityId == ac->getId()){
-            if(isOcuppied(ac->getStartTime(),ac->getEndTime())){
-                throw hasActivityAtSameTime(this->id,activityId);
-            } else {
-                ScheduledActivities.push_back(ac);
-                activityExists = true;
-            }
-        }
-    }
-
-    if(!activityExists){
-        throw activityNonExistant(activityId);
-    }
-
-
-}
 
 bool Client::isOcuppied(Time startTime, Time endTime) {
 
@@ -95,6 +71,10 @@ bool Client::isOcuppied(Time startTime, Time endTime) {
 
 Client::Client() {
 
+}
+
+vector<Activity *> Client::getScheduledActivities() const {
+    return this->ScheduledActivities;
 }
 
 ostream &operator<<(ostream &out, const alreadyGoldMember &member) {
