@@ -5,3 +5,5 @@ cmake-build-debug/
 *.zip
 *.exe
 *.mdj
+
+*.pdf
