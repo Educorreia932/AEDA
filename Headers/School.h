@@ -21,9 +21,10 @@ class School {
         int clientIndex(unsigned int id);
         void removeClient(unsigned int id);
 
+
         //Getters
         vector<Activity*> getActivities() const;
-
+        vector<Staff *> getStaff() const;   //Currently unused
         //Read-Functions
         void readClients();
         void readActivities();
@@ -35,7 +36,7 @@ private:
         map<string, string> Files;
         vector<Client*> Clients;
         vector<Material*> Materials;
-        vector<Staff*> staff;
+        vector<Staff*> Staff;
         vector<Activity*> Activities;
 };
 

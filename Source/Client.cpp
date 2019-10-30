@@ -77,7 +77,7 @@ vector<Activity *> Client::getScheduledActivities() const {
     return this->ScheduledActivities;
 }
 
-void Client::addActivity(Activity* activity) {
+void Client::sivity(Activity* activity) {
 
     for (const auto &ac : this->ScheduledActivities){
         if (ac->getId() == activity->getId()){

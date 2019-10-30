@@ -9,43 +9,47 @@
 using namespace std;
 
 class Time{
-    public:
-        //Constructors
-        Time(); //Today's Date
-        Time (const string &t); //const In format DD/MM/AAAA hh:mm
-        Time(unsigned short day, unsigned short month, unsigned short year);
-        Time(unsigned short day, unsigned short month, unsigned short year, unsigned short hours, unsigned short minutes);
+public:
+    //Constructors
+    Time(); //Today's Date
+    Time (const string &t); //const In format DD/MM/AAAA hh:mm
+    Time(short day, short month, short year);
+    Time(short day, short month, short year, short hours, short minutes);
 
-        //Getters
-        unsigned short getYear() const;
-        unsigned short getMonth() const;
-        unsigned short getDay() const;
-        string getWeekday() const;
-        unsigned short getHours() const;
-        unsigned short getMinutes() const;
+    //Getters
+    short getYear() const;
+    short getMonth() const;
+    short getDay() const;
+    string getWeekday() const;
+    short getHours() const;
+    short getMinutes() const;
 
-        //Setters
-        void setHours(const unsigned short hours);
-        void setMinutes(const unsigned short minutes);
-    private:
-        unsigned short year, month, day, hours, minutes;
+    //Setters
+    void setYear(const short year);
+    void setMonth(const short month);
+    void setDay(const short day);
+    void setHours(const short hours);
+    void setMinutes(const short minutes);
+private:
+    short year, month, day, hours, minutes;
 
-        int numberOfdays() const;
-        bool isBissextile() const;
-        int dayOfweek() const;
+    int numberOfdays() const;
+    bool isBissextile() const;
+    int dayOfweek() const;
 
-        //Operators
-        friend ostream & operator<<(ostream &out, Time t);
-        friend bool operator >(Time const t1, Time const t2);
-        friend bool operator <(Time const t1, Time const t2);
-        friend bool operator ==(Time const t1, Time const t2);
+    //Operators
+    friend ostream & operator<<(ostream &out, Time t);
+    friend bool operator >(Time const t1, Time const t2);
+    friend bool operator <(Time const t1, Time const t2);
+    friend bool operator ==(Time const t1, Time const t2);
+    friend Time operator -(Time const startTime, Time const endTime);
 };
 
 class ImpossibleTimeDiference : std::exception {
-        public:
-            Time startTime;
-            Time endTime;
-            ImpossibleTimeDiference(Time startTime, Time endTime);
+public:
+    Time startTime;
+    Time endTime;
+    ImpossibleTimeDiference(Time startTime, Time endTime);
 };
 
 ostream &operator<<(ostream &out, const ImpossibleTimeDiference &times);

@@ -17,41 +17,45 @@ class Activity {
         Time getStartTime();
         Time getEndTime();
         unsigned int getId() const;
+        std::string getName() const;
 
         //Setters
         void setName(string name);
         void setID(unsigned int id);
 
-        virtual int calcCost() const;
+        virtual int calcCost() const = 0;
 };
 
+
 class Ride : public Activity {
+    protected:
+        unsigned int cost;
     public:
         Ride(Time startTime,Time endTime,string name) : Activity(startTime,endTime,name){};
-        int CalcCost() const;
+        unsigned int CalcCost() const;
 };
 
 class Lesson : public Activity {
     public:
     Lesson(Time startTime,Time endTime,string name) : Activity(startTime,endTime,name){};
-    int CalcCost() const;
+    unsigned int CalcCost() const;
 };
 
 class StandUpPaddle : public Lesson {
     public:
-        int CalcCost() const;
+        unsigned int CalcCost() const;
         StandUpPaddle(Time startTime,Time endTime,string name) : Lesson(startTime,endTime,name){};
 };
 
 class Surf : public Lesson {
     public:
-        int CalcCost() const;
+        unsigned int CalcCost() const;
         Surf(Time startTime,Time endTime,string name) : Lesson(startTime,endTime,name){};
 };
 
 class Windsurf : public Lesson {
     public:
-        int CalcCost() const;
+        unsigned int CalcCost() const;
         Windsurf(Time startTime,Time endTime,string name) : Lesson(startTime,endTime,name){};
 };
 

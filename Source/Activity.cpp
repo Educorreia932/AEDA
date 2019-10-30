@@ -35,8 +35,12 @@ void Activity::setID(unsigned int id) {
     this->id = id;
 }
 
-int Activity::calcCost() const {
+unsigned int Lesson::CalcCost() const {
     return 0;
+}
+
+unsigned int Ride::CalcCost() const{
+    return cost;
 }
 
 std::ostream &operator<<(std::ostream &out, const activityNonExistant &activity) {

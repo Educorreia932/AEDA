@@ -1,12 +1,15 @@
 #ifndef SUP_SCHOOL_MATERIAL_H
 #define SUP_SCHOOL_MATERIAL_H
 #include "Activity.h"
-
+#include <vector>
+#include <string>
 class Material {
     public:
         bool beingUsed(Time startTime, Time endTime);
+        string getObjectType() const;
     private:
-        Activity* activity;
+        string objectType;
+        vector<Activity*> activities;
 };
 
 class Boat : public Material {

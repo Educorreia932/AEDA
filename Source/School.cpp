@@ -82,6 +82,10 @@ vector<Activity *> School::getActivities() const {
     return this->Activities;
 }
 
+vector<Staff *> School::getStaff() const{
+    return this->Staff;
+}
+
 void School::readClients() {
     string line;
     ifstream File("../Data/" + Files["Clients"]);

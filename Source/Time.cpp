@@ -15,11 +15,11 @@ Time::Time(const string& t) {
     char separator;
 
     stringstream s(t);
-                                                    //What about space " " ?
+    //What about space " " ?
     s >> day >> separator >> month >> separator >> year >> hours >> separator >> minutes;
 }
 
-Time::Time(unsigned short day, unsigned short month, unsigned short year) {
+Time::Time(short day, short month, short year) {
     this->day = day;
     this->month = month;
     this->year = year;
@@ -27,7 +27,7 @@ Time::Time(unsigned short day, unsigned short month, unsigned short year) {
     minutes = 0;
 }
 
-Time::Time(unsigned short day, unsigned short month, unsigned short year, unsigned short hours, unsigned short minutes) {
+Time::Time(short day, short month, short year, short hours, short minutes) {
     this->day = day;
     this->month = month;
     this->year = year;
@@ -36,15 +36,15 @@ Time::Time(unsigned short day, unsigned short month, unsigned short year, unsign
     //Check if it's valid date
 }
 
-unsigned short Time::getYear() const {
+short Time::getYear() const {
     return year;
 }
 
-unsigned short Time::getMonth() const {
+short Time::getMonth() const {
     return month;
 }
 
-unsigned short Time::getDay() const {
+short Time::getDay() const {
     return day;
 }
 
@@ -70,19 +70,31 @@ string Time::getWeekday() const {
     return "N/A";
 }
 
-unsigned short Time::getHours() const {
+short Time::getHours() const {
     return hours;
 }
 
-unsigned short Time::getMinutes() const {
+short Time::getMinutes() const {
     return minutes;
 }
 
-void Time::setHours(const unsigned short hours) {
+void Time::setYear(const short year) {
+    this->year = year;
+}
+
+void Time::setMonth(const short month) {
+    this->month = month;
+}
+
+void Time::setDay(const short day) {
+    this->day = day;
+}
+
+void Time::setHours(const short hours) {
     this->hours = hours;
 }
 
-void Time::setMinutes(const unsigned short minutes) {
+void Time::setMinutes(const short minutes) {
     this->minutes = minutes;
 }
 
@@ -205,7 +217,7 @@ bool operator ==(Time const t1, Time const t2) {
 
 ostream &operator<<(ostream &out, Time t) {
     out << t.getDay() << '/' << t.getMonth() << '/' << t.getYear() << ' ' << t.getHours() << ':' << t.getMinutes();
-                                                                            //Include leading zeros
+    //Include leading zeros
     return out;
 }
 
@@ -217,4 +229,254 @@ ImpossibleTimeDiference::ImpossibleTimeDiference(Time startTime, Time endTime){
 ostream &operator<<(ostream &out, const ImpossibleTimeDiference &times) {
     out << "ERROR: The starting time of " << times.startTime << " is after " << times.endTime << endl;
     return out;
+}
+
+Time operator -(Time const startTime, Time const endTime) {
+
+    Time deltaTime;
+    short minutes = endTime.getMinutes() - startTime.getMinutes();
+    short hours = endTime.getHours() - startTime.getHours();
+
+    if (hours > 0 && minutes < 0) {
+        hours--;
+        minutes += 60;
+    }
+    if (hours < 0 && minutes > 0) {
+        hours++;
+        minutes -= 60;
+    }
+    deltaTime.setYear(0);
+    deltaTime.setMonth(0);
+    deltaTime.setDay(1);
+    deltaTime.setHours(hours);
+    deltaTime.setMinutes(minutes);
+    return deltaTime;
+}
+    /*
+    short day = endTime.getDay() -  startTime.getDay();
+    short month = endTime.getMonth() - startTime.getMonth();
+    short year = endTime.getYear() - startTime.getYear();
+
+    short time[5] = {};
+    time[4] = minutes;
+    time[3] = hours;
+    time[2] = day;
+    time[1] = month;
+    time[0] = year;
+
+    for(int i = 0; i < 4; i++){
+        //i+1
+        if(time[i] < 0 && time[i + 1] > 0){
+            time[i]++;
+            if(i == 0)
+                time[i + 1] -= 12;
+            else if(i == 1)
+                time[i + 1] -= startTime.numberOfdays();
+            else if(i == 2)
+                time[i + 1] -= 24;
+            else if(i == 3)
+                time[i + 1] -= 60;
+            continue;
+        }
+        else if(time[i] > 0 && time[i + 1] < 0) {
+            time[i]--;
+            if(i == 0)
+                time[i + 1] += 12;
+            else if(i == 1)
+                time[i + 1] += startTime.numberOfdays();
+            else if(i == 2)
+                time[i + 1] += 24;
+            else if(i == 3)
+                time[i + 1] += 60;
+            continue;
+        }
+
+        if(i >= 4){
+            continue;
+        }
+        //i+2
+        if(time[i] > 0 && time[i + 1] == 0){
+            time[i]--;
+            if(time[i + 2] < 0){
+                if(i == 0) {
+                    time[i + 1] += 11;
+                    time[i + 2] += startTime.numberOfdays();
+                    continue;
+                }
+                if(i == 1){
+                    time[i + 1] += startTime.numberOfdays() - 1;
+                    time[i + 2] += 24;
+                    continue;
+                }
+                if(i == 2){
+                    time[i + 1] += 23;
+                    time[i + 2] += 60;
+                    continue;
+                }
+
+            }
+        }
+        else if(time[i] < 0 && time[i + 1] == 0){
+            if(time[i + 2] > 0){
+                time[i]++;
+                if(i == 0){
+                    time[i + 1] -= 11;
+                    time[i + 2] -= startTime.numberOfdays() - 1;
+                    time[i + 3] -= 24;
+                    continue;
+                }
+                if(i == 1){
+                    time[i + 2] -= startTime.numberOfdays() - 1;
+                    time[i + 3] -= 23;
+                    time[i + 4] -= 60;
+                    continue;
+                }
+            }
+        }
+
+        if(i >= 3){
+            continue;
+        }
+        //i + 3
+        if(time[i] > 0 && time[i + 1] == 0){
+            if(time[i] > 0 && time[i + 2] == 0){
+                if(time[i + 3] < 0){
+                    time[i]--;
+                    time[i + 1] += 11;
+                    time[i + 2] += startTime.numberOfdays() - 1;
+                    time[i + 3] += 23;
+                    time[i + 4] += 60;
+                    continue;
+                }
+            }
+        }
+
+        if(time[i] < 0 && time[i + 1] == 0){
+            if(time[i] < 0 && time[i + 2] == 0){
+                if(time[i + 3] > 0){
+                    time[i]++;
+                    time[i + 1] -= 11;
+                    time[i + 2] -= startTime.numberOfdays() - 1;
+                    time[i + 3] -= 23;
+                    time[i + 4] -= 60;
+                    continue;
+                }
+            }
+        }
+
+        if(i >= 2){
+            continue;
+        }
+        //i + 4
+        if(time[i] > 0 && time[i + 1] == 0){
+            if(time[i + 2] == 0){
+                if(time[i + 3] == 0){
+                    if(time[i + 4] < 0){
+                        time[i]--;
+                        time[i + 1] += 11;
+                        time[i + 2] += startTime.numberOfdays() - 1;
+                        time[i + 3] += 23;
+                        time[i + 4] += 60;
+                        continue;
+                    }
+                }
+            }
+        }
+
+        if(time[i] < 0 && time[i + 1] == 0){
+            if(time[i + 2] == 0){
+                if(time[i + 3] == 0){
+                    if(time[i + 4] > 0){
+                        time[i]++;
+                        time[i + 1] -= 11;
+                        time[i + 2] -= startTime.numberOfdays() - 1;
+                        time[i + 3] -= 23;
+                        time[i + 4] -= 60;
+                        continue;
+                    }
+                }
+            }
+        }
+    }
+    deltaTime.setMinutes(time[4]);
+    deltaTime.setHours(time[3]);
+    deltaTime.setDay(time[2]);
+    deltaTime.setMonth(time[1]);
+    deltaTime.setYear(time[0]);
+    return deltaTime;
+
+    /*
+    if(year < 0 &&  month > 0){
+        year++;
+        month -= 12;
+    }
+    if(year > 0 && month < 0){
+        year--;
+        month += 12;
+    }
+    if(month < 0 && day > 0){
+        month++;
+        day -= startTime.numberOfdays();
+    }
+    if(month > 0 && day < 0){
+        month--;
+        day -= startTime.numberOfdays();
+    }
+    if(day < 0 && hours > 0){
+        day++;
+        hours += 24;
+    }
+    if(day > 0 && hours < 0){
+        day--;
+        hours -= 24;
+    }
+    if(hours > 0 && minutes < 0){
+        hours--;
+        minutes -= 60;
+    }
+    if(hours > 0 && minutes < 0){
+        hours--;
+        minutes -= 60;
+    }
+    deltaTime.setMinutes(minutes);
+    deltaTime.setHours(hours);
+    deltaTime.setDay(day);
+    deltaTime.setMonth(month);
+    deltaTime.setYear(year);
+    return deltaTime;
+
+    if(minutes < 0){
+        minutes += 60;
+        hours--;
+    }
+    deltaTime.setMinutes(minutes);
+    if(hours < 0){
+        hours += 24;
+        day--;
+    }
+    deltaTime.setHours(hours);
+
+    if (day == 0){
+        if(startTime.getMonth() == 1) {
+            Time monthBeforestartTime = Time(1, 12, startTime.getYear() - 1, 0, 0);
+            day = monthBeforestartTime.numberOfdays();
+        }
+        else{
+            Time monthBeforestartTime = Time(1, startTime.getMonth() - 1, startTime.getYear(), 0, 0);
+            day = monthBeforestartTime.numberOfdays();
+        }
+        month--;
+    }
+    deltaTime.setDay(day);
+
+    if(month == 0){
+        month += 12;
+        year--;
+    }
+    deltaTime.setMonth(month);
+
+    deltaTime.setYear(year);
+
+
+    return deltaTime;*/
 }
