@@ -216,8 +216,11 @@ bool operator ==(Time const t1, Time const t2) {
 }
 
 ostream &operator<<(ostream &out, Time t) {
-    out << t.getDay() << '/' << t.getMonth() << '/' << t.getYear() << ' ' << t.getHours() << ':' << t.getMinutes();
-    //Include leading zeros
+    out << setw(2) << setfill('0') << t.getDay() << '/' // Day
+        << setw(2) << setfill('0') << t.getMonth() <<  '/' // Month
+        << t.getYear() //Year
+        << ' ' << t.getHours() << ':' << t.getMinutes(); // Hours and Minutes
+
     return out;
 }
 
@@ -478,5 +481,5 @@ Time operator -(Time const startTime, Time const endTime) {
     deltaTime.setYear(year);
 
 
-    return deltaTime;*/
-}
+    return deltaTime;
+}*/

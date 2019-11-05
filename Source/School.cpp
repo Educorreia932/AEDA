@@ -68,11 +68,6 @@ void School::addClient(Client* client) {
     Clients.push_back(client);
 }
 
-void School::addActivity(Activity activity){
-    for(int i = 0; i < Staff.size(); i++)
-}
-
-
 int School::clientIndex(unsigned int id) {
     for (size_t i = 0; i < Clients.size();i++){
         if (Clients.at(i)->getId() == id){
@@ -95,7 +90,7 @@ void School::readClients() {
     string line;
     ifstream File("../Data/" + Files["Clients"]);
     int counter = 0;
-    Client* auxClient = new Client();
+    auto* auxClient = new Client();
 
     if (File.is_open()) {
         while (getline(File, line)) {
@@ -127,11 +122,11 @@ void School::readActivities() {
     ifstream File("../Data/" + Files["Activities"]);
     int counter = 0;
 
-    Activity* auxActivity = new Activity();
+    auto* auxActivity = new Activity();
 
     if (File.is_open()) {
         while (getline(File, line)) {
-            switch (counter % 3) {
+            switch (counter % 5) {
                 case 0:
                     auxActivity->setID(stoi(line));
                     break;
@@ -139,6 +134,12 @@ void School::readActivities() {
                     auxActivity->setName(line);
                     break;
                 case 2:
+                    auxActivity->setStartTime(line);
+                    break;
+                case 3:
+                    auxActivity->setEndTime(line);
+                    break;
+                case 4:
                     Activities.push_back(auxActivity);
                     auxActivity = new Activity();
                     break;
@@ -149,14 +150,13 @@ void School::readActivities() {
     }
 }
 
-void School::enroll(const unsigned int clientId,const unsigned int activityId,const vector<Activity*> schoolActivities) {
-
+void School::enroll(const unsigned int clientId, const unsigned int activityId) {
     //Time needs to be checked if is ahead of the set current time
 
     Client* client;
     bool clientExists = false;
 
-    for(const auto &c : this->Clients){
+    for (const auto &c : this->Clients) {
         if(c->getId() == clientId){
             client = c;
             clientExists = true;
@@ -164,30 +164,51 @@ void School::enroll(const unsigned int clientId,const unsigned int activityId,co
         }
     }
 
-    if(!clientExists){
+    if(!clientExists)
         throw NonExistantClient(clientId);
-    }
 
     bool activityExists = false;
 
-    for (const auto &ac : schoolActivities){
-
-        if(activityId == ac->getId()){
+    for (const auto &ac : Activities) {
+        if (activityId == ac->getId()){
             try {
                 client->addActivity(ac);
-            } catch (exception &e){
-                throw;
             }
 
+            catch (clientAlreadHasActivity &e) {
+                throw e;
+            }
         }
     }
 
-    if(!activityExists){
-        throw activityNonExistant(activityId);
-    }
+/*    if(!activityExists)
+        throw activityNonExistant(activityId);*/
+}
 
+void School::viewActivities() {
 
 }
+
+ostream &operator<<(ostream &out, const School& S) {
+    out << "Name: " << S.name << endl
+        << "Current date: " << S.currentTime << endl
+        << "Number of enrolled clients: " << S.Clients.size() << endl
+        << "Number of planned activities: " << S.Activities.size() << endl;
+
+    return out;
+}
+
+void School::viewClients(bool detailed) {
+    if (detailed)
+        for (auto & Client : Clients)
+            cout << *Client << endl;
+
+    else
+        for (auto & Client : Clients)
+            cout << Client->getName() << " - " << Client->getId() << endl;
+}
+
+//Exceptions
 
 std::ostream &operator<<(std::ostream &out, const NonExistantClient &client) {
     out << "Client with ID " << client.id << " does not exist in school." << endl;

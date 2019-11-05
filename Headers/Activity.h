@@ -2,13 +2,15 @@
 #define SUP_SCHOOL_ACTIVITY_H
 
 #include "Time.h"
-#include <string>
+
 class Activity {
     private:
+        string name;
+        unsigned int id;
+        static unsigned int last_id;
         Time startTime;
         Time endTime;
-        static unsigned int id;
-        string name;
+
     public:
         Activity();
         Activity(Time startTime,Time endTime,string name);
@@ -16,14 +18,16 @@ class Activity {
         //Getters
         Time getStartTime();
         Time getEndTime();
+        string getName() const;
         unsigned int getId() const;
-        std::string getName() const;
 
         //Setters
         void setName(string name);
         void setID(unsigned int id);
+        void setStartTime(string time);
+        void setEndTime(string time);
 
-        virtual unsigned int CalcCost() const = 0;
+        virtual unsigned int CalcCost() const;
 };
 
 class Ride : public Activity {
@@ -43,7 +47,7 @@ class Lesson : public Activity {
 class StandUpPaddle : public Lesson {
     public:
     unsigned int CalcCost() const;
-        StandUpPaddle(Time startTime,Time endTime,string name) : Lesson(startTime,endTime,name){};
+    StandUpPaddle(Time startTime,Time endTime,string name) : Lesson(startTime,endTime,name){};
 };
 
 class Surf : public Lesson {
@@ -55,6 +59,8 @@ class Windsurf : public Lesson {
     unsigned int CalcCost() const;
         Windsurf(Time startTime,Time endTime,string name) : Lesson(startTime,endTime,name){};
 };
+
+//Exceptions
 
 class activityNonExistant : std::exception {
 public:

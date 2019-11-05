@@ -1,7 +1,6 @@
 #ifndef SUP_SCHOOL_SCHOOL_H
 #define SUP_SCHOOL_SCHOOL_H
 
-#include "Activity.h"
 #include "Client.h"
 #include "Material.h"
 #include "Staff.h"
@@ -21,7 +20,7 @@ class School {
         int clientIndex(unsigned int id);
         void removeClient(unsigned int id);
 
-        void addActivity(Activity activity);
+        void addActivity(Activity* activity);
 
         //Getters
         vector<Activity*> getActivities() const;
@@ -29,9 +28,15 @@ class School {
         //Read-Functions
         void readClients();
         void readActivities();
-        void enroll(const unsigned int clientId,const unsigned int activityId,const vector<Activity*> schoolActivities);
+        void enroll(const unsigned int clientId,const unsigned int activityId);
+    private:
+        // View Functions ← Display detailed information
+        void viewClients(bool detailed = true);
+        void viewActivities();
+        void viewMaterial();
 
-private:
+        friend ostream& operator<<(ostream& out, const School& S);
+    private:
         string name;
         unsigned int id;
         Time currentTime;

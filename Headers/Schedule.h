@@ -24,10 +24,10 @@ class Schedule {
     public:
         Schedule();
         Schedule(const vector<Activity*> &Activities);
-        Schedule(map <Time, vector<Activity*>> Activities);
+        Schedule(map <Time, Activity*> Activities);
         void view(Time Date, int width);
     private:
-        map <Time, vector<Activity*>> Activities;
+        map <Time, Activity*> Activities;
 };
 
 #endif //SUP_SCHOOL_SCHEDULE_H

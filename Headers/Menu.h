@@ -1,7 +1,7 @@
 #ifndef SUP_SCHOOL_MENU_H
 #define SUP_SCHOOL_MENU_H
 
-#include "Auxiliary.h"
+#include "Schedule.h"
 #include "School.h"
 
 class Menu {
@@ -9,10 +9,8 @@ class Menu {
         //Constructors
         Menu(School SUPSchool);
 
-        int showMainMenu();
+        static int showMainMenu();
         void mainMenuSelection(int selected);
-
-        void manageClientsMenu();
 
         //Utils
         static void clearScreen();
@@ -20,8 +18,11 @@ class Menu {
     private:
         School SUPSchool;
 
-        //Schedules
+        static int showManageClients();
+        void manageClientsSelection(int selected);
 
+        static int showConsultSchedule();
+        void consultScheduleSelection(int selected);
 };
 
 #endif //SUP_SCHOOL_MENU_H

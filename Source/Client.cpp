@@ -2,7 +2,11 @@
 
 using namespace std;
 
-unsigned int Client::id = 0;
+unsigned int Client::last_id = 0;
+
+Client::Client() {
+
+}
 
 Client::Client(string name, bool gold_member) {
     this->id = Client::id++;
@@ -44,33 +48,36 @@ void Client::setID(const unsigned int id) {
     this->id = id;
 }
 
-
-
 bool Client::isOcuppied(const Time startTime,const Time endTime) {
+    for (const auto &ac : this->ScheduledActivities) {
+        if(ac->getStartTime() == startTime)
+            return true;
 
-    for (const auto &ac : this->ScheduledActivities){
+        if(ac->getEndTime() == endTime)
+            return true;
 
-        if(ac->getStartTime() == startTime){
+        if(ac->getStartTime() > startTime && ac->getStartTime() < endTime)
             return true;
-        }
-        if(ac->getEndTime() == endTime){
+
+        if(ac->getEndTime() > startTime && ac->getEndTime() < endTime)
             return true;
-        }
-        if(ac->getStartTime() > startTime && ac->getStartTime() < endTime){
-            return true;
-        }
-        if(ac->getEndTime() > startTime && ac->getEndTime() < endTime){
-            return true;
-        }
     }
 
     return false;
-
-
 }
 
-Client::Client() {
+ostream &operator<<(ostream &out, const Client &C) {
+    if (C.gold_member)
+        out << "$ Gold Member $" << endl;
 
+    out << "Name: " << C.name << endl
+        << "ID: " << C.id << endl;
+
+    return out;
+}
+
+void Client::setActivities(const vector<Activity *> Activities) {
+    ScheduledActivities = Activities;
 }
 
 vector<Activity *> Client::getScheduledActivities() const {
@@ -78,19 +85,14 @@ vector<Activity *> Client::getScheduledActivities() const {
 }
 
 void Client::addActivity(Activity* activity) {
+    for (const auto &ac : ScheduledActivities)
+        if (ac->getId() == activity->getId())
+            throw clientAlreadHasActivity(id,activity->getId()); //Not catching
 
-    for (const auto &ac : this->ScheduledActivities){
-        if (ac->getId() == activity->getId()){
-            throw clientAlreadHasActivity(this->id,activity->getId());
-        }
-    }
-
-    if(isOcuppied(activity->getStartTime(),activity->getEndTime())){
+    if(isOcuppied(activity->getStartTime(), activity->getEndTime()))
         throw hasActivityAtSameTime(this->id,activity->getId());
-    }
 
-    this->ScheduledActivities.push_back(activity);
-
+    ScheduledActivities.push_back(activity);
 }
 
 ostream &operator<<(ostream &out, const alreadyGoldMember &member) {
@@ -103,7 +105,7 @@ ostream &operator<<(ostream &out, const hasActivityAtSameTime &ids) {
     return out;
 }
 
-std::ostream &operator<<(std::ostream &out, const clientAlreadHasActivity &ids) {
+ostream &operator<<(std::ostream &out, const clientAlreadHasActivity &ids) {
     out << "Client with ID \"" << ids.clientId << "\" already is already enrolled in activity with ID \"" << ids.activityId << "\"." << endl;
     return out;
 }
