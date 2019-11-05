@@ -1,8 +1,8 @@
 #ifndef SUP_SCHOOL_MATERIAL_H
 #define SUP_SCHOOL_MATERIAL_H
 #include "Activity.h"
-#include <vector>
 #include <string>
+#include <vector>
 class Material {
     public:
         bool beingUsed(Time startTime, Time endTime);
@@ -10,6 +10,9 @@ class Material {
     private:
         string objectType;
         vector<Activity*> activities;
+
+
+    friend ostream &operator<<(ostream out, Material material);
 };
 
 class Boat : public Material {

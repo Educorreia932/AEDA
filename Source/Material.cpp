@@ -1,6 +1,6 @@
 #include "../Headers/Material.h"
-#include <vector>
 #include <string>
+using namespace std;
 bool Material::beingUsed(Time startTime, Time endTime){
     if (startTime > endTime) { //Implement >=
         throw ImpossibleTimeDiference(startTime, endTime);
@@ -19,7 +19,7 @@ bool Material::beingUsed(Time startTime, Time endTime){
     for(int i = 0; i < activities.size(); i++){
         //if(*(activity[i]))
         if(!(endTime < activities[i]->getStartTime() || startTime > activities[i]->getEndTime())){
-            return true;
+             return true;
         }
     }
 

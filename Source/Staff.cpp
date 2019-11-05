@@ -5,6 +5,6 @@ Staff::Staff() {
 }
 
 Teacher::Teacher() : Staff() {
-
+    Activities = {};
 }
 

@@ -39,9 +39,10 @@ unsigned int Lesson::CalcCost() const {
     return 0;
 }
 
-unsigned int Ride::CalcCost() const{
+unsigned int Ride::CalcCost() const {
     return cost;
 }
+
 
 std::ostream &operator<<(std::ostream &out, const activityNonExistant &activity) {
     out << "Activity with ID \"" << activity.id << "\" does not exist." << endl;

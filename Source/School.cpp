@@ -68,6 +68,11 @@ void School::addClient(Client* client) {
     Clients.push_back(client);
 }
 
+void School::addActivity(Activity activity){
+    for(int i = 0; i < Staff.size(); i++)
+}
+
+
 int School::clientIndex(unsigned int id) {
     for (size_t i = 0; i < Clients.size();i++){
         if (Clients.at(i)->getId() == id){

@@ -21,6 +21,7 @@ class School {
         int clientIndex(unsigned int id);
         void removeClient(unsigned int id);
 
+        void addActivity(Activity activity);
 
         //Getters
         vector<Activity*> getActivities() const;
@@ -29,6 +30,7 @@ class School {
         void readClients();
         void readActivities();
         void enroll(const unsigned int clientId,const unsigned int activityId,const vector<Activity*> schoolActivities);
+
 private:
         string name;
         unsigned int id;

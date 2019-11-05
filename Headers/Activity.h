@@ -2,7 +2,7 @@
 #define SUP_SCHOOL_ACTIVITY_H
 
 #include "Time.h"
-
+#include <string>
 class Activity {
     private:
         Time startTime;
@@ -23,9 +23,8 @@ class Activity {
         void setName(string name);
         void setID(unsigned int id);
 
-        virtual int calcCost() const = 0;
+        virtual unsigned int CalcCost() const = 0;
 };
-
 
 class Ride : public Activity {
     protected:
@@ -43,19 +42,17 @@ class Lesson : public Activity {
 
 class StandUpPaddle : public Lesson {
     public:
-        unsigned int CalcCost() const;
+    unsigned int CalcCost() const;
         StandUpPaddle(Time startTime,Time endTime,string name) : Lesson(startTime,endTime,name){};
 };
 
 class Surf : public Lesson {
     public:
-        unsigned int CalcCost() const;
         Surf(Time startTime,Time endTime,string name) : Lesson(startTime,endTime,name){};
 };
 
 class Windsurf : public Lesson {
-    public:
-        unsigned int CalcCost() const;
+    unsigned int CalcCost() const;
         Windsurf(Time startTime,Time endTime,string name) : Lesson(startTime,endTime,name){};
 };
 
