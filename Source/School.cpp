@@ -83,7 +83,7 @@ vector<Activity *> School::getActivities() const {
 }
 
 vector<Staff *> School::getStaff() const{
-    return this->Staff;
+    return this->staff;
 }
 
 void School::readClients() {

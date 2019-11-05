@@ -43,7 +43,7 @@ class School {
         map<string, string> Files;
         vector<Client*> Clients;
         vector<Material*> Materials;
-        vector<Staff*> Staff;
+        vector<Staff*> staff;
         vector<Activity*> Activities;
 };
 
