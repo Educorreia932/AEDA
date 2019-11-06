@@ -18,9 +18,15 @@ class Menu {
     private:
         School SUPSchool;
 
+        // Client related        
         static int showManageClients();
         void manageClientsSelection(int selected);
-
+        
+        // Teacher related
+        static int showManageTeachers();
+        void manageTeachersSelection(int selected);
+        
+        // Schedule related
         static int showConsultSchedule();
         void consultScheduleSelection(int selected);
 };

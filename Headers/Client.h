@@ -16,6 +16,7 @@ class Client {
 
         //Getters
         string getName() const;
+        static unsigned int getLastID();
         unsigned int getId() const;
         vector<Activity*> getScheduledActivities() const;
 

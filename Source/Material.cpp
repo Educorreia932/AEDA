@@ -1,6 +1,7 @@
 #include "../Headers/Material.h"
-#include <string>
+
 using namespace std;
+
 bool Material::beingUsed(Time startTime, Time endTime){
     if (startTime > endTime) { //Implement >=
         throw ImpossibleTimeDiference(startTime, endTime);
@@ -27,11 +28,11 @@ bool Material::beingUsed(Time startTime, Time endTime){
     //return !(endTime < activity->getStartTime() || startTime > activity->getEndTime());
 }
 
-ostream &operator<<(ostream out, Material material) {
-    out << "This is a" <<  material.objectType << ", which is going to be used by:\n";
-    for(int i= 0; i < material.activities.size(); i++){
-        cout << (material.activities)[i]->getName();
-        if(i != material.activities.size() - 1){
+ostream &operator<<(ostream &out, Material material) {
+    out << "This is a" <<  material.getObjectType() << ", which is going to be used by:\n";
+    for(int i= 0; i < material.getObjectType().size(); i++){
+        cout << (material.getActivities())[i]->getName();
+        if(i != material.getActivities().size() - 1){
             cout << ", ";
         }
     }
@@ -40,4 +41,8 @@ ostream &operator<<(ostream out, Material material) {
 
 string Material::getObjectType() const{
     return objectType;
+}
+
+vector<Activity *> Material::getActivities() const {
+    return activities;
 }

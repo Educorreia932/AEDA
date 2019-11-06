@@ -3,16 +3,17 @@
 #include "Activity.h"
 #include <string>
 #include <vector>
+
 class Material {
     public:
         bool beingUsed(Time startTime, Time endTime);
         string getObjectType() const;
+        vector<Activity*> getActivities() const;
     private:
         string objectType;
         vector<Activity*> activities;
 
-
-    friend ostream &operator<<(ostream out, Material material);
+        friend ostream &operator<<(ostream out, Material material);
 };
 
 class Boat : public Material {

@@ -32,6 +32,10 @@ string Client::getName() const {
     return this->name;
 }
 
+unsigned int Client::getLastID() {
+    return last_id;
+}
+
 unsigned int Client::getId() const {
     return this->id;
 }

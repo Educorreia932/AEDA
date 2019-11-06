@@ -31,7 +31,10 @@ void Menu::mainMenuSelection(int selected) {
         case 2: // Manage clients
             manageClientsSelection(showManageClients());
             return;
-        case 5:
+        case 3: // Manage teachers
+            manageTeachersSelection(showManageClients());
+            return;
+        case 5: // Consult clients
             SUPSchool.viewClients();
             pause();
             return;
@@ -44,8 +47,14 @@ void Menu::mainMenuSelection(int selected) {
             return;
         case 0:
             return;
+        default:
+            cout << "NOT IMPLEMENTED YET" << endl;
+            pause();
+            return;
     }
 }
+
+// Client --------------------
 
 int Menu::showManageClients() {
     clearScreen();
@@ -54,7 +63,7 @@ int Menu::showManageClients() {
          << endl
          << "1) Create a new client." << endl
          << "2) Change the information of a client." << endl //<- perhaps ask for admin permission/password
-         << "3) Remove an existent client." << endl
+         << "3) Remove an existent client." << endl //<- Remove all information associated with him
          << "4) Enrole a client in an activity." << endl //<- and remove him from a planned activity
          << "0) Go back" << endl
          << endl;
@@ -76,12 +85,12 @@ void Menu::manageClientsSelection(int selected) {
 
             cout << endl;
 
-            selected_client = readOption(0, SUPSchool.Clients.size()); // <- Get Max ID
+            selected_client = readOption(0, SUPSchool.Clients[0]->getLastID());
             pause();
             return;
         case 4:
             cout << "Insert the client ID: " << endl; //Make function to display the clients
-            selected_client = readOption(0, SUPSchool.Clients.size());
+            selected_client = readOption(0, SUPSchool.Clients[0]->getLastID());
 
             cout << "Insert the activity ID: " << endl;
             selected_activity = readOption(0, SUPSchool.Activities.size());
@@ -102,7 +111,26 @@ void Menu::manageClientsSelection(int selected) {
             return;
         case 0:
             return;
+        default:
+            cout << "NOT IMPLEMENTED YET" << endl;
     }
+}
+
+// Teacher --------------------
+
+int Menu::showManageTeachers() {
+    clearScreen();
+
+    cout << "What do you want to do? Insert the corresponding key." << endl
+         << endl
+         << "1) Create a new teacher." << endl
+         << "2) Change the information of a teacher." << endl //<- perhaps ask for admin permission/password
+         << "3) Remove an existent teacher." << endl //<- Remove all information associated with him
+         << "4) Designate a lesson to a teacher." << endl
+         << "0) Go back" << endl
+         << endl;
+
+    return readOption(0, 4);
 }
 
 // Schedule --------------------
@@ -123,13 +151,21 @@ int Menu::showConsultSchedule() {
 
 void Menu::consultScheduleSelection(int selected) {
     //test -v
-    //SUPSchool.Clients[0]->setActivities(SUPSchool.getActivities());
-
-    Schedule test(SUPSchool.Clients[0]->getScheduledActivities());
+    int selected_client;
+    Schedule* s = new Schedule();
 
     switch (selected) {
         case 1:
-            test.view(Time(18, 10, 2019), 30);
+            clearScreen();
+            
+            cout << "Which client do you wish to see its schedule? Insert the corresponding key." << endl
+                 << endl;
+
+            selected_client = readOption(0, SUPSchool.Clients[0]->getLastID());
+
+            s = new Schedule(SUPSchool.Clients[selected_client]->getScheduledActivities());
+            s->view(Time(18, 10, 2019), 30);
+
             pause();
             return;
         case 0:
@@ -140,13 +176,13 @@ void Menu::consultScheduleSelection(int selected) {
 // Utils --------------------
 
 void Menu::clearScreen() {
-#ifdef __unix__
-    system("clear");
-#endif
+    #ifdef __unix__
+        system("clear");
+    #endif
 
-#ifdef _WIN32
-    system("cls");
-#endif
+    #ifdef _WIN32
+        system("cls");
+    #endif
 
     //cout << string( 100, '\n' );
 }
@@ -155,3 +191,8 @@ void Menu::pause() {
     cout << "Press any key to continue ...";
     cin.get();
 }
+
+void Menu::manageTeachersSelection(int selected) {
+
+}
+

@@ -13,7 +13,7 @@ class Time{
     public:
         //Constructors
         Time(); //Today's Date
-        Time (const string &t); //const In format DD/MM/AAAA hh:mm
+        Time(const string &t); //const In format DD/MM/AAAA hh:mm
         Time(short day, short month, short year);
         Time(short day, short month, short year, short hours, short minutes);
 
