@@ -9,12 +9,6 @@
 #include "Auxiliary.h"
 
 class Client {
-    private:
-        vector<Activity*> PastActivities;
-        vector<Activity*> ScheduledActivities;
-        static unsigned int id;
-        string name;
-        bool gold_member;
     public:
         //Constructors
         Client();
@@ -22,19 +16,35 @@ class Client {
 
         //Getters
         string getName() const;
+        static unsigned int getLastID();
         unsigned int getId() const;
+        vector<Activity*> getScheduledActivities() const;
 
         //Setters
         void setName(const string newName);
+        static void setLastID(const unsigned int id);
         void setID(const unsigned int id);
         void setGoldMember(const bool gold_member);
+        //test -v
+        void setActivities(const vector<Activity *> Activities);
 
         //Misc.
+        void addActivity(Activity* activity);
         void purchaseGold();
         bool isGoldMember() const;
-        void enroll(const unsigned int activityId,const vector<Activity*> schoolActivities);
-        bool isOcuppied(Time startTime,Time endTime); //Not implemented
+
+        friend ostream& operator<<(ostream& out, const Client& C);
+    private:
+        vector<Activity*> PastActivities;
+        vector<Activity*> ScheduledActivities;
+        static unsigned int last_id;
+        unsigned int id;
+        string name;
+        bool gold_member;
+        bool isOcuppied(const Time startTime,const Time endTime);
 };
+
+//Exceptions
 
 class alreadyGoldMember : std::exception {
     public:
@@ -44,14 +54,22 @@ class alreadyGoldMember : std::exception {
 
 std::ostream & operator <<(std::ostream &out,const alreadyGoldMember &member);
 
-
 class hasActivityAtSameTime : std::exception {
-public:
-    unsigned clientId;
-    unsigned int activityId;
-    hasActivityAtSameTime(unsigned int clientId,unsigned int activityId){clientId = clientId;activityId = activityId;};
+    public:
+        unsigned clientId;
+        unsigned int activityId;
+        hasActivityAtSameTime(unsigned int clientId,unsigned int activityId){clientId = clientId;activityId = activityId;};
 };
 
 std::ostream & operator <<(std::ostream &out,const hasActivityAtSameTime &ids);
+
+class clientAlreadHasActivity : std::exception {
+public:
+    unsigned clientId;
+    unsigned int activityId;
+    clientAlreadHasActivity(unsigned int clientId,unsigned int activityId){clientId = clientId;activityId = activityId;};
+};
+
+std::ostream & operator <<(std::ostream &out,const clientAlreadHasActivity &ids);
 
 #endif //SUP_SCHOOL_CLIENT_H

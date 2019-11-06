@@ -8,16 +8,13 @@ Schedule::Schedule() {
 }
 
 Schedule::Schedule(const vector<Activity *> &Activities) {
-    for (Activity* a : Activities) {
-        Time t_aux = a->getStartTime(); //Use pointer/Macro
-        Time t(t_aux.getDay(), t_aux.getMonth(), t_aux.getYear());
-
+    for (auto a : Activities) {;
         //Use different positions for different times of the day
-        this->Activities[t].push_back(a);
+        this->Activities[a->getStartTime()] = a;
     }
 }
 
-Schedule::Schedule(map <Time, vector<Activity*>> Activities) {
+Schedule::Schedule(map <Time, Activity*> Activities) {
     this->Activities = Activities;
 }
 
@@ -29,15 +26,21 @@ void Schedule::view(Time Date, int width) {
         if (!i) //First row
             cout << setw(8) << Chars.topLeft << string(width, Chars.topDownSimple) << Chars.topRight << endl
                  << setw(8) << Chars.leftRightSimple << setw(width) << centerString(width, Date.getWeekday()) << Chars.leftRightSimple << endl
-                 << setw(8) << Chars.leftSeparation << string(width, Chars.topDownSimple) << Chars.rightSeparation << endl;
+                 << setw(7) << Times[i] << Chars.leftSeparation << string(width, Chars.topDownSimple) << Chars.rightSeparation << endl;
 
-        else if (i < 19)
-            cout << setw(7) << Times[i - 1] <<Chars.leftRightSimple << setw(width + 1) << Chars.leftRightSimple << endl
-                 << setw(8) <<Chars.leftSeparation << string(width, Chars.topDownSimple) << Chars.rightSeparation << endl;
+        else if (i < 19) {
+            stringstream t1("");
+            Time t2("18/10/2019 " + Times[i]);
+
+            if (Activities.count(t2))
+                t1 << Activities[t2]->getName() << ' ' << Activities[t2]->getId();
+
+            cout << setw(8) << Chars.leftRightSimple << centerString(width, t1.str()) << Chars.leftRightSimple << endl
+                 << setw(7) << Times[i]  <<Chars.leftSeparation << string(width, Chars.topDownSimple) << Chars.rightSeparation << endl;
+        }
 
         else //Last row
-            cout << setw(7) << Times[i - 1] << Chars.leftRightSimple << setw(width) << Chars.leftRightSimple << endl
-                 << setw(8) << Chars.downLeft << string(width + 1, Chars.topDownSimple) << Chars.downRight << endl;
+            cout << setw(8) << Chars.leftRightSimple << setw(width + 1) << Chars.leftRightSimple << endl
+                 << setw(8) << Chars.downLeft << string(width, Chars.topDownSimple) << Chars.downRight << endl;
     }
-
 }

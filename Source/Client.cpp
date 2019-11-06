@@ -2,7 +2,11 @@
 
 using namespace std;
 
-unsigned int Client::id = 0;
+unsigned int Client::last_id = 0;
+
+Client::Client() {
+
+}
 
 Client::Client(string name, bool gold_member) {
     this->id = Client::id++;
@@ -28,6 +32,10 @@ string Client::getName() const {
     return this->name;
 }
 
+unsigned int Client::getLastID() {
+    return last_id;
+}
+
 unsigned int Client::getId() const {
     return this->id;
 }
@@ -44,57 +52,55 @@ void Client::setID(const unsigned int id) {
     this->id = id;
 }
 
-void Client::enroll(const unsigned int activityId,const vector<Activity*> schoolActivities) {
-
-    //Time needs to be checked if is ahead of the set current time
-
-
-    bool activityExists = false;
-
-    for (const auto &ac : schoolActivities){
-
-        if(activityId == ac->getId()){
-            if(isOcuppied(ac->getStartTime(),ac->getEndTime())){
-                throw hasActivityAtSameTime(this->id,activityId);
-            } else {
-                ScheduledActivities.push_back(ac);
-                activityExists = true;
-            }
-        }
-    }
-
-    if(!activityExists){
-        throw activityNonExistant(activityId);
-    }
-
-
-}
-
-bool Client::isOcuppied(Time startTime, Time endTime) {
-
-    for (const auto &ac : this->ScheduledActivities){
-
-        if(ac->getStartTime() == startTime){
+bool Client::isOcuppied(const Time startTime,const Time endTime) {
+    for (const auto &ac : this->ScheduledActivities) {
+        if(ac->getStartTime() == startTime)
             return true;
-        }
-        if(ac->getEndTime() == endTime){
+
+        if(ac->getEndTime() == endTime)
             return true;
-        }
-        if(ac->getStartTime() > startTime && ac->getStartTime() < endTime){
+
+        if(ac->getStartTime() > startTime && ac->getStartTime() < endTime)
             return true;
-        }
-        if(ac->getEndTime() > startTime && ac->getEndTime() < endTime){
+
+        if(ac->getEndTime() > startTime && ac->getEndTime() < endTime)
             return true;
-        }
     }
 
     return false;
-
-
 }
 
-Client::Client() {
+ostream &operator<<(ostream &out, const Client &C) {
+    if (C.gold_member)
+        out << "$ Gold Member $" << endl;
 
+    out << "Name: " << C.name << endl
+        << "ID: " << C.id << endl;
+
+    return out;
+}
+
+void Client::setActivities(const vector<Activity *> Activities) {
+    ScheduledActivities = Activities;
+}
+
+vector<Activity *> Client::getScheduledActivities() const {
+    return this->ScheduledActivities;
+}
+
+void Client::addActivity(Activity* activity) {
+    for (const auto &ac : ScheduledActivities)
+        if (ac->getId() == activity->getId())
+            throw clientAlreadHasActivity(id,activity->getId()); //Not catching
+
+    if(isOcuppied(activity->getStartTime(), activity->getEndTime()))
+        throw hasActivityAtSameTime(this->id,activity->getId());
+
+    ScheduledActivities.push_back(activity);
+}
+
+void Client::setLastID(const unsigned int id) {
+    last_id = id;
 }
 
 ostream &operator<<(ostream &out, const alreadyGoldMember &member) {
@@ -104,5 +110,10 @@ ostream &operator<<(ostream &out, const alreadyGoldMember &member) {
 
 ostream &operator<<(ostream &out, const hasActivityAtSameTime &ids) {
     out << "Client with ID \"" << ids.clientId << "\" already has an activity at the same time as activity with ID \"" << ids.activityId << "\"." << endl;
+    return out;
+}
+
+ostream &operator<<(std::ostream &out, const clientAlreadHasActivity &ids) {
+    out << "Client with ID \"" << ids.clientId << "\" already is already enrolled in activity with ID \"" << ids.activityId << "\"." << endl;
     return out;
 }

@@ -15,11 +15,11 @@ Time::Time(const string& t) {
     char separator;
 
     stringstream s(t);
-                                                    //What about space " " ?
+    //What about space " " ?
     s >> day >> separator >> month >> separator >> year >> hours >> separator >> minutes;
 }
 
-Time::Time(unsigned short day, unsigned short month, unsigned short year) {
+Time::Time(short day, short month, short year) {
     this->day = day;
     this->month = month;
     this->year = year;
@@ -27,7 +27,7 @@ Time::Time(unsigned short day, unsigned short month, unsigned short year) {
     minutes = 0;
 }
 
-Time::Time(unsigned short day, unsigned short month, unsigned short year, unsigned short hours, unsigned short minutes) {
+Time::Time(short day, short month, short year, short hours, short minutes) {
     this->day = day;
     this->month = month;
     this->year = year;
@@ -36,15 +36,15 @@ Time::Time(unsigned short day, unsigned short month, unsigned short year, unsign
     //Check if it's valid date
 }
 
-unsigned short Time::getYear() const {
+short Time::getYear() const {
     return year;
 }
 
-unsigned short Time::getMonth() const {
+short Time::getMonth() const {
     return month;
 }
 
-unsigned short Time::getDay() const {
+short Time::getDay() const {
     return day;
 }
 
@@ -70,19 +70,31 @@ string Time::getWeekday() const {
     return "N/A";
 }
 
-unsigned short Time::getHours() const {
+short Time::getHours() const {
     return hours;
 }
 
-unsigned short Time::getMinutes() const {
+short Time::getMinutes() const {
     return minutes;
 }
 
-void Time::setHours(const unsigned short hours) {
+void Time::setYear(const short year) {
+    this->year = year;
+}
+
+void Time::setMonth(const short month) {
+    this->month = month;
+}
+
+void Time::setDay(const short day) {
+    this->day = day;
+}
+
+void Time::setHours(const short hours) {
     this->hours = hours;
 }
 
-void Time::setMinutes(const unsigned short minutes) {
+void Time::setMinutes(const short minutes) {
     this->minutes = minutes;
 }
 
@@ -204,17 +216,42 @@ bool operator ==(Time const t1, Time const t2) {
 }
 
 ostream &operator<<(ostream &out, Time t) {
-    out << t.getDay() << '/' << t.getMonth() << '/' << t.getYear() << ' ' << t.getHours() << ':' << t.getMinutes();
-                                                                            //Include leading zeros
+    out << setw(2) << setfill('0') << t.getDay() << '/' // Day
+        << setw(2) << setfill('0') << t.getMonth() <<  '/' // Month
+        << t.getYear() //Year
+        << ' ' << t.getHours() << ':' << t.getMinutes(); // Hours and Minutes
+
     return out;
 }
 
 ImpossibleTimeDiference::ImpossibleTimeDiference(Time startTime, Time endTime){
-    startTime = startTime;
-    endTime = endTime;
+    this->startTime = startTime;
+    this->endTime = endTime;
 }
 
 ostream &operator<<(ostream &out, const ImpossibleTimeDiference &times) {
     out << "ERROR: The starting time of " << times.startTime << " is after " << times.endTime << endl;
     return out;
+}
+
+Time operator -(Time const startTime, Time const endTime) {
+
+    Time deltaTime;
+    short minutes = endTime.getMinutes() - startTime.getMinutes();
+    short hours = endTime.getHours() - startTime.getHours();
+
+    if (hours > 0 && minutes < 0) {
+        hours--;
+        minutes += 60;
+    }
+    if (hours < 0 && minutes > 0) {
+        hours++;
+        minutes -= 60;
+    }
+    deltaTime.setYear(0);
+    deltaTime.setMonth(0);
+    deltaTime.setDay(1);
+    deltaTime.setHours(hours);
+    deltaTime.setMinutes(minutes);
+    return deltaTime;
 }

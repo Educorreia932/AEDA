@@ -82,25 +82,38 @@ vector<Activity *> School::getActivities() const {
     return this->Activities;
 }
 
+vector<Staff *> School::getStaff() const{
+    return this->staff;
+}
+
 void School::readClients() {
     string line;
     ifstream File("../Data/" + Files["Clients"]);
     int counter = 0;
-    Client* auxClient = new Client();
+    auto* auxClient = new Client();
+    ostringstream planned_activities;
 
     if (File.is_open()) {
         while (getline(File, line)) {
-                switch (counter % 4) {
+                switch (counter % 5) {
                     case 0:
                         auxClient->setName(line);
                         break;
                     case 1:
                         auxClient->setID((stoi(line)));
+
+                        if (stoi(line) > Client::getLastID())
+                            Client::setLastID(stoi(line));
+
                         break;
                     case 2:
                         auxClient->setGoldMember(stob(line));
                         break;
                     case 3:
+                        planned_activities << line;
+
+                        break;
+                    case 4:
                         Clients.push_back(auxClient);
                         auxClient = new Client();
                         break;
@@ -118,18 +131,26 @@ void School::readActivities() {
     ifstream File("../Data/" + Files["Activities"]);
     int counter = 0;
 
-    Activity* auxActivity = new Activity();
+    auto* auxActivity = new Activity();
 
     if (File.is_open()) {
         while (getline(File, line)) {
-            switch (counter % 3) {
+            switch (counter % 6) {
                 case 0:
                     auxActivity->setID(stoi(line));
                     break;
                 case 1:
-                    auxActivity->setName(line);
                     break;
                 case 2:
+                    auxActivity->setName(line);
+                    break;
+                case 3:
+                    auxActivity->setStartTime(line);
+                    break;
+                case 4:
+                    auxActivity->setEndTime(line);
+                    break;
+                case 5:
                     Activities.push_back(auxActivity);
                     auxActivity = new Activity();
                     break;
@@ -139,6 +160,66 @@ void School::readActivities() {
         }
     }
 }
+
+void School::enroll(const unsigned int clientId, const unsigned int activityId) {
+    //Time needs to be checked if is ahead of the set current time
+
+    Client* client;
+    bool clientExists = false;
+
+    for (const auto &c : this->Clients) {
+        if(c->getId() == clientId){
+            client = c;
+            clientExists = true;
+            break;
+        }
+    }
+
+    if(!clientExists)
+        throw NonExistantClient(clientId);
+
+    bool activityExists = false;
+
+    for (const auto &ac : Activities) {
+        if (activityId == ac->getId()){
+            try {
+                client->addActivity(ac);
+            }
+
+            catch (clientAlreadHasActivity &e) {
+                throw e;
+            }
+        }
+    }
+
+/*    if(!activityExists)
+        throw activityNonExistant(activityId);*/
+}
+
+void School::viewActivities() {
+
+}
+
+ostream &operator<<(ostream &out, const School& S) {
+    out << "Name: " << S.name << endl
+        << "Current date: " << S.currentTime << endl
+        << "Number of enrolled clients: " << S.Clients.size() << endl
+        << "Number of planned activities: " << S.Activities.size() << endl;
+
+    return out;
+}
+
+void School::viewClients(bool detailed) {
+    if (detailed)
+        for (auto & Client : Clients)
+            cout << *Client << endl;
+
+    else
+        for (auto & Client : Clients)
+            cout << Client->getName() << " - " << Client->getId() << endl;
+}
+
+//Exceptions
 
 std::ostream &operator<<(std::ostream &out, const NonExistantClient &client) {
     out << "Client with ID " << client.id << " does not exist in school." << endl;

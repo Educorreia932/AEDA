@@ -1,32 +1,45 @@
 Eduardo da Costa Correia
 1     
 true
+1 2 3 4
 ::::::::::
 Ana Ines Oliveira Barros
 2
 false
+7
 ::::::::::
 Rodrigo Campos Reis
 3
 true
+3 5 7
 ::::::::::
 Joao Alexandre Lobo Cardoso
 4
 false
+7
 ::::::::::
 Henrique Melo Ribeiro
 5
 false
+1 2
 ::::::::::
 Davide Castro
 6
 false
+1 2
 ::::::::::
 Ricardo Fontao
 7
 false
+3 4
 ::::::::::
 Tiago Duarte Silva
 8
 true
+4 5
+::::::::::
+Ivo Saavedra
+9
+true
+5
 ---END---

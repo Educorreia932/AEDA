@@ -1,5 +1,4 @@
 #include "../Headers/Menu.h"
-#include "../Headers/Schedule.h"
 
 using namespace std;
 
@@ -9,17 +8,12 @@ int main() {
     int selected;
 
     while (true) {
-        if(selected = SUPMenu.showMainMenu())
+        if((selected = Menu::showMainMenu()))
             SUPMenu.mainMenuSelection(selected);
 
         else
             break;
     }
-
-/*    Schedule test;
-    Time t(23, 5, 2015);
-    test.view(t, 30);
-    Menu::pause();*/
 
     return 0;
 }

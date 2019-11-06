@@ -17,7 +17,7 @@ class Teacher : public Staff {
     public:
         Teacher();
     private:
-        vector<Lesson *> Lessons;
+        vector<Activity *> Activities;
 };
 
 class Employees : public Staff {

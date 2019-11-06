@@ -14,7 +14,9 @@ int readOption(int min, int max) {
         else {
             cin.clear();
             cin.ignore(1000, '\n');
-            cerr << "Invalid input. Please try again:\n"; //Throw exception
+            cerr << endl
+                 << "Invalid input. Please try again:" << endl
+                 << endl;
         }
     }
 }

@@ -1,7 +1,5 @@
 #include "../Headers/Menu.h"
 
-extern int selection;
-
 Menu::Menu(School SUPSchool) {
     this->SUPSchool = SUPSchool;
 }
@@ -14,58 +12,168 @@ int Menu::showMainMenu() {
          << "1) Rent material." << endl
          << "2) Manage clients." << endl
          << "3) Manage teachers." << endl
-         << "4) Manage activities" << endl
-         << "5) Consult schedules." << endl
-         << "6) Consult school's information." << endl
+         << "4) Manage activities." << endl
+         << "5) Consult clients." << endl
+         << "6) Consult teachers." << endl
+         << "7) Manage activities." << endl
+         << "8) Consult schedules." << endl
+         << "9) Consult school's information." << endl
          << "0) Exit" << endl //And save to files
          << endl;
 
-    return readOption(0, 6);
+    return readOption(0, 9);
 }
 
 void Menu::mainMenuSelection(int selected) {
+    clearScreen();
+
     switch (selected) {
-        case 1:
-            //Call function
+        case 2: // Manage clients
+            manageClientsSelection(showManageClients());
             return;
-        case 2:
-            manageClientsMenu();
+        case 3: // Manage teachers
+            manageTeachersSelection(showManageClients());
             return;
-        case 5:
+        case 5: // Consult clients
+            SUPSchool.viewClients();
+            pause();
             return;
-        case 6:
-            cout << SUPSchool.currentTime << endl;
-            system("pause"); //Implement in function
+        case 8: // Consult schedules
+            consultScheduleSelection(showConsultSchedule());
+            return;
+        case 9: // Consult school's information
+            cout << SUPSchool<< endl;
+            pause();
             return;
         case 0:
             return;
         default:
-            //Error not valid
+            cout << "NOT IMPLEMENTED YET" << endl;
+            pause();
             return;
     }
 }
 
-void Menu::manageClientsMenu() {
+// Client --------------------
+
+int Menu::showManageClients() {
     clearScreen();
 
     cout << "What do you want to do? Insert the corresponding key." << endl
          << endl
-         << "1) Enrole a client in an activity." << endl
-         << "0) Go back" << endl;
+         << "1) Create a new client." << endl
+         << "2) Change the information of a client." << endl //<- perhaps ask for admin permission/password
+         << "3) Remove an existent client." << endl //<- Remove all information associated with him
+         << "4) Enrole a client in an activity." << endl //<- and remove him from a planned activity
+         << "0) Go back" << endl
+         << endl;
 
-    switch(readOption(0, 1)) {
-        case 1:
-            int client;
-            cout << "Which client?" << endl;
-            cout << SUPSchool.Clients[0]->getName();
+    return readOption(0, 4);
+}
+
+void Menu::manageClientsSelection(int selected) {
+    int selected_client, selected_activity;
+
+    clearScreen();
+
+    switch (selected) {
+        case 2:
+            cout << "Which client do you wish to change the information of? Insert the corresponding key." << endl
+                 << endl;
+
+            SUPSchool.viewClients(false);
+
+            cout << endl;
+
+            selected_client = readOption(0, SUPSchool.Clients[0]->getLastID());
+
+            pause();
+            return;
+        case 4:
+            cout << "Insert the client ID: " << endl; //Make function to display the clients
+            selected_client = readOption(0, SUPSchool.Clients[0]->getLastID());
+
+            cout << "Insert the activity ID: " << endl;
+            selected_activity = readOption(0, SUPSchool.Activities.size());
 
             try {
-                SUPSchool.Clients[0]->enroll(1, SUPSchool.Activities);
+                SUPSchool.enroll(selected_client, selected_activity);
             }
 
-            catch (exception &e) {
-                cerr << e.what();
+            catch (clientAlreadHasActivity &e) {
+                cerr << e;
             }
+
+            catch (NonExistantClient &e) {
+                cerr << e;
+            }
+
+            pause();
+            return;
+        case 0:
+            return;
+        default:
+            cout << "NOT IMPLEMENTED YET" << endl;
+    }
+}
+
+// Teacher --------------------
+
+int Menu::showManageTeachers() {
+    clearScreen();
+
+    cout << "What do you want to do? Insert the corresponding key." << endl
+         << endl
+         << "1) Create a new teacher." << endl
+         << "2) Change the information of a teacher." << endl //<- perhaps ask for admin permission/password
+         << "3) Remove an existent teacher." << endl //<- Remove all information associated with him
+         << "4) Designate a lesson to a teacher." << endl
+         << "0) Go back" << endl
+         << endl;
+
+    return readOption(0, 4);
+}
+
+void Menu::manageTeachersSelection(int selected) {
+    clearScreen();
+
+    switch (selected) {
+
+    }
+}
+
+// Schedule --------------------
+
+int Menu::showConsultSchedule() {
+    clearScreen();
+
+    cout << "What do you want to do? Insert the corresponding key." << endl
+         << endl
+         << "1) View a client's schedule." << endl
+         << "2) View a teacher's schedule." << endl
+         // << "3) View school's schedule." << endl
+         << "0) Go back." << endl
+         << endl;
+
+    return readOption(0, 2);
+}
+
+void Menu::consultScheduleSelection(int selected) {
+    //test -v
+    int selected_client;
+    Schedule* s = new Schedule();
+
+    switch (selected) {
+        case 1:
+            clearScreen();
+
+            cout << "Which client do you wish to see its schedule? Insert the corresponding key." << endl
+                 << endl;
+
+            selected_client = readOption(0, SUPSchool.Clients[0]->getLastID());
+
+            s = new Schedule(SUPSchool.Clients[selected_client]->getScheduledActivities());
+            s->view(Time(18, 10, 2019), 30);
 
             pause();
             return;
@@ -73,6 +181,8 @@ void Menu::manageClientsMenu() {
             return;
     }
 }
+
+// Utils --------------------
 
 void Menu::clearScreen() {
     #ifdef __unix__
@@ -90,4 +200,3 @@ void Menu::pause() {
     cout << "Press any key to continue ...";
     cin.get();
 }
-
