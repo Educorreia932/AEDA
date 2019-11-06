@@ -76,7 +76,7 @@ void Menu::manageClientsSelection(int selected) {
 
     clearScreen();
 
-    switch(selected) {
+    switch (selected) {
         case 2:
             cout << "Which client do you wish to change the information of? Insert the corresponding key." << endl
                  << endl;
@@ -86,6 +86,7 @@ void Menu::manageClientsSelection(int selected) {
             cout << endl;
 
             selected_client = readOption(0, SUPSchool.Clients[0]->getLastID());
+
             pause();
             return;
         case 4:
@@ -134,7 +135,11 @@ int Menu::showManageTeachers() {
 }
 
 void Menu::manageTeachersSelection(int selected) {
+    clearScreen();
 
+    switch (selected) {
+
+    }
 }
 
 // Schedule --------------------

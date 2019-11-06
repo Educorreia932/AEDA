@@ -99,6 +99,10 @@ void Client::addActivity(Activity* activity) {
     ScheduledActivities.push_back(activity);
 }
 
+void Client::setLastID(const unsigned int id) {
+    last_id = id;
+}
+
 ostream &operator<<(ostream &out, const alreadyGoldMember &member) {
     out << "Client with ID \"" << member.id << "\" already has a gold card." << endl;
     return out;

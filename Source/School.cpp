@@ -91,20 +91,29 @@ void School::readClients() {
     ifstream File("../Data/" + Files["Clients"]);
     int counter = 0;
     auto* auxClient = new Client();
+    ostringstream planned_activities;
 
     if (File.is_open()) {
         while (getline(File, line)) {
-                switch (counter % 4) {
+                switch (counter % 5) {
                     case 0:
                         auxClient->setName(line);
                         break;
                     case 1:
                         auxClient->setID((stoi(line)));
+
+                        if (stoi(line) > Client::getLastID())
+                            Client::setLastID(stoi(line));
+
                         break;
                     case 2:
                         auxClient->setGoldMember(stob(line));
                         break;
                     case 3:
+                        planned_activities << line;
+
+                        break;
+                    case 4:
                         Clients.push_back(auxClient);
                         auxClient = new Client();
                         break;
@@ -126,20 +135,22 @@ void School::readActivities() {
 
     if (File.is_open()) {
         while (getline(File, line)) {
-            switch (counter % 5) {
+            switch (counter % 6) {
                 case 0:
                     auxActivity->setID(stoi(line));
                     break;
                 case 1:
-                    auxActivity->setName(line);
                     break;
                 case 2:
-                    auxActivity->setStartTime(line);
+                    auxActivity->setName(line);
                     break;
                 case 3:
-                    auxActivity->setEndTime(line);
+                    auxActivity->setStartTime(line);
                     break;
                 case 4:
+                    auxActivity->setEndTime(line);
+                    break;
+                case 5:
                     Activities.push_back(auxActivity);
                     auxActivity = new Activity();
                     break;

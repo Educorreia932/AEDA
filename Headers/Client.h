@@ -22,6 +22,7 @@ class Client {
 
         //Setters
         void setName(const string newName);
+        static void setLastID(const unsigned int id);
         void setID(const unsigned int id);
         void setGoldMember(const bool gold_member);
         //test -v
@@ -31,7 +32,6 @@ class Client {
         void addActivity(Activity* activity);
         void purchaseGold();
         bool isGoldMember() const;
-        void enroll(const unsigned int activityId,const vector<Activity*> schoolActivities);
 
         friend ostream& operator<<(ostream& out, const Client& C);
     private:
