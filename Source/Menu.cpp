@@ -133,6 +133,10 @@ int Menu::showManageTeachers() {
     return readOption(0, 4);
 }
 
+void Menu::manageTeachersSelection(int selected) {
+
+}
+
 // Schedule --------------------
 
 int Menu::showConsultSchedule() {
@@ -157,7 +161,7 @@ void Menu::consultScheduleSelection(int selected) {
     switch (selected) {
         case 1:
             clearScreen();
-            
+
             cout << "Which client do you wish to see its schedule? Insert the corresponding key." << endl
                  << endl;
 
@@ -191,8 +195,3 @@ void Menu::pause() {
     cout << "Press any key to continue ...";
     cin.get();
 }
-
-void Menu::manageTeachersSelection(int selected) {
-
-}
-
