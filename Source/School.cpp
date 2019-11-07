@@ -234,10 +234,18 @@ void School::viewActivities(){
     cout << "---------------------" << endl;
     for (unsigned int i = 0; i < Activities.size(); i++){
 
-        cout << "Name: " << Activities[i]->getName() << endl;
-        cout << "ID: " << Activities[i]->getId() << endl;
-        cout << "Start Time: " << Activities[i]->getStartTime() << endl;
-        cout << "End Time: " << Activities[i]->getEndTime() << endl;
+        cout << Activities.at(i);
+        cout << "---------------------" << endl;
+    }
+}
+
+void School::viewStaff() {
+
+    cout << "All Staff:\n";
+    cout << "---------------------" << endl;
+    for (unsigned int i = 0; i < staff.size(); i++){
+
+        cout << staff.at(i);
         cout << "---------------------" << endl;
     }
 }

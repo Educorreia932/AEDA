@@ -35,6 +35,7 @@ class School {
         void viewClients(bool detailed = true);
         void viewActivities();
         void viewMaterial();
+        void viewStaff();
 
         friend ostream& operator<<(ostream& out, const School& S);
     private:

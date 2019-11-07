@@ -50,6 +50,14 @@ unsigned int Activity::CalcCost() const {
     return 0;
 }
 
+ostream &operator<<(ostream &out, const Activity &A) {
+    cout << "Name: " << A.name << endl;
+    cout << "ID: " << A.id << endl;
+    cout << "Start Time: " << A.startTime << endl;
+    cout << "End Time: " << A.endTime << endl;
+    return out;
+}
+
 unsigned int Lesson::CalcCost() const {
     return 0;
 }
