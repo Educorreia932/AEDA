@@ -1,13 +1,14 @@
 #include "../Headers/Staff.h"
 
+unsigned int Staff::last_id = 0;
+
 Staff::Staff() {
-    this->id = Staff::id++;
 }
 
 Staff::Staff(string name){
-    this->id = Staff::id++;
+    this->id = last_id+1;
     this->name = name;
-
+    last_id++;
 }
 
 Teacher::Teacher() : Staff() {

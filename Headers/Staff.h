@@ -12,7 +12,8 @@ class Staff {
 
     protected:
         string name;
-        static unsigned int id;
+        unsigned int id;
+        static unsigned int last_id;
 };
 
 class Teacher : public Staff {

@@ -9,7 +9,8 @@ Client::Client() {
 }
 
 Client::Client(string name, bool gold_member) {
-    this->id = Client::id++;
+    this->id = Client::last_id+1;
+    last_id++;
     this->name = name;
     this->gold_member = gold_member;
 }
