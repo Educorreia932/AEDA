@@ -38,6 +38,10 @@ void Menu::mainMenuSelection(int selected) {
             SUPSchool.viewClients();
             pause();
             return;
+        case 6:
+            SUPSchool.viewStaff();
+            pause();
+            return;
         case 8: // Consult schedules
             consultScheduleSelection(showConsultSchedule());
             return;
