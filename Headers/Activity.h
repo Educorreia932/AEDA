@@ -4,7 +4,7 @@
 #include "Time.h"
 
 class Activity {
-    private:
+    protected:
         string name;
         unsigned int id;
         static unsigned int last_id;
@@ -28,6 +28,8 @@ class Activity {
         void setEndTime(string time);
 
         virtual unsigned int CalcCost() const;
+
+        friend ostream& operator<<(ostream& out, const Activity& A);
 };
 
 class Ride : public Activity {

@@ -8,16 +8,24 @@
 class Staff {
     public:
         Staff();
-    private:
+        Staff(string name);
+
+    protected:
         string name;
-        static unsigned int id;
+        unsigned int id;
+        static unsigned int last_id;
 };
 
 class Teacher : public Staff {
     public:
         Teacher();
+        Teacher(string name);
+
+        friend ostream& operator<<(ostream& out, const Teacher& C);
     private:
         vector<Activity *> Activities;
+
+
 };
 
 class Employees : public Staff {

@@ -196,9 +196,7 @@ void School::enroll(const unsigned int clientId, const unsigned int activityId) 
         throw activityNonExistant(activityId);*/
 }
 
-void School::viewActivities() {
 
-}
 
 ostream &operator<<(ostream &out, const School& S) {
     out << "Name: " << S.name << endl
@@ -229,5 +227,26 @@ std::ostream &operator<<(std::ostream &out, const NonExistantClient &client) {
 std::ostream &operator<<(std::ostream &out, const ClientAlreadyExists &client) {
     out << "Client with ID " << client.id << " already exists in school." << endl;
     return out;
+}
+
+void School::viewActivities(){
+    cout << "All activities:\n";
+    cout << "---------------------" << endl;
+    for (unsigned int i = 0; i < Activities.size(); i++){
+
+        cout << Activities.at(i);
+        cout << "---------------------" << endl;
+    }
+}
+
+void School::viewStaff() {
+
+    cout << "All Staff:\n";
+    cout << "---------------------" << endl;
+    for (unsigned int i = 0; i < staff.size(); i++){
+
+        cout << staff.at(i);
+        cout << "---------------------" << endl;
+    }
 }
 

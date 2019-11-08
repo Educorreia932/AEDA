@@ -15,7 +15,7 @@ int Menu::showMainMenu() {
          << "4) Manage activities." << endl
          << "5) Consult clients." << endl
          << "6) Consult teachers." << endl
-         << "7) Manage activities." << endl
+         << "7) Consult activities." << endl
          << "8) Consult schedules." << endl
          << "9) Consult school's information." << endl
          << "0) Exit" << endl //And save to files
@@ -36,6 +36,14 @@ void Menu::mainMenuSelection(int selected) {
             return;
         case 5: // Consult clients
             SUPSchool.viewClients();
+            pause();
+            return;
+        case 6:
+            SUPSchool.viewStaff();
+            pause();
+            return;
+        case 7: // Consult activities
+            SUPSchool.viewActivities();
             pause();
             return;
         case 8: // Consult schedules
