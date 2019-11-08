@@ -232,9 +232,9 @@ std::ostream &operator<<(std::ostream &out, const ClientAlreadyExists &client) {
 void School::viewActivities(){
     cout << "All activities:\n";
     cout << "---------------------" << endl;
-    for (unsigned int i = 0; i < Activities.size(); i++){
+    for (const auto & Activity : Activities){
 
-        cout << Activities.at(i);
+        cout << *Activity;
         cout << "---------------------" << endl;
     }
 }
