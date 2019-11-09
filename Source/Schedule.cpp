@@ -30,10 +30,10 @@ void Schedule::view(Time Date, int width) {
 
         else if (i < 19) {
             stringstream t1("");
-            Time t2("18/10/2019 " + Times[i]);
+            Time t2("18/10/2019 " + Times[i - 1]);
 
             if (Activities.count(t2))
-                t1 << Activities[t2]->getName() << ' ' << Activities[t2]->getId();
+                t1 << Activities[t2]->getName();
 
             cout << setw(8) << Chars.leftRightSimple << centerString(width, t1.str()) << Chars.leftRightSimple << endl
                  << setw(7) << Times[i]  <<Chars.leftSeparation << string(width, Chars.topDownSimple) << Chars.rightSeparation << endl;

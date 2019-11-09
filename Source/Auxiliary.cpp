@@ -1,6 +1,6 @@
 #include "../Headers/Auxiliary.h"
 
-int readOption(int min, int max) {
+int readOption(int min, unsigned int max) {
     int option;
 
     while (true) {

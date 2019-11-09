@@ -1,4 +1,5 @@
 #include "../Headers/School.h"
+#include "../Headers/Menu.h"
 
 School::School() {
 
@@ -86,46 +87,6 @@ vector<Staff *> School::getStaff() const{
     return this->staff;
 }
 
-void School::readClients() {
-    string line;
-    ifstream File("../Data/" + Files["Clients"]);
-    int counter = 0;
-    auto* auxClient = new Client();
-    ostringstream planned_activities;
-
-    if (File.is_open()) {
-        while (getline(File, line)) {
-                switch (counter % 5) {
-                    case 0:
-                        auxClient->setName(line);
-                        break;
-                    case 1:
-                        auxClient->setID((stoi(line)));
-
-                        if (stoi(line) > Client::getLastID())
-                            Client::setLastID(stoi(line));
-
-                        break;
-                    case 2:
-                        auxClient->setGoldMember(stob(line));
-                        break;
-                    case 3:
-                        planned_activities << line;
-
-                        break;
-                    case 4:
-                        Clients.push_back(auxClient);
-                        auxClient = new Client();
-                        break;
-            }
-
-            counter++;
-        }
-
-        File.close();
-    }
-}
-
 void School::readActivities() {
     string line;
     ifstream File("../Data/" + Files["Activities"]);
@@ -161,6 +122,68 @@ void School::readActivities() {
     }
 }
 
+void School::readClients() {
+    string line;
+    ifstream File("../Data/" + Files["Clients"]);
+    int counter = 0, activity_id;
+    auto* auxClient = new Client();
+    stringstream planned_activities;
+
+    if (File.is_open()) {
+        while (getline(File, line)) {
+                switch (counter % 5) {
+                    case 0:
+                        auxClient->setName(line);
+                        break;
+                    case 1:
+                        auxClient->setID((stoi(line)));
+
+                        if (stoi(line) > Client::getLastID())
+                            Client::setLastID(stoi(line));
+
+                        break;
+                    case 2:
+                        auxClient->setGoldMember(stob(line));
+                        break;
+                    case 3:
+                        planned_activities << line;
+                        break;
+                    case 4:
+                        Clients.push_back(auxClient);
+
+                        while (planned_activities >> activity_id) {
+                            try {
+                                enroll(auxClient->getId(), activity_id);
+                            }
+
+                            catch (activityNonExistant &e) {
+                                cout << e;
+                                Menu::pause();
+                            }
+
+                            catch (hasActivityAtSameTime &e) {
+                                cout << e;
+                                Menu::pause();
+                            }
+
+                            catch (clientAlreadHasActivity &e) {
+                                cout << e;
+                                Menu::pause();
+                            }
+                        }
+
+                        planned_activities.clear();
+                        auxClient = new Client();
+                        break;
+            }
+
+            counter++;
+        }
+
+        File.close();
+    }
+}
+
 void School::enroll(const unsigned int clientId, const unsigned int activityId) {
     //Time needs to be checked if is ahead of the set current time
 
@@ -184,6 +207,7 @@ void School::enroll(const unsigned int clientId, const unsigned int activityId) 
         if (activityId == ac->getId()){
             try {
                 client->addActivity(ac);
+                activityExists = true;
             }
 
             catch (clientAlreadHasActivity &e) {
@@ -192,11 +216,9 @@ void School::enroll(const unsigned int clientId, const unsigned int activityId) 
         }
     }
 
-/*    if(!activityExists)
-        throw activityNonExistant(activityId);*/
+    if(!activityExists)
+        throw activityNonExistant(activityId);
 }
-
-
 
 ostream &operator<<(ostream &out, const School& S) {
     out << "Name: " << S.name << endl
@@ -210,7 +232,8 @@ ostream &operator<<(ostream &out, const School& S) {
 void School::viewClients(bool detailed) {
     if (detailed)
         for (auto & Client : Clients)
-            cout << *Client << endl;
+            cout << *Client << endl
+                 << "---------------------" << endl;
 
     else
         for (auto & Client : Clients)
@@ -232,20 +255,19 @@ std::ostream &operator<<(std::ostream &out, const ClientAlreadyExists &client) {
 void School::viewActivities(){
     cout << "All activities:\n";
     cout << "---------------------" << endl;
-    for (const auto & Activity : Activities){
 
+    for (const auto & Activity : Activities) {
         cout << *Activity;
         cout << "---------------------" << endl;
     }
 }
 
 void School::viewStaff() {
-
     cout << "All Staff:\n";
     cout << "---------------------" << endl;
-    for (unsigned int i = 0; i < staff.size(); i++){
 
-        cout << staff.at(i);
+    for (const auto & i : staff) {
+        cout << i;
         cout << "---------------------" << endl;
     }
 }

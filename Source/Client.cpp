@@ -53,7 +53,7 @@ void Client::setID(const unsigned int id) {
     this->id = id;
 }
 
-bool Client::isOcuppied(const Time startTime,const Time endTime) {
+bool Client::isOcuppied(const Time startTime, const Time endTime) {
     for (const auto &ac : this->ScheduledActivities) {
         if(ac->getStartTime() == startTime)
             return true;
@@ -61,10 +61,10 @@ bool Client::isOcuppied(const Time startTime,const Time endTime) {
         if(ac->getEndTime() == endTime)
             return true;
 
-        if(ac->getStartTime() > startTime && ac->getStartTime() < endTime)
+        if(ac->getStartTime() < startTime && startTime < ac->getEndTime())
             return true;
 
-        if(ac->getEndTime() > startTime && ac->getEndTime() < endTime)
+        if(endTime > ac->getStartTime() && endTime < ac->getEndTime())
             return true;
     }
 
@@ -76,7 +76,11 @@ ostream &operator<<(ostream &out, const Client &C) {
         out << "$ Gold Member $" << endl;
 
     out << "Name: " << C.name << endl
-        << "ID: " << C.id << endl;
+        << "ID: " << C.id << endl
+        << "Scheduled activities: ";
+
+    for (auto a : C.getScheduledActivities())
+        out << a->getId() << " ";
 
     return out;
 }

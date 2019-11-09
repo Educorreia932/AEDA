@@ -199,11 +199,26 @@ int Time::dayOfweek() const {
 }
 
 bool operator >(Time const t1, Time const t2) { //Include year/day/month
-    return t1.getDay() > t2.getDay() || 60 * t1.getHours() + t1.getMinutes() > 60 * t2.getHours() + t2.getMinutes();
+    return !(t1 < t2) && !(t1 == t2);
 }
 
 bool operator <(Time const t1, Time const t2) {
-    return t1.getDay() < t2.getDay() || 60 * t1.getHours() + t1.getMinutes() < 60 * t2.getHours() + t2.getMinutes();
+    if (t1.getYear() < t2.getYear())
+        return true;
+
+    else if (t1.getYear() == t2.getYear() && t1.getMonth() < t2.getMonth())
+        return true;
+
+    else if (t1.getYear() == t2.getYear() && t1.getMonth() == t2.getMonth() && t1.getDay() < t2.getDay())
+        return true;
+
+    else if (t1.getYear() == t2.getYear() && t1.getMonth() == t2.getMonth() && t1.getDay() == t2.getDay() && t1.getHours() < t2.getHours())
+        return true;
+
+    else if (t1.getYear() == t2.getYear() && t1.getMonth() == t2.getMonth() && t1.getDay() == t2.getDay() && t1.getHours() == t2.getHours() && t1.getMinutes() < t2.getMinutes())
+        return true;
+
+    return false;
 }
 
 bool operator ==(Time const t1, Time const t2) {
@@ -211,15 +226,15 @@ bool operator ==(Time const t1, Time const t2) {
             t1.getHours() == t2.getHours() &&
             t1.getMinutes() == t2.getMinutes() &&
             t1.getMonth() == t2.getMonth() &&
-            t1.getYear() == t2.getYear() &&
-            t1.getWeekday() == t2.getWeekday());
+            t1.getYear() == t2.getYear());
 }
 
 ostream &operator<<(ostream &out, Time t) {
-    out << setw(2) << setfill('0') << t.getDay() << '/' // Day
-        << setw(2) << setfill('0') << t.getMonth() <<  '/' // Month
-        << t.getYear() //Year
-        << ' ' << t.getHours() << ':' << t.getMinutes(); // Hours and Minutes
+    out << setfill('0') << setw(2) << t.getDay() << '/' // Day
+        << setfill('0') << setw(2) << t.getMonth() <<  '/' // Month
+        << t.getYear() // Year
+        << ' ' << setfill('0') << setw(2) << t.getHours()
+        << ':' << setfill('0') << setw(2) << t.getMinutes(); // Hours and Minutes
 
     return out;
 }
