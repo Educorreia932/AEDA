@@ -48,23 +48,20 @@ School::School(const string& filename) {
 void School::removeClient(unsigned int id) {
     bool exists = false;
 
-    for(size_t i = 0; i < Clients.size() ; i++){
-        if (Clients.at(i)->getId() == id){
+    for(size_t i = 0; i < Clients.size() ; i++)
+        if (Clients.at(i)->getId() == id) {
             Clients.erase(Clients.begin()+i);
             exists = true;
             break;
         }
-    }
 
-    if (!exists){
+    if (!exists)
         throw NonExistantClient(id);
-    }
 }
 
 void School::addClient(Client* client) {
-    if(clientIndex(client->getId()) != -1){
+    if (clientIndex(client->getId()) != -1)
         throw ClientAlreadyExists(client->getId());
-    }
 
     Clients.push_back(client);
 }
@@ -125,9 +122,9 @@ void School::readActivities() {
 void School::readClients() {
     string line;
     ifstream File("../Data/" + Files["Clients"]);
-    int counter = 0, activity_id;
+    int counter = 0;
     auto* auxClient = new Client();
-    stringstream planned_activities;
+    auto* planned_activities = new stringstream;
 
     if (File.is_open()) {
         while (getline(File, line)) {
@@ -146,33 +143,14 @@ void School::readClients() {
                         auxClient->setGoldMember(stob(line));
                         break;
                     case 3:
-                        planned_activities << line;
+                        *planned_activities << line;
                         break;
                     case 4:
                         Clients.push_back(auxClient);
 
-                        while (planned_activities >> activity_id) {
-                            try {
-                                enroll(auxClient->getId(), activity_id);
-                            }
+                        readClientsActivities(planned_activities, auxClient);
 
-                            catch (activityNonExistant &e) {
-                                cout << e;
-                                Menu::pause();
-                            }
-
-                            catch (hasActivityAtSameTime &e) {
-                                cout << e;
-                                Menu::pause();
-                            }
-
-                            catch (clientAlreadHasActivity &e) {
-                                cout << e;
-                                Menu::pause();
-                            }
-                        }
-
-                        planned_activities.clear();
+                        planned_activities->clear();
                         auxClient = new Client();
                         break;
             }
@@ -218,6 +196,32 @@ void School::enroll(const unsigned int clientId, const unsigned int activityId) 
 
     if(!activityExists)
         throw activityNonExistant(activityId);
+}
+
+void School::readClientsActivities(stringstream* planned_activities, Client* c) {
+    int activity_id;
+
+    while (*planned_activities >> activity_id) {
+        try {
+            enroll(c->getId(), activity_id);
+        }
+
+        catch (activityNonExistant &e) {
+            cout << e;
+            Menu::pause();
+        }
+
+        catch (hasActivityAtSameTime &e) {
+            cout << e;
+            Menu::pause();
+        }
+
+        catch (clientAlreadHasActivity &e) {
+            cout << e;
+            Menu::pause();
+        }
+    }
+
 }
 
 ostream &operator<<(ostream &out, const School& S) {
