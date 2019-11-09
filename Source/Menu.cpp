@@ -85,6 +85,9 @@ void Menu::manageClientsSelection(int selected) {
     clearScreen();
 
     switch (selected) {
+        case 1:
+            createClient();
+            return;
         case 2:
             cout << "Which client do you wish to change the information of? Insert the corresponding key." << endl
                  << endl;
@@ -93,16 +96,16 @@ void Menu::manageClientsSelection(int selected) {
 
             cout << endl;
 
-            selected_client = readOption(0, SUPSchool.Clients[0]->getLastID());
+            selected_client = readOption(0, SUPSchool.Clients[0]->getLastID() - 1);
 
             pause();
             return;
         case 4:
             cout << "Insert the client ID: " << endl; //Make function to display the clients
-            selected_client = readOption(0, SUPSchool.Clients[0]->getLastID());
+            selected_client = readOption(0, SUPSchool.Clients[0]->getLastID() - 1);
 
             cout << "Insert the activity ID: " << endl;
-            selected_activity = readOption(0, SUPSchool.Activities.size());
+            selected_activity = readOption(0, SUPSchool.Activities.size() - 1);
 
             try {
                 SUPSchool.enroll(selected_client, selected_activity);
@@ -123,6 +126,42 @@ void Menu::manageClientsSelection(int selected) {
         default:
             cout << "NOT IMPLEMENTED YET" << endl;
     }
+}
+
+void Menu::createClient() {
+    auto *c = new Client();
+    string aux;
+    stringstream aux_stream;
+
+    cout << "What's the name of the new client? " << endl;
+    getline(cin, aux);
+    c->setName(aux);
+    cout << endl;
+
+    cout << "Is the new client a gold member (Y/N)? " << endl;
+    cin >> aux;
+    cout << endl;
+
+    c->setGoldMember(aux == "Y");
+
+    try {
+        SUPSchool.addClient(c);
+    }
+
+    catch (ClientAlreadyExists &e) {
+        cout << e;
+        pause();
+    }
+
+    cout << "Which are the scheduled activities of the new client (insert IDs separated by Space)? " << endl;
+    cin.ignore();
+    getline(cin, aux);
+    aux_stream << aux;
+
+    SUPSchool.readClientsActivities(&aux_stream, c);
+
+    cout << endl;
+    pause();
 }
 
 // Teacher --------------------
@@ -219,3 +258,5 @@ void Menu::pause() {
     cout << "Press any key to continue ...";
     cin.get();
 }
+
+

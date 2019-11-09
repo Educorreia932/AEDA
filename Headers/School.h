@@ -29,7 +29,7 @@ class School {
         void readClients();
         void readActivities();
         void enroll(const unsigned int clientId, const unsigned int activityId);
-
+        void readClientsActivities(stringstream* planned_activities, Client* c);
     private:
         // View Functions ← Display detailed information
         void viewClients(bool detailed = true);

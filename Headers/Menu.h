@@ -21,6 +21,7 @@ class Menu {
         // Client related        
         static int showManageClients();
         void manageClientsSelection(int selected);
+        void createClient();
         
         // Teacher related
         static int showManageTeachers();
