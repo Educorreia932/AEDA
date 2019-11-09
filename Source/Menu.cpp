@@ -169,18 +169,29 @@ int Menu::showConsultSchedule() {
 void Menu::consultScheduleSelection(int selected) {
     //test -v
     int selected_client;
-    Schedule* s = new Schedule();
+    int client_index;
+    Schedule* s;
 
     switch (selected) {
         case 1:
             clearScreen();
 
-            cout << "Which client do you wish to see its schedule? Insert the corresponding key." << endl
+            cout << "Which client's schedule do you wish to see? Insert the corresponding key." << endl
                  << endl;
 
-            selected_client = readOption(0, SUPSchool.Clients[0]->getLastID());
+            SUPSchool.viewClients(false);
 
-            s = new Schedule(SUPSchool.Clients[selected_client]->getScheduledActivities());
+            cout << endl;
+
+            selected_client = readOption(0, SUPSchool.Clients[0]->getLastID());
+            client_index = SUPSchool.clientIndex(selected_client);
+
+            clearScreen();
+
+            cout << "You're seeing the schedule of " << SUPSchool.Clients[client_index]->getName() << '.' << endl
+                 << endl;
+
+            s = new Schedule(SUPSchool.Clients[client_index]->getScheduledActivities());
             s->view(Time(18, 10, 2019), 30);
 
             pause();

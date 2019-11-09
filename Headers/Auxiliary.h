@@ -7,7 +7,7 @@
 
 using namespace std;
 
-int readOption(int min, int max);
+int readOption(int min, unsigned int max);
 bool stob(const string &s);
 string centerString(int width, const string& s);
 
