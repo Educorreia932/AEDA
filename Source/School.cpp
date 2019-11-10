@@ -28,6 +28,9 @@ School::School(const string& filename) {
                 case 4:
                     Files["Activities"] = line;
                     break;
+                case 5:
+                    Files["Staff"] = line;
+                    break;
                 default:
                     break;
             }
@@ -39,6 +42,7 @@ School::School(const string& filename) {
 
         readActivities();
         readClients();
+        readStaff();
     }
 
     else
@@ -80,7 +84,7 @@ vector<Activity *> School::getActivities() const {
     return this->Activities;
 }
 
-vector<Staff *> School::getStaff() const{
+vector<Teacher *> School::getStaff() const{
     return this->staff;
 }
 
@@ -162,6 +166,50 @@ void School::readClients() {
     }
 }
 
+
+void School::readStaff() {
+    string line;
+    ifstream File("../Data/" + Files["Staff"]);
+    int counter = 0;
+    auto* auxTeacher = new Teacher();
+    auto* planned_activities = new stringstream;
+
+    if (File.is_open()) {
+        while (getline(File, line)) {
+            switch (counter % 4) {
+                case 0:
+                    auxTeacher->setName(line);
+                    break;
+                case 1:
+                    auxTeacher->setID((stoi(line)));
+
+                    if (stoi(line) > Teacher::getLastID())
+                        Teacher::setLastID(stoi(line));
+
+                    break;
+                case 2:
+                    *planned_activities << line;
+                    break;
+                case 3:
+                    staff.push_back(auxTeacher);
+
+                    readStaffActivities(planned_activities, auxTeacher);
+
+                    planned_activities->clear();
+                    auxTeacher = new Teacher();
+                    break;
+            }
+
+            counter++;
+        }
+
+        File.close();
+    }
+
+
+}
+
+
 void School::enroll(const unsigned int clientId, const unsigned int activityId) {
     //Time needs to be checked if is ahead of the set current time
 
@@ -198,6 +246,42 @@ void School::enroll(const unsigned int clientId, const unsigned int activityId) 
         throw activityNonExistant(activityId);
 }
 
+void School::assign(const unsigned int teacherId, const unsigned int activityId) {
+    //Time needs to be checked if is ahead of the set current time
+
+    Teacher* teacher;
+    bool teacherExists = false;
+
+    for (const auto &t : this->staff) {
+        if(t->getID() == teacherId){
+            teacher = t;
+            teacherExists = true;
+            break;
+        }
+    }
+
+    if(!teacherExists)
+        throw NonExistantTeacher(teacherId);
+
+    bool activityExists = false;
+
+    for (const auto &ac : Activities) {
+        if (activityId == ac->getId()){
+            try {
+                teacher->addActivity(ac);
+                activityExists = true;
+            }
+
+            catch (teacherAlreadHasActivity &e) {
+                throw e;
+            }
+        }
+    }
+
+    if(!activityExists)
+        throw activityNonExistant(activityId);
+}
+
 void School::readClientsActivities(stringstream* planned_activities, Client* c) {
     int activity_id;
 
@@ -217,6 +301,31 @@ void School::readClientsActivities(stringstream* planned_activities, Client* c) 
         }
 
         catch (clientAlreadHasActivity &e) {
+            cout << e;
+            Menu::pause();
+        }
+    }
+
+}
+void School::readStaffActivities(stringstream* planned_activities, Teacher* t) {
+    int activity_id;
+
+    while (*planned_activities >> activity_id) {
+        try {
+            assign(t->getID(), activity_id);
+        }
+
+        catch (activityNonExistant &e) {
+            cout << e;
+            Menu::pause();
+        }
+
+        catch (teacherHasActivityAtSameTime &e) {
+            cout << e;
+            Menu::pause();
+        }
+
+        catch (teacherAlreadHasActivity &e) {
             cout << e;
             Menu::pause();
         }
@@ -256,6 +365,11 @@ std::ostream &operator<<(std::ostream &out, const ClientAlreadyExists &client) {
     return out;
 }
 
+std::ostream &operator<<(std::ostream &out, const NonExistantTeacher &teacher) {
+    out << "Teacher with ID " << teacher.id << " does not exist in school." << endl;
+    return out;
+}
+
 void School::viewActivities(){
     cout << "All activities:\n";
     cout << "---------------------" << endl;
@@ -271,7 +385,7 @@ void School::viewStaff() {
     cout << "---------------------" << endl;
 
     for (const auto & i : staff) {
-        cout << i;
+        cout << *i;
         cout << "---------------------" << endl;
     }
 }
