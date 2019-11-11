@@ -1,5 +1,5 @@
-#ifndef SUP_SCHOOL_STAFF_H
-#define SUP_SCHOOL_STAFF_H
+#ifndef SUP_SCHOOL_TEACHER_H
+#define SUP_SCHOOL_TEACHER_H
 
 #include "Activity.h"
 
@@ -49,4 +49,4 @@ public:
 std::ostream & operator <<(std::ostream &out,const teacherAlreadHasActivity &ids);
 
 
-#endif //SUP_SCHOOL_STAFF_H
+#endif //SUP_SCHOOL_TEACHER_H

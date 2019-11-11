@@ -5,11 +5,11 @@ using namespace std;
 unsigned int Client::last_id = 0;
 
 Client::Client() {
-    id = ++last_id;
+    id = last_id++;
 }
 
 Client::Client(string name, bool gold_member) {
-    this->id = ++Client::last_id;
+    this->id = Client::last_id++;
     this->name = name;
     this->gold_member = gold_member;
 }
@@ -19,13 +19,11 @@ bool Client::isGoldMember() const {
 }
 
 void Client::purchaseGold() {
-
-    if(this->gold_member){
+    if (this->gold_member)
         throw alreadyGoldMember (this->id);
-    } else {
-        gold_member = true;
-    }
 
+    else
+        gold_member = true;
 }
 
 string Client::getName() const {
@@ -105,6 +103,19 @@ void Client::addActivity(Activity* activity) {
 
 void Client::setLastID(const unsigned int id) {
     last_id = id;
+}
+
+bool Client::getGoldMember() const {
+    return gold_member;
+}
+
+string Client::getScheduledActivitiesID() const {
+    stringstream result;
+
+    for (auto a : ScheduledActivities)
+        result << a->getId() << " ";
+
+    return result.str();
 }
 
 ostream &operator<<(ostream &out, const alreadyGoldMember &member) {

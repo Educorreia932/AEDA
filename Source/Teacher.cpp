@@ -1,4 +1,4 @@
-#include "../Headers/Staff.h"
+#include "../Headers/Teacher.h"
 
 unsigned int Teacher::last_id = 0;
 

@@ -31,4 +31,11 @@ string centerString(int width, const string& s) {
     string result = string(pos, ' ') + s + string(width - pos - length, ' ');
 
     return result;
+}
+
+string btos(const bool &b) {
+    if (b)
+        return "true";
+
+    return "false";
 };

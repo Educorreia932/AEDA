@@ -3,7 +3,7 @@
 
 #include "Client.h"
 #include "Material.h"
-#include "Staff.h"
+#include "Teacher.h"
 #include "Time.h"
 
 #include <map>
@@ -31,10 +31,11 @@ class School {
         void readStaff();
         void enroll(const unsigned int clientId, const unsigned int activityId);
         void readClientsActivities(stringstream* planned_activities, Client* c);
-
-        void assign(const unsigned int teacherId, const unsigned int activityId);
         void readStaffActivities(stringstream* planned_activities, Teacher* t);
-private:
+        void assign(const unsigned int teacherId, const unsigned int activityId);
+        void saveClients();
+        void saveActivities();
+    private:
         // View Functions ← Display detailed information
         void viewClients(bool detailed = true);
         void viewActivities();

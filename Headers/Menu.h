@@ -7,7 +7,7 @@
 class Menu {
     public:
         //Constructors
-        Menu(School SUPSchool);
+        Menu(School* SUPSchool);
 
         static int showMainMenu();
         void mainMenuSelection(int selected);
@@ -16,7 +16,7 @@ class Menu {
         static void clearScreen();
         static void pause();
     private:
-        School SUPSchool;
+        School* SUPSchool;
 
         // Client related        
         static int showManageClients();

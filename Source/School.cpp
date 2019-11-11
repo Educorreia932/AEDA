@@ -166,7 +166,6 @@ void School::readClients() {
     }
 }
 
-
 void School::readStaff() {
     string line;
     ifstream File("../Data/" + Files["Staff"]);
@@ -208,7 +207,6 @@ void School::readStaff() {
 
 
 }
-
 
 void School::enroll(const unsigned int clientId, const unsigned int activityId) {
     //Time needs to be checked if is ahead of the set current time
@@ -388,5 +386,31 @@ void School::viewStaff() {
         cout << *i;
         cout << "---------------------" << endl;
     }
+}
+
+void School::saveClients() {
+    ofstream f;
+    int counter = 0;
+
+    f.open("../Data/" + Files["Clients"]);
+
+    if (f.is_open())
+        for (auto c : Clients) {
+            f << c->getName() << endl
+              << c->getId() << endl
+              << btos(c->getGoldMember()) << endl
+              << c->getScheduledActivitiesID() << endl;
+
+            if (counter == size(Clients) - 1)
+                f << "---END---";
+
+
+            else
+                f << "::::::::::" << endl;
+
+            counter++;
+        }
+
+    f.close();
 }
 
