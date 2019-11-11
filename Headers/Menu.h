@@ -15,6 +15,7 @@ class Menu {
         //Utils
         static void clearScreen();
         static void pause();
+
     private:
         School* SUPSchool;
 
@@ -26,6 +27,7 @@ class Menu {
         // Teacher related
         static int showManageTeachers();
         void manageTeachersSelection(int selected);
+        void createTeacher();
         
         // Schedule related
         static int showConsultSchedule();

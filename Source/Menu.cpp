@@ -182,10 +182,83 @@ int Menu::showManageTeachers() {
 void Menu::manageTeachersSelection(int selected) {
     clearScreen();
 
-    switch (selected) {
+    int selected_teacher, selected_activity;
 
+    switch (selected) {
+        case 1:
+            createTeacher();
+            return;
+        case 2:
+            cout << "Which teacher do you wish to change the information of? Insert the corresponding key." << endl
+                 << endl;
+
+            SUPSchool->viewTeachers(false);
+
+            cout << endl;
+
+            selected_teacher = readOption(0, SUPSchool->Teachers[0]->getLastID() - 1);
+
+            pause();
+            return;
+        case 4:
+            cout << "Insert the teacher ID: " << endl; //Make function to display the clients
+            selected_teacher = readOption(0, SUPSchool->Teachers[0]->getLastID() - 1);
+
+            cout << "Insert the activity ID: " << endl;
+            selected_activity = readOption(0, SUPSchool->Teachers.size() - 1);
+
+            try {
+                SUPSchool->assign(selected_teacher, selected_activity);
+            }
+
+            catch (teacherAlreadHasActivity &e) {
+                cerr << e;
+            }
+
+            catch (NonExistantTeacher &e) {
+                cerr << e;
+            }
+
+            pause();
+            return;
+        case 0:
+            return;
+        default:
+            cout << "NOT IMPLEMENTED YET" << endl;
     }
 }
+
+void Menu::createTeacher() {
+    auto *t = new Teacher();
+    string aux;
+    stringstream aux_stream;
+
+    cout << "What's the name of the new teacher? " << endl;
+    getline(cin, aux);
+    t->setName(aux);
+    cout << endl;
+
+
+    try {
+        SUPSchool->addTeacher(t);
+    }
+
+    catch (TeacherAlreadyExists &e) {
+        cout << e;
+        pause();
+    }
+
+    cout << "Which are the scheduled activities of the new teacher(insert IDs separated by Space)? " << endl;
+    cin.ignore();
+    getline(cin, aux);
+    aux_stream << aux;
+
+    SUPSchool->readTeachersActivities(&aux_stream, t);
+
+    cout << endl;
+    pause();
+}
+
 
 // Schedule --------------------
 

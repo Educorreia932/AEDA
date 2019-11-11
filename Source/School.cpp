@@ -352,6 +352,8 @@ void School::viewClients(bool detailed) {
             cout << Client->getName() << " - " << Client->getId() << endl;
 }
 
+
+
 //Exceptions
 
 std::ostream &operator<<(std::ostream &out, const NonExistantClient &client) {
@@ -369,6 +371,11 @@ std::ostream &operator<<(std::ostream &out, const NonExistantTeacher &teacher) {
     return out;
 }
 
+std::ostream &operator<<(std::ostream &out, const TeacherAlreadyExists &teacher) {
+    out << "Teacher with ID " << teacher.id << "already exists in school." << endl;
+    return out;
+}
+
 void School::viewActivities(){
     cout << "All activities:\n";
     cout << "---------------------" << endl;
@@ -379,14 +386,15 @@ void School::viewActivities(){
     }
 }
 
-void School::viewTeachers() {
-    cout << "All Teachers:\n";
-    cout << "---------------------" << endl;
+void School::viewTeachers(bool detailed) {
+    if (detailed)
+        for (auto & teacher : Teachers)
+            cout << *teacher
+                 << "---------------------" << endl;
 
-    for (const auto & i : Teachers) {
-        cout << *i;
-        cout << "---------------------" << endl;
-    }
+    else
+        for (auto & teacher : Teachers)
+            cout << teacher->getName() << " - " << teacher->getID() << endl;
 }
 
 void School::saveClients() {
@@ -415,3 +423,44 @@ void School::saveClients() {
     f.close();
 }
 
+void School::saveTeachers() {
+    ofstream f;
+    int counter = 0;
+
+    f.open("../Data/" + Files["Teachers"]);
+
+    if (f.is_open())
+        for (auto t : Teachers) {
+            f << t->getName() << endl
+              << t->getID() << endl
+              << t->getActivitiesID() << endl;
+
+            if (counter == size(Teachers) - 1)
+                f << "---END---";
+
+
+            else
+                f << "::::::::::" << endl;
+
+            counter++;
+        }
+
+    f.close();
+}
+
+void School::addTeacher(Teacher* teacher) {
+    if (teacherIndex(teacher->getID()) != -1)
+        throw TeacherAlreadyExists(teacher->getID());
+
+    Teachers.push_back(teacher);
+}
+
+int School::teacherIndex(unsigned int id) {
+    for (size_t i = 0; i < Teachers.size();i++){
+        if (Teachers.at(i)->getID() == id){
+            return i;
+        }
+    }
+
+    return -1;
+}

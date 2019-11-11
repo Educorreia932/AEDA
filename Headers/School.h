@@ -35,12 +35,17 @@ class School {
         void assign(const unsigned int teacherId, const unsigned int activityId);
         void saveClients();
         void saveActivities();
+        void saveTeachers();
+
+        void addTeacher(Teacher* teacher);
+        int teacherIndex(unsigned int id);
+
     private:
         // View Functions ← Display detailed information
         void viewClients(bool detailed = true);
         void viewActivities();
         void viewMaterial();
-        void viewTeachers();
+        void viewTeachers(bool detailed = true);
 
         friend ostream& operator<<(ostream& out, const School& S);
     private:
@@ -78,6 +83,16 @@ public:
     ClientAlreadyExists(unsigned int id){this->id = id;};
 };
 
-std::ostream & operator <<(std::ostream &out,const ClientAlreadyExists &client);
+std::ostream & operator <<(std::ostream &out, const ClientAlreadyExists &client);
+
+class TeacherAlreadyExists : std::exception {
+public:
+    unsigned int id;
+    TeacherAlreadyExists(unsigned int id){this->id = id;};
+};
+
+std::ostream & operator <<(std::ostream &out, const TeacherAlreadyExists &client);
+
+
 
 #endif //SUP_SCHOOL_SCHOOL_H

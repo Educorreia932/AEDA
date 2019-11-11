@@ -83,6 +83,19 @@ unsigned Teacher::getID() const {
     return id;
 }
 
+string Teacher::getName() const {
+    return name;
+}
+
+string Teacher::getActivitiesID() const {
+    stringstream result;
+
+    for (auto a : Activities)
+        result << a->getId() << " ";
+
+    return result.str();
+}
+
 
 ostream &operator<<(ostream &out, const teacherHasActivityAtSameTime &ids) {
     out << "Teacher with ID \"" << ids.teacherId << "\" already has an activity at the same time as activity with ID \"" << ids.activityId << "\"." << endl;
