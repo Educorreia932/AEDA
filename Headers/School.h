@@ -24,14 +24,14 @@ class School {
 
         //Getters
         vector<Activity*> getActivities() const;
-        vector<Teacher *> getStaff() const;   //Currently unused
+        vector<Teacher *> getTeachers() const;
         //Read-Functions
         void readClients();
         void readActivities();
-        void readStaff();
+        void readTeachers();
         void enroll(const unsigned int clientId, const unsigned int activityId);
         void readClientsActivities(stringstream* planned_activities, Client* c);
-        void readStaffActivities(stringstream* planned_activities, Teacher* t);
+        void readTeachersActivities(stringstream* planned_activities, Teacher* t);
         void assign(const unsigned int teacherId, const unsigned int activityId);
         void saveClients();
         void saveActivities();
@@ -40,7 +40,7 @@ class School {
         void viewClients(bool detailed = true);
         void viewActivities();
         void viewMaterial();
-        void viewStaff();
+        void viewTeachers();
 
         friend ostream& operator<<(ostream& out, const School& S);
     private:
@@ -50,7 +50,7 @@ class School {
         map<string, string> Files;
         vector<Client*> Clients;
         vector<Material*> Materials;
-        vector<Teacher*> staff;
+        vector<Teacher*> Teachers;
         vector<Activity*> Activities;
 };
 

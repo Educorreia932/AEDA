@@ -39,7 +39,7 @@ void Menu::mainMenuSelection(int selected) {
             pause();
             return;
         case 6: // Consult teachers
-            SUPSchool->viewStaff();
+            SUPSchool->viewTeachers();
             pause();
             return;
         case 7: // Consult activities

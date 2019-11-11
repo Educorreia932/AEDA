@@ -29,7 +29,7 @@ School::School(const string& filename) {
                     Files["Activities"] = line;
                     break;
                 case 5:
-                    Files["Staff"] = line;
+                    Files["Teachers"] = line;
                     break;
                 default:
                     break;
@@ -42,7 +42,7 @@ School::School(const string& filename) {
 
         readActivities();
         readClients();
-        readStaff();
+        readTeachers();
     }
 
     else
@@ -84,8 +84,8 @@ vector<Activity *> School::getActivities() const {
     return this->Activities;
 }
 
-vector<Teacher *> School::getStaff() const{
-    return this->staff;
+vector<Teacher *> School::getTeachers() const{
+    return this->Teachers;
 }
 
 void School::readActivities() {
@@ -166,9 +166,9 @@ void School::readClients() {
     }
 }
 
-void School::readStaff() {
+void School::readTeachers() {
     string line;
-    ifstream File("../Data/" + Files["Staff"]);
+    ifstream File("../Data/" + Files["Teachers"]);
     int counter = 0;
     auto* auxTeacher = new Teacher();
     auto* planned_activities = new stringstream;
@@ -190,9 +190,9 @@ void School::readStaff() {
                     *planned_activities << line;
                     break;
                 case 3:
-                    staff.push_back(auxTeacher);
+                    Teachers.push_back(auxTeacher);
 
-                    readStaffActivities(planned_activities, auxTeacher);
+                    readTeachersActivities(planned_activities, auxTeacher);
 
                     planned_activities->clear();
                     auxTeacher = new Teacher();
@@ -250,7 +250,7 @@ void School::assign(const unsigned int teacherId, const unsigned int activityId)
     Teacher* teacher;
     bool teacherExists = false;
 
-    for (const auto &t : this->staff) {
+    for (const auto &t : this->Teachers) {
         if(t->getID() == teacherId){
             teacher = t;
             teacherExists = true;
@@ -305,7 +305,8 @@ void School::readClientsActivities(stringstream* planned_activities, Client* c) 
     }
 
 }
-void School::readStaffActivities(stringstream* planned_activities, Teacher* t) {
+
+void School::readTeachersActivities(stringstream* planned_activities, Teacher* t) {
     int activity_id;
 
     while (*planned_activities >> activity_id) {
@@ -378,11 +379,11 @@ void School::viewActivities(){
     }
 }
 
-void School::viewStaff() {
-    cout << "All Staff:\n";
+void School::viewTeachers() {
+    cout << "All Teachers:\n";
     cout << "---------------------" << endl;
 
-    for (const auto & i : staff) {
+    for (const auto & i : Teachers) {
         cout << *i;
         cout << "---------------------" << endl;
     }
