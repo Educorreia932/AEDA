@@ -3,7 +3,7 @@
 using namespace std;
 
 int main() {
-    School PortoSUPSchool("../Data/School.txt");
+    auto* PortoSUPSchool = new School("../Data/School.txt");
     Menu SUPMenu(PortoSUPSchool);
     int selected;
 
@@ -11,8 +11,10 @@ int main() {
         if((selected = Menu::showMainMenu()))
             SUPMenu.mainMenuSelection(selected);
 
-        else
+        else {
+            PortoSUPSchool->saveClients();
             break;
+        }
     }
 
     return 0;

@@ -18,7 +18,9 @@ class Client {
         string getName() const;
         static unsigned int getLastID();
         unsigned int getId() const;
+        bool getGoldMember() const;
         vector<Activity*> getScheduledActivities() const;
+        string getScheduledActivitiesID() const;
 
         //Setters
         void setName(const string newName);

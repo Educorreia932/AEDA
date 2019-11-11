@@ -1,6 +1,6 @@
 #include "../Headers/Menu.h"
 
-Menu::Menu(School SUPSchool) {
+Menu::Menu(School* SUPSchool) {
     this->SUPSchool = SUPSchool;
 }
 
@@ -32,28 +32,26 @@ void Menu::mainMenuSelection(int selected) {
             manageClientsSelection(showManageClients());
             return;
         case 3: // Manage teachers
-            manageTeachersSelection(showManageClients());
+            manageTeachersSelection(showManageTeachers());
             return;
         case 5: // Consult clients
-            SUPSchool.viewClients();
+            SUPSchool->viewClients();
             pause();
             return;
-        case 6:
-            SUPSchool.viewStaff();
+        case 6: // Consult teachers
+            SUPSchool->viewStaff();
             pause();
             return;
         case 7: // Consult activities
-            SUPSchool.viewActivities();
+            SUPSchool->viewActivities();
             pause();
             return;
         case 8: // Consult schedules
             consultScheduleSelection(showConsultSchedule());
             return;
         case 9: // Consult school's information
-            cout << SUPSchool<< endl;
+            cout << *SUPSchool<< endl;
             pause();
-            return;
-        case 0:
             return;
         default:
             cout << "NOT IMPLEMENTED YET" << endl;
@@ -92,23 +90,23 @@ void Menu::manageClientsSelection(int selected) {
             cout << "Which client do you wish to change the information of? Insert the corresponding key." << endl
                  << endl;
 
-            SUPSchool.viewClients(false);
+            SUPSchool->viewClients(false);
 
             cout << endl;
 
-            selected_client = readOption(0, SUPSchool.Clients[0]->getLastID() - 1);
+            selected_client = readOption(0, SUPSchool->Clients[0]->getLastID() - 1);
 
             pause();
             return;
         case 4:
             cout << "Insert the client ID: " << endl; //Make function to display the clients
-            selected_client = readOption(0, SUPSchool.Clients[0]->getLastID() - 1);
+            selected_client = readOption(0, SUPSchool->Clients[0]->getLastID() - 1);
 
             cout << "Insert the activity ID: " << endl;
-            selected_activity = readOption(0, SUPSchool.Activities.size() - 1);
+            selected_activity = readOption(0, SUPSchool->Activities.size() - 1);
 
             try {
-                SUPSchool.enroll(selected_client, selected_activity);
+                SUPSchool->enroll(selected_client, selected_activity);
             }
 
             catch (clientAlreadHasActivity &e) {
@@ -145,7 +143,7 @@ void Menu::createClient() {
     c->setGoldMember(aux == "Y");
 
     try {
-        SUPSchool.addClient(c);
+        SUPSchool->addClient(c);
     }
 
     catch (ClientAlreadyExists &e) {
@@ -158,7 +156,7 @@ void Menu::createClient() {
     getline(cin, aux);
     aux_stream << aux;
 
-    SUPSchool.readClientsActivities(&aux_stream, c);
+    SUPSchool->readClientsActivities(&aux_stream, c);
 
     cout << endl;
     pause();
@@ -218,19 +216,19 @@ void Menu::consultScheduleSelection(int selected) {
             cout << "Which client's schedule do you wish to see? Insert the corresponding key." << endl
                  << endl;
 
-            SUPSchool.viewClients(false);
+            SUPSchool->viewClients(false);
 
             cout << endl;
 
-            selected_client = readOption(0, SUPSchool.Clients[0]->getLastID());
-            client_index = SUPSchool.clientIndex(selected_client);
+            selected_client = readOption(0, SUPSchool->Clients[0]->getLastID());
+            client_index = SUPSchool->clientIndex(selected_client);
 
             clearScreen();
 
-            cout << "You're seeing the schedule of " << SUPSchool.Clients[client_index]->getName() << '.' << endl
+            cout << "You're seeing the schedule of " << SUPSchool->Clients[client_index]->getName() << '.' << endl
                  << endl;
 
-            s = new Schedule(SUPSchool.Clients[client_index]->getScheduledActivities());
+            s = new Schedule(SUPSchool->Clients[client_index]->getScheduledActivities());
             s->view(Time(18, 10, 2019), 30);
 
             pause();
