@@ -16,9 +16,10 @@ class Teacher {
         static unsigned int getLastID( );
         static void setLastID(const unsigned int id);
         void setName(string name);
+        string getName() const;
         void addActivity(Activity* activity);
         bool isOcuppied(const Time startTime, const Time endTime);
-
+        string getActivitiesID() const;
 
         friend ostream& operator<<(ostream& out, const Teacher& C);
     private:

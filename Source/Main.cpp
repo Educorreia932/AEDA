@@ -13,6 +13,7 @@ int main() {
 
         else {
             PortoSUPSchool->saveClients();
+            PortoSUPSchool->saveTeachers();
             break;
         }
     }

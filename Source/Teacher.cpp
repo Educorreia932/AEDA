@@ -3,12 +3,12 @@
 unsigned int Teacher::last_id = 0;
 
 Teacher::Teacher(){
-    this->id = ++last_id;
+    this->id = last_id++;
     Activities = {};
 }
 
 Teacher::Teacher(string name){
-    this->id = ++last_id;
+    this->id = last_id++;
     this->name = name;
     Activities = {};
 }
