@@ -139,6 +139,15 @@ vector<Activity *> Client::getScheduleActivitiesByDate(Time Date) const {
     return result;
 }
 
+string Client::getPastActivitiesID() const {
+    stringstream result;
+
+    for (auto a : PastActivities)
+        result << a->getId() << " ";
+
+    return result.str();
+}
+
 double Client::getBalance() const {
     return balance;
 }

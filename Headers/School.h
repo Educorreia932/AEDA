@@ -33,7 +33,7 @@ class School {
         void readActivities();
         void readTeachers();
         void enroll(const unsigned int clientId, const unsigned int activityId);
-        void readClientsActivities(stringstream* planned_activities, Client* c);
+        void readClientsActivities(stringstream* scheduledActivities, stringstream* pastActivities, Client* c);
         void readTeachersActivities(stringstream* planned_activities, Teacher* t);
         void assign(const unsigned int teacherId, const unsigned int activityId);
         void saveClients();

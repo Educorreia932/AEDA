@@ -102,7 +102,8 @@ void Menu::manageClientsSelection(int selected) {
 
             selected_client = readOption(0, Client::getLastID() - 1);
 
-            pause();
+            clearScreen();
+            changeClient(selected_client);
             return;
         case 3:
             cout << "Which client do you wish to add funds to?" << endl;
@@ -174,7 +175,7 @@ void Menu::manageClientsSelection(int selected) {
 void Menu::createClient() {
     auto *c = new Client();
     string aux;
-    stringstream aux_stream;
+    stringstream aux_stream, aux_stream2;
     double balance;
 
     cout << "What's the name of the new client? " << endl;
@@ -210,15 +211,42 @@ void Menu::createClient() {
         pause();
     }
 
-    cout << "Which are the scheduled activities of the new client (insert IDs separated by Space)? " << endl;
+    cout << "Which are the past activities of the new client (insert IDs separated by Space)? " << endl;
     cin.ignore();
     getline(cin, aux);
     aux_stream << aux;
 
-    SUPSchool->readClientsActivities(&aux_stream, c);
+    cout << "Which are the scheduled activities of the new client (insert IDs separated by Space)? " << endl;
+    cin.ignore();
+    getline(cin, aux);
+    aux_stream2 << aux;
+
+    SUPSchool->readClientsActivities(&aux_stream2, &aux_stream, c);
 
     cout << endl;
     pause();
+}
+
+void Menu::changeClient(int client_id) {
+    cout << "What information do you want to change? Insert the corresponding key." << endl
+         << endl
+         << "1) Change the client's name" << endl
+         << "0) Go back" << endl
+         << endl;
+
+    int selected_option = readOption(0, 1);
+    string aux;
+
+    switch (selected_option) {
+        case 1:
+            cout << "What's the name of the new client? " << endl;
+            getline(cin, aux);
+            SUPSchool->Clients[SUPSchool->clientIndex(client_id)]->setName(aux);
+            cout << endl;
+            break;
+        case 0:
+            return;
+    }
 }
 
 // Teacher --------------------
@@ -333,7 +361,7 @@ void Menu::createTeacher() {
         pause();
     }
 
-    cout << "Which are the scheduled activities of the new teacher(insert IDs separated by Space)? " << endl;
+    cout << "Which are the scheduled activities of the new teacher (insert IDs separated by Space)? " << endl; // Only one activity per teacher?
     cin.ignore();
     getline(cin, aux);
     aux_stream << aux;
@@ -351,7 +379,7 @@ void Menu::changeTeachers(int teacherId) {
          << "0) Go back" << endl
          << endl;
 
-    int selected_option = readOption(0, 4);
+    int selected_option = readOption(0, 1);
     string aux;
 
     switch (selected_option) {
@@ -366,6 +394,8 @@ void Menu::changeTeachers(int teacherId) {
 
     }
 }
+
+// Activity --------------------
 
 int Menu::showManageActivities(){
     clearScreen();
@@ -608,6 +638,3 @@ void Menu::pause() {
     cout << "Press any key to continue ...";
     cin.get();
 }
-
-
-
