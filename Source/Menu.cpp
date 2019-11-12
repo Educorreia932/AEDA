@@ -36,7 +36,7 @@ void Menu::mainMenuSelection(int selected) {
             return;
         case 4: //Manage activities
             manageActivitiesSelection(showManageActivities());
-            pause();
+            return;
         case 5: // Consult clients
             SUPSchool->viewClients();
             pause();
@@ -72,8 +72,10 @@ int Menu::showManageClients() {
          << endl
          << "1) Create a new client." << endl
          << "2) Change the information of a client." << endl //<- perhaps ask for admin permission/password
-         << "3) Remove an existent client." << endl //<- Remove all information associated with him
-         << "4) Enroll a client in an activity." << endl //<- and remove him from a planned activity
+         << "3) Add funds "<< endl
+         << "4) Purchase gold card" << endl
+         << "5) Remove an existent client." << endl //<- Remove all information associated with him
+         << "6) Enroll a client in an activity." << endl //<- and remove him from a planned activity
          << "0) Go back" << endl
          << endl;
 
@@ -82,6 +84,7 @@ int Menu::showManageClients() {
 
 void Menu::manageClientsSelection(int selected) {
     int selected_client, selected_activity;
+    double amount;
 
     clearScreen();
 
@@ -99,9 +102,49 @@ void Menu::manageClientsSelection(int selected) {
 
             selected_client = readOption(0, Client::getLastID() - 1);
 
-            pause();
+            clearScreen();
+            changeClient(selected_client);
             return;
+        case 3:
+            cout << "Which client do you wish to add funds to?" << endl;
+
+            SUPSchool->viewClients(false);
+
+            cout << endl;
+
+            selected_client = readOption(0, Client::getLastID() - 1);
+
+            cout << "Current balance: " << SUPSchool->Clients[SUPSchool->clientIndex(selected_client)]->getBalance()
+                 << endl;
+
+
+            amount = readOption(0,999999);
+
+            try {
+                SUPSchool->Clients[SUPSchool->clientIndex(selected_client)]->addBalance(amount);
+            } catch (insufficientFunds &e){
+                cerr << e;
+            }
+            break;
         case 4:
+            cout << "Which client wants to purchase the gold card?" << endl;
+
+            SUPSchool->viewClients(false);
+
+            cout << endl;
+
+            selected_client = readOption(0, Client::getLastID() - 1);
+
+            try {
+                SUPSchool->Clients[SUPSchool->clientIndex(selected_client)]->purchaseGold();
+            } catch (insufficientFunds &e){
+                cerr << e;
+            } catch (alreadyGoldMember &e){
+                cerr << e;
+            }
+
+            break;
+        case 6:
             cout << "Insert the client ID: " << endl; //Make function to display the clients
             selected_client = readOption(0, Client::getLastID() - 1);
 
@@ -116,7 +159,7 @@ void Menu::manageClientsSelection(int selected) {
                 cerr << e;
             }
 
-            catch (NonExistantClient &e) {
+            catch (NonExistentClient &e) {
                 cerr << e;
             }
 
@@ -132,7 +175,8 @@ void Menu::manageClientsSelection(int selected) {
 void Menu::createClient() {
     auto *c = new Client();
     string aux;
-    stringstream aux_stream;
+    stringstream aux_stream, aux_stream2;
+    double balance;
 
     cout << "What's the name of the new client? " << endl;
     getline(cin, aux);
@@ -145,6 +189,19 @@ void Menu::createClient() {
 
     c->setGoldMember(aux == "Y");
 
+    cout << "What is the starting balance of the client?" << endl;
+    balance = readOption(0,999999);
+
+    try{
+        c->addBalance(balance);
+        //Probably wont fail because of readOption
+    } catch(insufficientFunds &e){
+       cerr << e;
+    }
+
+
+    cout << endl;
+
     try {
         SUPSchool->addClient(c);
     }
@@ -154,15 +211,42 @@ void Menu::createClient() {
         pause();
     }
 
-    cout << "Which are the scheduled activities of the new client (insert IDs separated by Space)? " << endl;
+    cout << "Which are the past activities of the new client (insert IDs separated by Space)? " << endl;
     cin.ignore();
     getline(cin, aux);
     aux_stream << aux;
 
-    SUPSchool->readClientsActivities(&aux_stream, c);
+    cout << "Which are the scheduled activities of the new client (insert IDs separated by Space)? " << endl;
+    cin.ignore();
+    getline(cin, aux);
+    aux_stream2 << aux;
+
+    SUPSchool->readClientsActivities(&aux_stream2, &aux_stream, c);
 
     cout << endl;
     pause();
+}
+
+void Menu::changeClient(int client_id) {
+    cout << "What information do you want to change? Insert the corresponding key." << endl
+         << endl
+         << "1) Change the client's name" << endl
+         << "0) Go back" << endl
+         << endl;
+
+    int selected_option = readOption(0, 1);
+    string aux;
+
+    switch (selected_option) {
+        case 1:
+            cout << "What's the name of the new client? " << endl;
+            getline(cin, aux);
+            SUPSchool->Clients[SUPSchool->clientIndex(client_id)]->setName(aux);
+            cout << endl;
+            break;
+        case 0:
+            return;
+    }
 }
 
 // Teacher --------------------
@@ -217,7 +301,7 @@ void Menu::manageTeachersSelection(int selected) {
 
             try {
                 SUPSchool->removeTeacher(selected_teacher);
-            }catch(NonExistantTeacher &e){
+            }catch(NonExistentTeacher &e){
                 cout << e;
             }
 
@@ -241,10 +325,10 @@ void Menu::manageTeachersSelection(int selected) {
                 cerr << e;
             }
 
-            catch (NonExistantTeacher &e) {
+            catch (NonExistentTeacher &e) {
                 cerr << e;
 
-            } catch(activityNonExistant &e){
+            } catch(activityNonExistent &e){
 
                 cerr << e;
             }
@@ -268,7 +352,6 @@ void Menu::createTeacher() {
     t->setName(aux);
     cout << endl;
 
-
     try {
         SUPSchool->addTeacher(t);
     }
@@ -278,7 +361,7 @@ void Menu::createTeacher() {
         pause();
     }
 
-    cout << "Which are the scheduled activities of the new teacher(insert IDs separated by Space)? " << endl;
+    cout << "Which are the scheduled activities of the new teacher (insert IDs separated by Space)? " << endl; // Only one activity per teacher?
     cin.ignore();
     getline(cin, aux);
     aux_stream << aux;
@@ -290,14 +373,13 @@ void Menu::createTeacher() {
 }
 
 void Menu::changeTeachers(int teacherId) {
-
     cout << "What information do you want to change? Insert the corresponding key." << endl
          << endl
          << "1) Change the teacher name" << endl
          << "0) Go back" << endl
          << endl;
 
-    int selected_option = readOption(0, 4);
+    int selected_option = readOption(0, 1);
     string aux;
 
     switch (selected_option) {
@@ -313,6 +395,7 @@ void Menu::changeTeachers(int teacherId) {
     }
 }
 
+// Activity --------------------
 
 int Menu::showManageActivities(){
     clearScreen();
@@ -328,138 +411,42 @@ int Menu::showManageActivities(){
     return readOption(0, 3);
 }
 
-
 void Menu::manageActivitiesSelection(int selected) {
     clearScreen();
 
     switch (selected) {
         case 1:
             createActivity();
+            return;
         case 2:
             removeActivity();
-        case 0: return;
+            return;
+        case 0:
+            return;
     }
 }
 
-void Menu::createActivity(){
+void Menu::createActivity() {
+    auto *a = new Activity();
+    string aux;
 
-    cout << "Add Activity:" << endl << endl;
-    cout << "Name " << endl;
-    string thing;
-    string name;
-    getline(cin, name);
-    cout << "Start Date (DD/MM/YYYY HH:MM) " << endl;
-    getline(cin, thing);
-    string currentDatePart = "";
-    int streamPhase = 0;
-    int date[5] = {};
-    try { //Parsing strings
-        cout << "Date: " << endl;
-        for (int i = 0; i < thing.length(); i++) {
-            if (thing[i] == '/') {
-                if (streamPhase < 2) {
-                    date[streamPhase] = stoi(currentDatePart);
-                    streamPhase++;
-                    currentDatePart = "";
-                } else {
-                    throw ImproperString("Too many forward slashes in date\n.");
-                }
-            } else if (thing[i] == ' ') {
-                if(streamPhase == 2){
-                    date[streamPhase] = stoi(currentDatePart);
-                    streamPhase++;
-                    currentDatePart = "";
-                }
-                else{
-                    throw ImproperString("Too many spaces in date\n.");
-                }
-            } else if (thing[i] == ':') {
-                if(streamPhase == 3){
-                    date[streamPhase] = stoi(currentDatePart);
-                    streamPhase++;
-                    currentDatePart = "";
-                }
-                else{
-                    throw ImproperString("Too many colons in date\n.");
-                }
-            }
-            else if (!isdigit(thing[i])){
-                throw ImproperString("Non number included in date\n.");
-            }
-            else{
-                currentDatePart += thing[i];
-            }
-        }
-        date[4] = stoi(currentDatePart);
-    }
-    catch(ImproperString &s){
-        cerr << s.getMsg();
-        cin.ignore(1000, '\n');
-    }
-    int date2[5] ={};
-    date2[0] = date[0];
-    date2[1] = date[1];
-    date2[2] = date[2];
+    cout << "What's the name of the new activity? ";
 
-    cout << "End Date (HH:MM) " << endl;
-    streamPhase = 3;
-    getline(cin, thing);
-    currentDatePart = "";
-    try{
-        for(int i = 0; i < thing.length(); i++){
-            if(thing[i] == ':'){
-                if(streamPhase < 4){
-                    date2[streamPhase] = stoi(currentDatePart);
-                    streamPhase++;
-                    currentDatePart = "";
-                }
-                else{
-                    throw ImproperString("Too many colons in string.\n");
-                }
-            }
-            else if(!isdigit(thing[i])){
-                throw ImproperString("Invalid symbol in string.\n");
-            }
-            else{
-                currentDatePart += thing[i];
-            }
-        }
-        date2[4] = stoi(currentDatePart);
-    }
-    catch(ImproperString &e){
-        cerr << e.getMsg();
-    }
-    //Setting times and creating activities
-    //Activity *ac;
-    try{
-        Time t1(date[0], date[1], date[2], date[3], date[4]);
-        Time t2(date2[0], date2[1], date2[2], date2[3], date2[4]);
-        Activity a(t1, t2, name);
-        SUPSchool->addActivity(&a);
-        cout << (*SUPSchool->getActivities()[7]) << endl;
-        cout << (*SUPSchool->getActivities()[7]) << endl;
-        cout << (*SUPSchool->getActivities()[7]) << endl;
-        cout << (*SUPSchool->getActivities()[7]) << endl;
-        cout << (*SUPSchool->getActivities()[7]) << endl;
-        cout << (*SUPSchool->getActivities()[7]) << endl;
-        cout << (*SUPSchool->getActivities()[7]) << endl;
-        cout << (*SUPSchool->getActivities()[7]) << endl;
-        cout << (*SUPSchool->getActivities()[7]) << endl;
-        cout << (*SUPSchool->getActivities()[7]) << endl;
-        cout << (*SUPSchool->getActivities()[7]) << endl;
-        cout << (*SUPSchool->getActivities()[7]) << endl;
-        cout << (*SUPSchool->getActivities()[7]) << endl;
-        cout << (*SUPSchool->getActivities()[7]) << endl;
-        cout << (*SUPSchool->getActivities()[7]) << endl;
-        cout << (*SUPSchool->getActivities()[7]) << endl;
-        cout << (*SUPSchool->getActivities()[7]) << endl;
-    }
-    catch(InvalidActivity &e){
-        cerr << e.getMsg();
-    }
-    cin.ignore(1000, '\n');
+    getline(cin, aux);
+    a->setName(aux);
+
+    cout << endl << "What's the start date (DD/MM/YYYY HH:MM) of the activity? ";
+
+    getline(cin, aux);
+    a->setStartTime(aux);
+
+    cout << endl << "What's the end date (HH:MM) of the activity? ";
+
+    getline(cin, aux);
+    a->setEndTime(aux);
+
+    SUPSchool->addActivity(a);
 }
-
 
 void Menu::removeActivity() {
     string IDstring;
@@ -651,6 +638,3 @@ void Menu::pause() {
     cout << "Press any key to continue ...";
     cin.get();
 }
-
-
-

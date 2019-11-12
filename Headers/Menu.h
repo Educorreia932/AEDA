@@ -15,7 +15,6 @@ class Menu {
         //Utils
         static void clearScreen();
         static void pause();
-
     private:
         School* SUPSchool;
 
@@ -23,6 +22,7 @@ class Menu {
         static int showManageClients();
         void manageClientsSelection(int selected);
         void createClient();
+        void changeClient(int client_id);
 
         //Activity related
         static int showManageActivities();

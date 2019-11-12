@@ -12,6 +12,8 @@ class School {
     friend class Menu;
 
     public:
+        static double goldCardPrice;
+
         //Constructors
         School();
         School(const string& filename);
@@ -31,7 +33,7 @@ class School {
         void readActivities();
         void readTeachers();
         void enroll(const unsigned int clientId, const unsigned int activityId);
-        void readClientsActivities(stringstream* planned_activities, Client* c);
+        void readClientsActivities(stringstream* scheduledActivities, stringstream* pastActivities, Client* c);
         void readTeachersActivities(stringstream* planned_activities, Teacher* t);
         void assign(const unsigned int teacherId, const unsigned int activityId);
         void saveClients();
@@ -53,6 +55,7 @@ class School {
 
         friend ostream& operator<<(ostream& out, const School& S);
     private:
+
         string name;
         unsigned int id;
         Time currentTime;
@@ -67,21 +70,21 @@ class School {
 
 //Exceptions
 
-class NonExistantClient : std::exception {
+class NonExistentClient : std::exception {
     public:
         unsigned int id;
-        NonExistantClient(unsigned int id){this->id = id;};
+        NonExistentClient(unsigned int id){this->id = id;};
 };
 
-std::ostream & operator <<(std::ostream &out,const NonExistantClient &client);
+std::ostream & operator <<(std::ostream &out,const NonExistentClient &client);
 
-class NonExistantTeacher : std::exception {
+class NonExistentTeacher : std::exception {
 public:
     unsigned int id;
-    NonExistantTeacher(unsigned int id){this->id = id;};
+    NonExistentTeacher(unsigned int id){this->id = id;};
 };
 
-std::ostream & operator <<(std::ostream &out,const NonExistantTeacher &teacher);
+std::ostream & operator <<(std::ostream &out,const NonExistentTeacher &teacher);
 
 class ClientAlreadyExists : std::exception {
 public:

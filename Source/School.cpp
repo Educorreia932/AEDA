@@ -1,6 +1,10 @@
 #include "../Headers/School.h"
 #include "../Headers/Menu.h"
 
+
+//Price of gold card
+double School::goldCardPrice = 40;
+
 School::School() {
 
 }
@@ -60,7 +64,7 @@ void School::removeClient(unsigned int id) {
         }
 
     if (!exists)
-        throw NonExistantClient(id);
+        throw NonExistentClient(id);
 }
 
 void School::addClient(Client* client) {
@@ -132,33 +136,40 @@ void School::readClients() {
     ifstream File("../Data/" + Files["Clients"]);
     int counter = 0;
     auto* auxClient = new Client();
-    auto* planned_activities = new stringstream;
+    auto* scheduledActivities = new stringstream;
+    auto* pastActivities = new stringstream;
 
     if (File.is_open()) {
         while (getline(File, line)) {
-                switch (counter % 5) {
-                    case 0:
+                switch (counter % 7) {
+                    case 0: // Name
                         auxClient->setName(line);
                         break;
-                    case 1:
+                    case 1: // ID
                         auxClient->setID((stoi(line)));
 
                         if (stoi(line) > Client::getLastID())
                             Client::setLastID(stoi(line));
 
                         break;
-                    case 2:
+                    case 2: // Gold membership
                         auxClient->setGoldMember(stob(line));
                         break;
-                    case 3:
-                        *planned_activities << line;
+                    case 3: // Balance
+                        auxClient->addBalance(stod(line));
                         break;
-                    case 4:
+                    case 4: // Past Activities
+                        *pastActivities << line;
+                        break;
+                    case 5: // Scheduled Activities
+                        *scheduledActivities << line;
+                        break;
+                    case 6:
                         Clients.push_back(auxClient);
 
-                        readClientsActivities(planned_activities, auxClient);
+                        readClientsActivities(scheduledActivities, pastActivities, auxClient);
 
-                        planned_activities->clear();
+                        scheduledActivities->clear();
                         auxClient = new Client();
                         break;
             }
@@ -227,7 +238,7 @@ void School::enroll(const unsigned int clientId, const unsigned int activityId) 
     }
 
     if(!clientExists)
-        throw NonExistantClient(clientId);
+        throw NonExistentClient(clientId);
 
     bool activityExists = false;
 
@@ -245,7 +256,7 @@ void School::enroll(const unsigned int clientId, const unsigned int activityId) 
     }
 
     if(!activityExists)
-        throw activityNonExistant(activityId);
+        throw activityNonExistent(activityId);
 }
 
 void School::assign(const unsigned int teacherId, const unsigned int activityId) {
@@ -263,7 +274,7 @@ void School::assign(const unsigned int teacherId, const unsigned int activityId)
     }
 
     if(!teacherExists)
-        throw NonExistantTeacher(teacherId);
+        throw NonExistentTeacher(teacherId);
 
     bool activityExists = false;
 
@@ -284,18 +295,18 @@ void School::assign(const unsigned int teacherId, const unsigned int activityId)
     }
 
     if(!activityExists)
-        throw activityNonExistant(activityId);
+        throw activityNonExistent(activityId);
 }
 
-void School::readClientsActivities(stringstream* planned_activities, Client* c) {
+void School::readClientsActivities(stringstream* scheduledActivities, stringstream* pastActivities, Client* c) {
     int activity_id;
 
-    while (*planned_activities >> activity_id) {
+    while (*scheduledActivities >> activity_id) {
         try {
             enroll(c->getId(), activity_id);
         }
 
-        catch (activityNonExistant &e) {
+        catch (activityNonExistent &e) {
             cout << e;
             Menu::pause();
         }
@@ -311,6 +322,7 @@ void School::readClientsActivities(stringstream* planned_activities, Client* c) 
         }
     }
 
+    // Include past activities
 }
 
 void School::readTeachersActivities(stringstream* planned_activities, Teacher* t) {
@@ -321,7 +333,7 @@ void School::readTeachersActivities(stringstream* planned_activities, Teacher* t
             assign(t->getID(), activity_id);
         }
 
-        catch (activityNonExistant &e) {
+        catch (activityNonExistent &e) {
             cout << e;
             Menu::pause();
         }
@@ -359,11 +371,9 @@ void School::viewClients(bool detailed) {
             cout << Client->getName() << " - " << Client->getId() << endl;
 }
 
-
-
 //Exceptions
 
-std::ostream &operator<<(std::ostream &out, const NonExistantClient &client) {
+std::ostream &operator<<(std::ostream &out, const NonExistentClient &client) {
     out << "Client with ID " << client.id << " does not exist in school." << endl;
     return out;
 }
@@ -373,7 +383,7 @@ std::ostream &operator<<(std::ostream &out, const ClientAlreadyExists &client) {
     return out;
 }
 
-std::ostream &operator<<(std::ostream &out, const NonExistantTeacher &teacher) {
+std::ostream &operator<<(std::ostream &out, const NonExistentTeacher &teacher) {
     out << "Teacher with ID " << teacher.id << " does not exist in school." << endl;
     return out;
 }
@@ -422,11 +432,12 @@ void School::saveClients() {
             f << c->getName() << endl
               << c->getId() << endl
               << btos(c->getGoldMember()) << endl
+              << c->getBalance() << endl
+              << c->getPastActivitiesID() << endl
               << c->getScheduledActivitiesID() << endl;
 
             if (counter == size(Clients) - 1)
                 f << "---END---";
-
 
             else
                 f << "::::::::::" << endl;
@@ -512,10 +523,11 @@ int School::teacherIndex(unsigned int id) {
 void School::addActivity(Activity* activity){
     Activities.push_back(activity);
 }
+
 void School::removeTeacher(unsigned id) {
 
     if (teacherIndex(id) == -1)
-        throw NonExistantTeacher(id);
+        throw NonExistentTeacher(id);
 
     Teachers.erase(Teachers.begin()+teacherIndex(id));
 
