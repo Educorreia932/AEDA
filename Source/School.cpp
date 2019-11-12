@@ -137,27 +137,30 @@ void School::readClients() {
 
     if (File.is_open()) {
         while (getline(File, line)) {
-                switch (counter % 6) {
-                    case 0:
+                switch (counter % 7) {
+                    case 0: // Name
                         auxClient->setName(line);
                         break;
-                    case 1:
+                    case 1: // ID
                         auxClient->setID((stoi(line)));
 
                         if (stoi(line) > Client::getLastID())
                             Client::setLastID(stoi(line));
 
                         break;
-                    case 2:
+                    case 2: // Gold membership
                         auxClient->setGoldMember(stob(line));
                         break;
-                    case 3:
+                    case 3: // Balance
+                        auxClient->addBalance(stod(line));
+                        break;
+                    case 4: // Past Activities
                         *pastActivities << line;
                         break;
-                    case 4:
+                    case 5: // Scheduled Activities
                         *scheduledActivities << line;
                         break;
-                    case 5:
+                    case 6:
                         Clients.push_back(auxClient);
 
                         readClientsActivities(scheduledActivities, pastActivities, auxClient);
@@ -425,7 +428,6 @@ void School::saveClients() {
             f << c->getName() << endl
               << c->getId() << endl
               << btos(c->getGoldMember()) << endl
-              << c->getPastActivitiesID() << endl
               << c->getScheduledActivitiesID() << endl;
 
             if (counter == size(Clients) - 1)

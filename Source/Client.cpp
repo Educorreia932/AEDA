@@ -6,12 +6,14 @@ unsigned int Client::last_id = 0;
 
 Client::Client() {
     id = last_id++;
+    this->balance = 0;
 }
 
-Client::Client(string name, bool gold_member) {
+Client::Client(string name, bool gold_member, int balance) {
     this->id = Client::last_id++;
     this->name = name;
     this->gold_member = gold_member;
+    this->balance = balance;
 }
 
 bool Client::isGoldMember() const {
@@ -74,6 +76,7 @@ ostream &operator<<(ostream &out, const Client &C) {
 
     out << "Name: " << C.name << endl
         << "ID: " << C.id << endl
+        << "Balance: " << C.balance << endl
         << "Scheduled activities: ";
 
     for (auto a : C.getScheduledActivities())
@@ -137,6 +140,20 @@ string Client::getPastActivitiesID() const {
     return result.str();
 }
 
+double Client::getBalance() const {
+    return balance;
+}
+
+//Amount can be negative(will throw exception if tries to make it negative)
+void Client::addBalance(double amount) {
+
+    if(this->balance + amount < 0)
+        throw insufficientFunds(this->id,this->balance,abs(amount)-balance);
+
+    this->balance += amount;
+
+}
+
 ostream &operator<<(ostream &out, const alreadyGoldMember &member) {
     out << "Client with ID \"" << member.id << "\" already has a gold card." << endl;
     return out;
@@ -149,5 +166,10 @@ ostream &operator<<(ostream &out, const hasActivityAtSameTime &ids) {
 
 ostream &operator<<(std::ostream &out, const clientAlreadHasActivity &ids) {
     out << "Client with ID \"" << ids.clientId << "\" already is already enrolled in activity with ID \"" << ids.activityId << "\"." << endl;
+    return out;
+}
+
+std::ostream &operator<<(std::ostream &out, const insufficientFunds &info) {
+    out << "Client with ID \"" << info.clientId << "\" does not have enough funds. Has: " << info.balance << " Needs: " << info.difference << endl;
     return out;
 }

@@ -21,6 +21,27 @@ int readOption(int min, unsigned int max) {
     }
 }
 
+double readOption(double min, double max) {
+    double option;
+
+    while (true) {
+        cout << "Your option: ";
+
+        if (cin >> option && option >= min && option <= max) {
+            cin.ignore(1000, '\n');
+            return option;
+        }
+
+        else {
+            cin.clear();
+            cin.ignore(1000, '\n');
+            cerr << endl
+                 << "Invalid input. Please try again:" << endl
+                 << endl;
+        }
+    }
+}
+
 bool stob(const string& s) {
     return s == "true";
 }
