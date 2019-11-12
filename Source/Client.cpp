@@ -76,7 +76,7 @@ ostream &operator<<(ostream &out, const Client &C) {
 
     out << "Name: " << C.name << endl
         << "ID: " << C.id << endl
-        << "Balance: " << C.balance << endl
+        << "Balance: " << C.balance << " EUR" << endl
         << "Scheduled activities: ";
 
     for (auto a : C.getScheduledActivities())
@@ -85,7 +85,7 @@ ostream &operator<<(ostream &out, const Client &C) {
     return out;
 }
 
-void Client::setActivities(const vector<Activity *> Activities) {
+void Client::setActivities(const vector<Activity *> &Activities) {
     ScheduledActivities = Activities;
 }
 

@@ -429,6 +429,7 @@ void School::saveClients() {
               << c->getId() << endl
               << btos(c->getGoldMember()) << endl
               << c->getBalance() << endl
+              << c->getPastActivitiesID() << endl
               << c->getScheduledActivitiesID() << endl;
 
             if (counter == size(Clients) - 1)

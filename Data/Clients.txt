@@ -29,15 +29,15 @@ false
 Henrique Melo Ribeiro
 5
 false
-
 0
+
 1 2 
 ::::::::::
 Davide Castro
 6
 false
-
 0
+
 1 2 3 
 ::::::::::
 Ricardo Fontao
@@ -50,21 +50,21 @@ false
 Tiago Duarte Silva
 8
 true
-
 0
+
 4 5 
 ::::::::::
 Ivo Saavedra
 9
 true
-
 0
+
 5 
 ::::::::::
 Diogo Guimarares Rosario
 10
 true
-
 0
+
 4 5 
 ---END---
