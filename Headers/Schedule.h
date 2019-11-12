@@ -4,7 +4,6 @@
 #include "Activity.h"
 #include "Auxiliary.h"
 #include "Client.h"
-#include "Teacher.h"
 
 #include <map>
 
@@ -22,15 +21,13 @@ struct CharacterCodes {
                   centreSeparation = 206; //╬
 };
 
-template <class T>
 class Schedule {
     public:
         Schedule();
-        Schedule(Time BeginDate, Time EndDate, const T *c);
+        Schedule(Time BeginDate, Time EndDate, const Client *c);
         vector<map <Time, Activity*>> getActivities() const;
         Time getBeginDate() const;
-        template <class T1>
-        friend ostream &operator<<(ostream &out, const Schedule<T1> &s);
+        friend ostream &operator<<(ostream &out, const Schedule &s);
     private:
         Time BeginDate, EndDate;
         vector<map <Time, Activity*>> Activities;
