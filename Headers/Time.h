@@ -51,12 +51,15 @@ class Time{
         friend Time operator -(Time const startTime, Time const endTime);
 };
 
-class InvalidDate : std::exception {
+/*! \cond */
+
+class InvalidDate : exception {
     string msg;
 public:
     InvalidDate(string msg){this->msg = msg;}
     string getMsg() const{return msg;}
 };
 
+/*! \endcond */
 
 #endif

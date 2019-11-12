@@ -38,6 +38,8 @@ class Suits : public Material {
 class Board : public Material {
 };
 
+/*! \cond */
+
 class ImpossibleTimeDifference: std::exception{
     Time startTime;
     Time endTime;
@@ -53,5 +55,7 @@ public:
         return endTime;
     }
 };
+
+/*! \endcond */
 
 #endif //SUP_SCHOOL_MATERIAL_H

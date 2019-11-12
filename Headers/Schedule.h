@@ -8,6 +8,8 @@
 
 #include <map>
 
+/*! \cond */
+
 struct CharacterCodes {
     unsigned char topRight = 187, //╗
             topLeft = 201, //╔
@@ -22,18 +24,22 @@ struct CharacterCodes {
             centreSeparation = 206; //╬
 };
 
+/*! \endcond */
+
+/*! @brief Timetable of a teacher or a client with its schedule activities */
+
 template <class T>
 class Schedule {
-public:
-    Schedule();
-    Schedule(Time BeginDate, Time EndDate, const T *c);
-    vector<map <Time, Activity*>> getActivities() const;
-    Time getBeginDate() const;
-    template <class T1>
-    friend ostream &operator<<(ostream &out, const Schedule<T1> &s);
-private:
-    Time BeginDate, EndDate;
-    vector<map <Time, Activity*>> Activities;
+    public:
+        Schedule();
+        Schedule(Time BeginDate, Time EndDate, const T *c);
+        vector<map <Time, Activity*>> getActivities() const;
+        Time getBeginDate() const;
+        template <class T1>
+        friend ostream &operator<<(ostream &out, const Schedule<T1> &s);
+    private:
+        Time BeginDate, EndDate;
+        vector<map <Time, Activity*>> Activities;
 };
 
 #endif //SUP_SCHOOL_SCHEDULE_H
