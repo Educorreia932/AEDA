@@ -39,6 +39,7 @@ class School {
 
         void addTeacher(Teacher* teacher);
         int teacherIndex(unsigned int id);
+        void removeTeacher(unsigned id);
 
     private:
         // View Functions ← Display detailed information

@@ -495,4 +495,14 @@ int School::teacherIndex(unsigned int id) {
     return -1;
 }
 
+void School::removeTeacher(unsigned id) {
+
+    if (teacherIndex(id) == -1)
+        throw NonExistantTeacher(id);
+
+    Teachers.erase(Teachers.begin()+teacherIndex(id));
+
+
+}
+
 

@@ -200,8 +200,29 @@ void Menu::manageTeachersSelection(int selected) {
 
             pause();
             return;
+        case 3:
+            cout << "Which client do you wish to remove? Insert the corresponding ID." << endl
+                 << endl;
+
+            SUPSchool->viewTeachers(false);
+
+            cout << endl;
+
+            selected_teacher = readOption(0, SUPSchool->Teachers[0]->getLastID() - 1);
+
+            try {
+                SUPSchool->removeTeacher(selected_teacher);
+            }catch(NonExistantTeacher &e){
+                cout << e;
+            }
+
+
+
+            pause();
+            return;
         case 4:
             cout << "Insert the teacher ID: " << endl; //Make function to display the clients
+
             selected_teacher = readOption(0, SUPSchool->Teachers[0]->getLastID() - 1);
 
             cout << "Insert the activity ID: " << endl;
