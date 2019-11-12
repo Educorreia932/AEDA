@@ -44,7 +44,7 @@ class School {
     private:
         // View Functions ← Display detailed information
         void viewClients(bool detailed = true);
-        void viewActivities();
+        void viewActivities(bool detailed = true);
         void viewMaterial();
         void viewTeachers(bool detailed = true);
         vector<Time> getDatesFromActivicties(vector <Activity*> Activities);

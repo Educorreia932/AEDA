@@ -273,6 +273,9 @@ void School::assign(const unsigned int teacherId, const unsigned int activityId)
             catch (teacherAlreadHasActivity &e) {
                 throw e;
             }
+            catch(teacherHasActivityAtSameTime &e){
+                throw e;
+            }
         }
     }
 
@@ -376,13 +379,20 @@ std::ostream &operator<<(std::ostream &out, const TeacherAlreadyExists &teacher)
     return out;
 }
 
-void School::viewActivities(){
-    cout << "All activities:\n";
-    cout << "---------------------" << endl;
-
-    for (const auto & Activity : Activities) {
-        cout << *Activity;
+void School::viewActivities(bool detailed){
+    if(detailed) {
+        cout << "All activities:\n";
         cout << "---------------------" << endl;
+
+        for (const auto &Activity : Activities) {
+            cout << *Activity;
+            cout << "---------------------" << endl;
+        }
+    }
+    else{
+        for (auto & activity : Activities)
+            cout << activity->getName() << " - " << activity->getId() << endl;
+
     }
 }
 
