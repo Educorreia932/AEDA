@@ -423,6 +423,36 @@ void School::saveClients() {
     f.close();
 }
 
+vector<Time> School::getDatesFromActivicties(vector <Activity*> Activities) {
+    vector<Time> Dates;
+    Time auxDate;
+    bool already_present = false;
+
+    for (auto a : Activities) {
+         auxDate = Time(a->getStartTime().getDay(), a->getStartTime().getMonth(), a->getStartTime().getYear());
+
+         for (auto d : Dates) // See if it's already in the vector
+             if (d == auxDate)
+                already_present = true;
+
+         if (!already_present)
+             Dates.push_back(auxDate);
+
+         already_present = false;
+    }
+
+    return Dates;
+}
+
+void School::viewDates(vector <Time> Dates) {
+    int counter = 1;
+
+    for (auto d : Dates) {
+        cout << counter << ") " << d.toString() << endl;
+        counter++;
+    }
+}
+
 void School::saveTeachers() {
     ofstream f;
     int counter = 0;
@@ -464,3 +494,5 @@ int School::teacherIndex(unsigned int id) {
 
     return -1;
 }
+
+

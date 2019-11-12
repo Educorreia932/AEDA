@@ -270,3 +270,36 @@ Time operator -(Time const startTime, Time const endTime) {
     deltaTime.setMinutes(minutes);
     return deltaTime;
 }
+
+bool Time::sameDate(Time Date) const {
+    return day == Date.getDay() && month == Date.getMonth() && year == Date.getYear();
+}
+
+string Time::toString() const {
+    stringstream result;
+
+    result << day << '/' << month << '/' << year;
+
+    return result.str();
+}
+
+Time Time::operator++(int) {
+    if (day == numberOfdays()) {
+        day = 1;
+
+        if (month == 12) {
+            month = 1;
+            year++;
+        }
+
+        else
+            month++;
+    }
+
+    else {
+        day++;
+    }
+
+    return *this;
+}
+

@@ -118,6 +118,16 @@ string Client::getScheduledActivitiesID() const {
     return result.str();
 }
 
+vector<Activity *> Client::getScheduleActivitiesByDate(Time Date) const {
+    vector<Activity *> result;
+
+    for (auto a : ScheduledActivities)
+        if (a->getStartTime().sameDate(Date))
+            result.push_back(a);
+
+    return result;
+}
+
 ostream &operator<<(ostream &out, const alreadyGoldMember &member) {
     out << "Client with ID \"" << member.id << "\" already has a gold card." << endl;
     return out;
