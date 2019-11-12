@@ -20,6 +20,8 @@ class Teacher {
         void addActivity(Activity* activity);
         bool isOcuppied(const Time startTime, const Time endTime);
         string getActivitiesID() const;
+        vector<Activity*> getScheduledActivities() const;
+        vector<Activity*> getScheduleActivitiesByDate(Time Date) const;
 
         friend ostream& operator<<(ostream& out, const Teacher& C);
     private:
@@ -27,8 +29,6 @@ class Teacher {
         unsigned int id;
         static unsigned int last_id;
         vector<Activity *> Activities;
-
-
 };
 
 class teacherHasActivityAtSameTime : std::exception {
@@ -48,6 +48,5 @@ public:
 };
 
 std::ostream & operator <<(std::ostream &out,const teacherAlreadHasActivity &ids);
-
 
 #endif //SUP_SCHOOL_TEACHER_H
