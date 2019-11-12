@@ -14,9 +14,11 @@ class School {
     public:
         static double goldCardPrice;
 
-        //Constructors
+        /*! @name Constructors */
+        ///@{
         School();
         School(const string& filename);
+        ///@}
 
         void addClient(Client* client);
         int clientIndex(unsigned int id);
@@ -24,34 +26,53 @@ class School {
 
         void addActivity(Activity* activity);
 
-        //Getters
+        /*! @name Getters */
+        ///@{
         vector<Activity*> getActivities() const;
         vector<Teacher *> getTeachers() const;
         vector<Client *> getClients() const;
-        //Read-Functions
+        ///@}
+
+        /** @name Read Functions
+         * This functions from the data files to internal data structures of the program.
+         */
+        ///@{
         void readClients();
         void readActivities();
         void readTeachers();
+        ///@}
+
         void enroll(const unsigned int clientId, const unsigned int activityId);
         void readClientsActivities(stringstream* scheduledActivities, stringstream* pastActivities, Client* c);
         void readTeachersActivities(stringstream* planned_activities, Teacher* t);
         void assign(const unsigned int teacherId, const unsigned int activityId);
+
+        /** @name Save Functions
+         * This functions save the alterations made to the respective data files.
+         */
+        ///@{
         void saveClients();
         void saveActivities();
         void saveTeachers();
+        ///@}
 
         void addTeacher(Teacher* teacher);
         int teacherIndex(unsigned int id);
         void removeTeacher(unsigned id);
 
     private:
-        // View Functions ← Display detailed information
+        /** @name View Functions
+         * This functions display information about the School elements.
+         */
+        ///@{
         void viewClients(bool detailed = true);
         void viewActivities(bool detailed = true);
         void viewMaterial();
         void viewTeachers(bool detailed = true);
-        vector<Time> getDatesFromActivicties(vector <Activity*> Activities);
         void viewDates(vector <Time> Dates);
+        ///@}
+
+        vector<Time> getDatesFromActivicties(vector <Activity*> Activities);
 
         friend ostream& operator<<(ostream& out, const School& S);
     private:
@@ -68,7 +89,7 @@ class School {
         vector<Activity*> ScheduledActivities;
 };
 
-//Exceptions
+/*! \cond */
 
 class NonExistentClient : std::exception {
     public:
@@ -78,30 +99,30 @@ class NonExistentClient : std::exception {
 
 std::ostream & operator <<(std::ostream &out,const NonExistentClient &client);
 
-class NonExistentTeacher : std::exception {
+class NonExistentTeacher : exception {
 public:
     unsigned int id;
     NonExistentTeacher(unsigned int id){this->id = id;};
 };
 
-std::ostream & operator <<(std::ostream &out,const NonExistentTeacher &teacher);
+ostream & operator <<(std::ostream &out,const NonExistentTeacher &teacher);
 
-class ClientAlreadyExists : std::exception {
+class ClientAlreadyExists : exception {
 public:
     unsigned int id;
     ClientAlreadyExists(unsigned int id){this->id = id;};
 };
 
-std::ostream & operator <<(std::ostream &out, const ClientAlreadyExists &client);
+ostream & operator <<(std::ostream &out, const ClientAlreadyExists &client);
 
-class TeacherAlreadyExists : std::exception {
-public:
-    unsigned int id;
-    TeacherAlreadyExists(unsigned int id){this->id = id;};
+class TeacherAlreadyExists : exception {
+        public:
+            unsigned int id;
+            TeacherAlreadyExists(unsigned int id){this->id = id;};
 };
 
-std::ostream & operator <<(std::ostream &out, const TeacherAlreadyExists &client);
+ostream & operator <<(std::ostream &out, const TeacherAlreadyExists &client);
 
-
+/*! \endcond */
 
 #endif //SUP_SCHOOL_SCHOOL_H

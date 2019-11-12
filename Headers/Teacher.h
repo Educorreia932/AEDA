@@ -30,6 +30,8 @@ private:
     vector<Activity *> Activities;
 };
 
+/*! \cond */
+
 class teacherHasActivityAtSameTime : std::exception {
 public:
     unsigned teacherId;
@@ -47,5 +49,7 @@ public:
 };
 
 ostream & operator <<(std::ostream &out,const teacherAlreadHasActivity &ids);
+
+/*! \endcond */
 
 #endif //SUP_SCHOOL_TEACHER_H

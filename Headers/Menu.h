@@ -41,14 +41,13 @@ class Menu {
         void consultScheduleSelection(int selected);
 };
 
-
-//Exceptions
+/*! \cond */
 
 class ImproperString: std::exception{
-    std::string msg;
+    string msg;
 public:
     ImproperString(std::string msg){this->msg = msg;}
-    std::string getMsg() const{return msg;}
+    string getMsg() const{return msg;}
 };
 
 class IdAlreadyExists: std::exception{
@@ -66,5 +65,6 @@ public:
     string getMsg() const{return msg;}
 };
 
+/*! \endcond */
 
 #endif //SUP_SCHOOL_MENU_H

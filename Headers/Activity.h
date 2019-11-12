@@ -64,7 +64,9 @@ class Windsurf : public Lesson {
         Windsurf(Time startTime,Time endTime,string name) : Lesson(startTime,endTime,name){};
 };
 
-//Exceptions
+vector<Activity*> eraseAndReturnVector(vector<Activity*> vec,unsigned int i);
+
+/*! \cond */
 
 class activityNonExistent : std::exception {
 public:
@@ -74,6 +76,6 @@ public:
 
 std::ostream & operator <<(std::ostream &out,const activityNonExistent &activity);
 
-vector<Activity*> eraseAndReturnVector(vector<Activity*> vec,unsigned int i);
+/*! \endcond */
 
 #endif //SUP_SCHOOL_ACTIVITY_H
