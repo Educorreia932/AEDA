@@ -14,17 +14,22 @@ public:
     void setID(int ID);
     void setType(string type);
     static void setLastID(const unsigned int id);
+    static void setCapacity(unsigned int capac);
+
 
     //Getter functions
     unsigned int getID() const;
     string getType() const;
     static unsigned int getLastID();
     vector<Activity*> getActivities() const;
+    static unsigned int getCapacity();
 private:
     string type;  //The type of material
     vector<Activity*> activities;
     unsigned int ID;
     static unsigned int last_id;
+
+    static unsigned int capacity;
 
     friend ostream &operator<<(ostream out, Material material);
 };

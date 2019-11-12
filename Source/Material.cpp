@@ -1,7 +1,8 @@
 #include "../Headers/Material.h"
 
-using namespace std;
 
+using namespace std;
+unsigned int Material::capacity = 0;
 unsigned int Material::last_id = 0;
 
 bool Material::beingUsed(Time startTime, Time endTime){
@@ -52,6 +53,9 @@ void Material::setLastID(unsigned int id) {
     last_id = id;
 }
 
+void Material::setCapacity(unsigned int capac){
+    capacity = capac;
+}
 //Getters
 unsigned int Material::getID() const{
     return ID;
@@ -67,4 +71,8 @@ vector<Activity *> Material::getActivities() const {
 
 unsigned int Material::getLastID(){
     return last_id;
+}
+
+static unsigned int Material::getCapacity(){
+    return capacity;
 }

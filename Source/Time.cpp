@@ -17,26 +17,27 @@ Time::Time(const string& t) {
     stringstream s(t);
     //What about space " " ?
     s >> day >> separator >> month >> separator >> year >> hours >> separator >> minutes;
+
     //Check if it's valid date
     try {
         if (year < 0) {
-            throw InvalidDate("Invalid year.\n");
+            throw InvalidDate("Invalid string.\n");
         }
         if(month <= 0 || month > 12){
-            throw InvalidDate("Invalid Month.\n");
+            throw InvalidDate("Invalid string.\n");
         }
         if(day <= 0 || day > numberOfdays()){
-            throw InvalidDate("Invalid Day.\n");
+            throw InvalidDate("Invalid string.\n");
         }
         if(hours < 0 || hours >= 24){
-            throw InvalidDate("Invalid Hour.\n");
+            throw InvalidDate("Invalid string.\n");
         }
         if(minutes < 0 || minutes >= 60){
-            throw InvalidDate("Invalid Minute.\n");
+            throw InvalidDate("Invalid string.\n");
         }
     }
-    catch(InvalidDate &a){
-        cerr << a.getMsg();
+    catch(InvalidDate &e) {
+        throw e;
     }
 }
 
