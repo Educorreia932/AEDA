@@ -80,6 +80,10 @@ int School::clientIndex(unsigned int id) {
     return -1;
 }
 
+vector<Client *> School::getClients() const{
+    return this->Clients;
+}
+
 vector<Activity *> School::getActivities() const {
     return this->Activities;
 }
@@ -495,4 +499,6 @@ int School::teacherIndex(unsigned int id) {
     return -1;
 }
 
-
+void School::addActivity(Activity* activity){
+    Activities.push_back(activity);
+}

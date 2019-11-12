@@ -2,16 +2,17 @@
 
 using namespace std;
 
+unsigned int Material::last_id = 0;
+
 bool Material::beingUsed(Time startTime, Time endTime){
-    if (startTime > endTime) { //Implement >=
-        throw ImpossibleTimeDiference(startTime, endTime);
-        /*
-        try {
-            throw ImpossibleTimeDiference(startTime, endTime);
+    try{
+        if (startTime > endTime) { //Implement >=
+            throw ImpossibleTimeDifference(startTime, endTime);
+
         }
-        catch (ImpossibleTimeDiference ImpossibleTimeDiference(Time startTime,Time endTime)){
-            cout << ImpossibleTimeDiference(startTime, endTime) << endl;
-        }*/
+    }
+    catch(ImpossibleTimeDifference &i){
+        cerr << "Start time of " << i.getStartTime() << " is after end time of " << i.getEndTime() << endl;
     }
 
     if (activities.size() == 0) //Or activity == NULL
@@ -25,12 +26,11 @@ bool Material::beingUsed(Time startTime, Time endTime){
     }
 
     return false;
-    //return !(endTime < activity->getStartTime() || startTime > activity->getEndTime());
 }
 
 ostream &operator<<(ostream &out, Material material) {
-    out << "This is a" <<  material.getObjectType() << ", which is going to be used by:\n";
-    for(int i= 0; i < material.getObjectType().size(); i++){
+    out << "This is a" <<  material.getType() << ", which is going to be used by:\n";
+    for(int i= 0; i < material.getType().size(); i++){
         cout << (material.getActivities())[i]->getName();
         if(i != material.getActivities().size() - 1){
             cout << ", ";
@@ -39,10 +39,32 @@ ostream &operator<<(ostream &out, Material material) {
     return out;
 }
 
-string Material::getObjectType() const{
-    return objectType;
+//Setters
+void Material::setID(int ID){
+    this->ID = ID;
+}
+
+void Material::setType(string type){
+    this->type = type;
+}
+
+void Material::setLastID(unsigned int id) {
+    last_id = id;
+}
+
+//Getters
+unsigned int Material::getID() const{
+    return ID;
+}
+
+string Material::getType() const{
+    return type;
 }
 
 vector<Activity *> Material::getActivities() const {
     return activities;
+}
+
+unsigned int Material::getLastID(){
+    return last_id;
 }

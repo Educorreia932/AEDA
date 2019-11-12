@@ -25,6 +25,7 @@ class School {
         //Getters
         vector<Activity*> getActivities() const;
         vector<Teacher *> getTeachers() const;
+        vector<Client *> getClients() const;
         //Read-Functions
         void readClients();
         void readActivities();

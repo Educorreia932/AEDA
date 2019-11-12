@@ -12,4 +12,7 @@ bool stob(const string &s);
 string btos(const bool &b);
 string centerString(int width, const string& s);
 
+//template <class T>
+//vector<T*> eraseAndReturnVector(vector<T*> vec,unsigned int i); //Calls std::erase for vector, but returns the vector without the element instead of just the element
+
 #endif //SUP_SCHOOL_AUXILIARY_H

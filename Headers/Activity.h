@@ -2,7 +2,7 @@
 #define SUP_SCHOOL_ACTIVITY_H
 
 #include "Time.h"
-
+#include <vector>
 class Activity {
     protected:
         string name;
@@ -28,6 +28,7 @@ class Activity {
         void setEndTime(string time);
 
         virtual unsigned int CalcCost() const;
+
 
         friend ostream& operator<<(ostream& out, const Activity& A);
 };
@@ -71,5 +72,7 @@ public:
 };
 
 std::ostream & operator <<(std::ostream &out,const activityNonExistant &activity);
+
+vector<Activity*> eraseAndReturnVector(vector<Activity*> vec,unsigned int i);
 
 #endif //SUP_SCHOOL_ACTIVITY_H

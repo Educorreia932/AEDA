@@ -23,7 +23,13 @@ class Menu {
         static int showManageClients();
         void manageClientsSelection(int selected);
         void createClient();
-        
+
+        //Activity related
+        static int showManageActivities();
+        void manageActivitiesSelection(int selected);
+        void createActivity();
+        void removeActivity();
+
         // Teacher related
         static int showManageTeachers();
         void manageTeachersSelection(int selected);
@@ -33,5 +39,31 @@ class Menu {
         static int showConsultSchedule();
         void consultScheduleSelection(int selected);
 };
+
+
+//Exceptions
+
+class ImproperString: std::exception{
+    std::string msg;
+public:
+    ImproperString(std::string msg){this->msg = msg;}
+    std::string getMsg() const{return msg;}
+};
+
+class IdAlreadyExists: std::exception{
+public:
+    IdAlreadyExists(){};
+};
+
+class InvalidActivity{
+private:
+    string msg;
+public:
+    InvalidActivity(string msg){
+        this->msg = msg;
+    }
+    string getMsg() const{return msg;}
+};
+
 
 #endif //SUP_SCHOOL_MENU_H
