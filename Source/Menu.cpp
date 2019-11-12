@@ -198,6 +198,8 @@ void Menu::manageTeachersSelection(int selected) {
 
             selected_teacher = readOption(0, Teacher::getLastID() - 1);
 
+            changeTeachers(selected_teacher); //Needs to catch exception in client index inside function
+
             pause();
             return;
         case 3:
@@ -283,6 +285,30 @@ void Menu::createTeacher() {
 
     cout << endl;
     pause();
+}
+
+void Menu::changeTeachers(int teacherId) {
+
+    cout << "What information do you want to change? Insert the corresponding key." << endl
+         << endl
+         << "1) Change the teacher name" << endl
+         << "0) Go back" << endl
+         << endl;
+
+    int selected_option = readOption(0, 4);
+    string aux;
+
+    switch (selected_option) {
+        case 1:
+            cout << "What's the name of the new teacher? " << endl;
+            getline(cin, aux);
+            SUPSchool->Teachers[SUPSchool->teacherIndex(teacherId)]->setName(aux);
+            cout << endl;
+            break;
+        case 0:
+            return;
+
+    }
 }
 
 
