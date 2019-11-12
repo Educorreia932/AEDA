@@ -17,6 +17,27 @@ Time::Time(const string& t) {
     stringstream s(t);
     //What about space " " ?
     s >> day >> separator >> month >> separator >> year >> hours >> separator >> minutes;
+    //Check if it's valid date
+    try {
+        if (year < 0) {
+            throw InvalidDate("Invalid year.\n");
+        }
+        if(month <= 0 || month > 12){
+            throw InvalidDate("Invalid Month.\n");
+        }
+        if(day <= 0 || day > numberOfdays()){
+            throw InvalidDate("Invalid Day.\n");
+        }
+        if(hours < 0 || hours >= 24){
+            throw InvalidDate("Invalid Hour.\n");
+        }
+        if(minutes < 0 || minutes >= 60){
+            throw InvalidDate("Invalid Minute.\n");
+        }
+    }
+    catch(InvalidDate &a){
+        cerr << a.getMsg();
+    }
 }
 
 Time::Time(short day, short month, short year) {
@@ -25,6 +46,21 @@ Time::Time(short day, short month, short year) {
     this->year = year;
     hours = 0;
     minutes = 0;
+    //Check if it's valid date
+    try{
+        if (year < 0) {
+            throw InvalidDate("Invalid year.\n");
+        }
+        if(month <= 0 || month > 12){
+            throw InvalidDate("Invalid Month.\n");
+        }
+        if(day <= 0 || day > numberOfdays()){
+            throw InvalidDate("Invalid Day.\n");
+        }
+    }
+    catch(InvalidDate &a){
+        cerr << a.getMsg();
+    }
 }
 
 Time::Time(short day, short month, short year, short hours, short minutes) {
@@ -34,6 +70,26 @@ Time::Time(short day, short month, short year, short hours, short minutes) {
     this->hours = hours;
     this->minutes = minutes;
     //Check if it's valid date
+    try {
+        if (year < 0) {
+            throw InvalidDate("Invalid year.\n");
+        }
+        if(month <= 0 || month > 12){
+            throw InvalidDate("Invalid Month.\n");
+        }
+        if(day <= 0 || day > numberOfdays()){
+            throw InvalidDate("Invalid Day.\n");
+        }
+        if(hours < 0 || hours >= 24){
+            throw InvalidDate("Invalid Hour.\n");
+        }
+        if(minutes < 0 || minutes >= 60){
+            throw InvalidDate("Invalid Minute.\n");
+        }
+    }
+    catch(InvalidDate &a){
+        cerr << a.getMsg();
+    }
 }
 
 short Time::getYear() const {
@@ -236,16 +292,6 @@ ostream &operator<<(ostream &out, Time t) {
         << ' ' << setfill('0') << setw(2) << t.getHours()
         << ':' << setfill('0') << setw(2) << t.getMinutes(); // Hours and Minutes
 
-    return out;
-}
-
-ImpossibleTimeDiference::ImpossibleTimeDiference(Time startTime, Time endTime){
-    this->startTime = startTime;
-    this->endTime = endTime;
-}
-
-ostream &operator<<(ostream &out, const ImpossibleTimeDiference &times) {
-    out << "ERROR: The starting time of " << times.startTime << " is after " << times.endTime << endl;
     return out;
 }
 

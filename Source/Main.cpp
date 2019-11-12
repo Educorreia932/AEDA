@@ -3,6 +3,9 @@
 using namespace std;
 
 int main() {
+    if(1 < 5){
+        cout << "I?AWEPOwqdpuaiweuOPKDoqw89udqwpuh BRUH" << endl;
+    }
     auto* PortoSUPSchool = new School("../Data/School.txt");
     Menu SUPMenu(PortoSUPSchool);
     int selected;

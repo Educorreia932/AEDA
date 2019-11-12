@@ -80,6 +80,10 @@ int School::clientIndex(unsigned int id) {
     return -1;
 }
 
+vector<Client *> School::getClients() const{
+    return this->Clients;
+}
+
 vector<Activity *> School::getActivities() const {
     return this->Activities;
 }
@@ -273,6 +277,9 @@ void School::assign(const unsigned int teacherId, const unsigned int activityId)
             catch (teacherAlreadHasActivity &e) {
                 throw e;
             }
+            catch(teacherHasActivityAtSameTime &e){
+                throw e;
+            }
         }
     }
 
@@ -376,13 +383,20 @@ std::ostream &operator<<(std::ostream &out, const TeacherAlreadyExists &teacher)
     return out;
 }
 
-void School::viewActivities(){
-    cout << "All activities:\n";
-    cout << "---------------------" << endl;
-
-    for (const auto & Activity : Activities) {
-        cout << *Activity;
+void School::viewActivities(bool detailed){
+    if(detailed) {
+        cout << "All activities:\n";
         cout << "---------------------" << endl;
+
+        for (const auto &Activity : Activities) {
+            cout << *Activity;
+            cout << "---------------------" << endl;
+        }
+    }
+    else{
+        for (auto & activity : Activities)
+            cout << activity->getName() << " - " << activity->getId() << endl;
+
     }
 }
 
@@ -493,6 +507,19 @@ int School::teacherIndex(unsigned int id) {
     }
 
     return -1;
+}
+
+void School::addActivity(Activity* activity){
+    Activities.push_back(activity);
+}
+void School::removeTeacher(unsigned id) {
+
+    if (teacherIndex(id) == -1)
+        throw NonExistantTeacher(id);
+
+    Teachers.erase(Teachers.begin()+teacherIndex(id));
+
+
 }
 
 

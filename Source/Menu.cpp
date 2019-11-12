@@ -34,6 +34,9 @@ void Menu::mainMenuSelection(int selected) {
         case 3: // Manage teachers
             manageTeachersSelection(showManageTeachers());
             return;
+        case 4: //Manage activities
+            manageActivitiesSelection(showManageActivities());
+            pause();
         case 5: // Consult clients
             SUPSchool->viewClients();
             pause();
@@ -94,13 +97,13 @@ void Menu::manageClientsSelection(int selected) {
 
             cout << endl;
 
-            selected_client = readOption(0, SUPSchool->Clients[0]->getLastID() - 1);
+            selected_client = readOption(0, Client::getLastID() - 1);
 
             pause();
             return;
         case 4:
             cout << "Insert the client ID: " << endl; //Make function to display the clients
-            selected_client = readOption(0, SUPSchool->Clients[0]->getLastID() - 1);
+            selected_client = readOption(0, Client::getLastID() - 1);
 
             cout << "Insert the activity ID: " << endl;
             selected_activity = readOption(0, SUPSchool->Activities.size() - 1);
@@ -196,16 +199,39 @@ void Menu::manageTeachersSelection(int selected) {
 
             cout << endl;
 
-            selected_teacher = readOption(0, SUPSchool->Teachers[0]->getLastID() - 1);
+            selected_teacher = readOption(0, Teacher::getLastID() - 1);
+
+            changeTeachers(selected_teacher); //Needs to catch exception in client index inside function
+
+            pause();
+            return;
+        case 3:
+            cout << "Which client do you wish to remove? Insert the corresponding ID." << endl
+                 << endl;
+
+            SUPSchool->viewTeachers(false);
+
+            cout << endl;
+
+            selected_teacher = readOption(0, Teacher::getLastID() - 1);
+
+            try {
+                SUPSchool->removeTeacher(selected_teacher);
+            }catch(NonExistantTeacher &e){
+                cout << e;
+            }
 
             pause();
             return;
         case 4:
             cout << "Insert the teacher ID: " << endl; //Make function to display the clients
-            selected_teacher = readOption(0, SUPSchool->Teachers[0]->getLastID() - 1);
+
+            SUPSchool->viewTeachers(false);
+            selected_teacher = readOption(0, Teacher::getLastID() - 1);
 
             cout << "Insert the activity ID: " << endl;
-            selected_activity = readOption(0, SUPSchool->Teachers.size() - 1);
+            SUPSchool->viewActivities(false);
+            selected_activity = readOption(0, Activity::getLastID() - 1);
 
             try {
                 SUPSchool->assign(selected_teacher, selected_activity);
@@ -216,6 +242,10 @@ void Menu::manageTeachersSelection(int selected) {
             }
 
             catch (NonExistantTeacher &e) {
+                cerr << e;
+
+            } catch(activityNonExistant &e){
+
                 cerr << e;
             }
 
@@ -259,6 +289,225 @@ void Menu::createTeacher() {
     pause();
 }
 
+void Menu::changeTeachers(int teacherId) {
+
+    cout << "What information do you want to change? Insert the corresponding key." << endl
+         << endl
+         << "1) Change the teacher name" << endl
+         << "0) Go back" << endl
+         << endl;
+
+    int selected_option = readOption(0, 4);
+    string aux;
+
+    switch (selected_option) {
+        case 1:
+            cout << "What's the name of the new teacher? " << endl;
+            getline(cin, aux);
+            SUPSchool->Teachers[SUPSchool->teacherIndex(teacherId)]->setName(aux);
+            cout << endl;
+            break;
+        case 0:
+            return;
+
+    }
+}
+
+
+int Menu::showManageActivities(){
+    clearScreen();
+
+    cout << "What do you want to do? Insert the corresponding key." << endl
+         << endl
+         << "1) Create a new activity." << endl
+         << "2) Change the information of a activity." << endl
+         << "3) Remove an existent activity." << endl //Remove from everything
+         << "0) Go back" << endl
+         << endl;
+
+    return readOption(0, 3);
+}
+
+
+void Menu::manageActivitiesSelection(int selected) {
+    clearScreen();
+
+    switch (selected) {
+        case 1:
+            createActivity();
+        case 2:
+            removeActivity();
+        case 0: return;
+    }
+}
+
+void Menu::createActivity(){
+
+    cout << "Add Activity:" << endl << endl;
+    cout << "Name " << endl;
+    string thing;
+    string name;
+    getline(cin, name);
+    cout << "Start Date (DD/MM/YYYY HH:MM) " << endl;
+    getline(cin, thing);
+    string currentDatePart = "";
+    int streamPhase = 0;
+    int date[5] = {};
+    try { //Parsing strings
+        cout << "Date: " << endl;
+        for (int i = 0; i < thing.length(); i++) {
+            if (thing[i] == '/') {
+                if (streamPhase < 2) {
+                    date[streamPhase] = stoi(currentDatePart);
+                    streamPhase++;
+                    currentDatePart = "";
+                } else {
+                    throw ImproperString("Too many forward slashes in date\n.");
+                }
+            } else if (thing[i] == ' ') {
+                if(streamPhase == 2){
+                    date[streamPhase] = stoi(currentDatePart);
+                    streamPhase++;
+                    currentDatePart = "";
+                }
+                else{
+                    throw ImproperString("Too many spaces in date\n.");
+                }
+            } else if (thing[i] == ':') {
+                if(streamPhase == 3){
+                    date[streamPhase] = stoi(currentDatePart);
+                    streamPhase++;
+                    currentDatePart = "";
+                }
+                else{
+                    throw ImproperString("Too many colons in date\n.");
+                }
+            }
+            else if (!isdigit(thing[i])){
+                throw ImproperString("Non number included in date\n.");
+            }
+            else{
+                currentDatePart += thing[i];
+            }
+        }
+        date[4] = stoi(currentDatePart);
+    }
+    catch(ImproperString &s){
+        cerr << s.getMsg();
+        cin.ignore(1000, '\n');
+    }
+    int date2[5] ={};
+    date2[0] = date[0];
+    date2[1] = date[1];
+    date2[2] = date[2];
+
+    cout << "End Date (HH:MM) " << endl;
+    streamPhase = 3;
+    getline(cin, thing);
+    currentDatePart = "";
+    try{
+        for(int i = 0; i < thing.length(); i++){
+            if(thing[i] == ':'){
+                if(streamPhase < 4){
+                    date2[streamPhase] = stoi(currentDatePart);
+                    streamPhase++;
+                    currentDatePart = "";
+                }
+                else{
+                    throw ImproperString("Too many colons in string.\n");
+                }
+            }
+            else if(!isdigit(thing[i])){
+                throw ImproperString("Invalid symbol in string.\n");
+            }
+            else{
+                currentDatePart += thing[i];
+            }
+        }
+        date2[4] = stoi(currentDatePart);
+    }
+    catch(ImproperString &e){
+        cerr << e.getMsg();
+    }
+    //Setting times and creating activities
+    //Activity *ac;
+    try{
+        Time t1(date[0], date[1], date[2], date[3], date[4]);
+        Time t2(date2[0], date2[1], date2[2], date2[3], date2[4]);
+        Activity a(t1, t2, name);
+        SUPSchool->addActivity(&a);
+        cout << (*SUPSchool->getActivities()[7]) << endl;
+        cout << (*SUPSchool->getActivities()[7]) << endl;
+        cout << (*SUPSchool->getActivities()[7]) << endl;
+        cout << (*SUPSchool->getActivities()[7]) << endl;
+        cout << (*SUPSchool->getActivities()[7]) << endl;
+        cout << (*SUPSchool->getActivities()[7]) << endl;
+        cout << (*SUPSchool->getActivities()[7]) << endl;
+        cout << (*SUPSchool->getActivities()[7]) << endl;
+        cout << (*SUPSchool->getActivities()[7]) << endl;
+        cout << (*SUPSchool->getActivities()[7]) << endl;
+        cout << (*SUPSchool->getActivities()[7]) << endl;
+        cout << (*SUPSchool->getActivities()[7]) << endl;
+        cout << (*SUPSchool->getActivities()[7]) << endl;
+        cout << (*SUPSchool->getActivities()[7]) << endl;
+        cout << (*SUPSchool->getActivities()[7]) << endl;
+        cout << (*SUPSchool->getActivities()[7]) << endl;
+        cout << (*SUPSchool->getActivities()[7]) << endl;
+    }
+    catch(InvalidActivity &e){
+        cerr << e.getMsg();
+    }
+    cin.ignore(1000, '\n');
+}
+
+
+void Menu::removeActivity() {
+    string IDstring;
+    cout << "Insert ID of the activity:\n";
+    cin >> IDstring;
+
+    //Checking if IDstring is a number
+    try{
+        for(int i = 0; i < IDstring.size(); i++){
+            if(!isdigit(IDstring[i])){
+                throw(ImproperString("Not a number.\n"));
+            }
+        }
+    }
+    catch(ImproperString &e){
+        cerr << e.getMsg();
+    }
+
+    //Convert IDstring to int
+    int ID = stoi(IDstring);
+
+
+    int index = -1;
+    //Check if ID already exists
+    try {
+        for(int i = 0; i < SUPSchool->Activities.size(); i++){
+            if(SUPSchool->Activities[i]->getId() == ID){
+                index = i;
+            }
+        }
+        if(index == -1){
+            throw IdAlreadyExists();
+        }
+    }
+    catch(IdAlreadyExists &e){
+        cerr << "ID already exists.\n";
+    }
+    //Removing the activity
+    for(int i = 0; i < SUPSchool->getClients().size(); i++){
+        if(SUPSchool->getClients()[i]->getId() == ID){
+            SUPSchool->getClients()[i]->setActivities(eraseAndReturnVector(SUPSchool->getClients()[i]->getScheduledActivities(), i));
+            //Make the materials used by the client unused
+        }
+    }
+
+
+}
+
 // Schedule --------------------
 
 int Menu::showConsultSchedule() {
@@ -276,7 +525,6 @@ int Menu::showConsultSchedule() {
 }
 
 void Menu::consultScheduleSelection(int selected) {
-    //test -v
     int selected_client, selected_teacher, client_index, teacher_index, begin_date, end_date;
     Schedule<Client>* s1;
     Schedule<Teacher>* s2;

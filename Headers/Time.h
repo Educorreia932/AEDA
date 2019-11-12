@@ -51,13 +51,12 @@ class Time{
         friend Time operator -(Time const startTime, Time const endTime);
 };
 
-class ImpossibleTimeDiference : std::exception {
+class InvalidDate : std::exception {
+    string msg;
 public:
-    Time startTime;
-    Time endTime;
-    ImpossibleTimeDiference(Time startTime, Time endTime);
+    InvalidDate(string msg){this->msg = msg;}
+    string getMsg() const{return msg;}
 };
 
-ostream &operator<<(ostream &out, const ImpossibleTimeDiference &times);
 
 #endif

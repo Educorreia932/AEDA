@@ -120,4 +120,3 @@ ostream &operator<<(std::ostream &out, const teacherAlreadHasActivity &ids) {
     out << "Teacher with ID \"" << ids.teacherId << "\" already is already enrolled in activity with ID \"" << ids.activityId << "\"." << endl;
     return out;
 }
-

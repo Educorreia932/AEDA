@@ -32,6 +32,13 @@ string centerString(int width, const string& s) {
 
     return result;
 }
+/*
+template <class T>
+vector<T*> eraseAndReturnVector(vector<T*> vec,unsigned int i){
+    erase(vec, i);
+    return vec;
+}
+*/
 
 string btos(const bool &b) {
     if (b)
@@ -39,3 +46,4 @@ string btos(const bool &b) {
 
     return "false";
 };
+

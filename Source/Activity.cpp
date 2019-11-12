@@ -1,14 +1,16 @@
 #include "../Headers/Activity.h"
 
+#include <vector>
 using namespace std;
 
 unsigned int Activity::last_id = 0;
 
 Activity::Activity() {
-
+    this->id = Activity::last_id++;
 }
 
 Activity::Activity(Time startTime, Time endTime, string name) {
+    this->name = name;
     this->startTime = startTime;
     this->endTime = endTime;
     this->id = Activity::last_id++;
@@ -58,6 +60,10 @@ ostream &operator<<(ostream &out, const Activity &A) {
     return out;
 }
 
+unsigned int Activity::getLastID() {
+    return last_id;
+}
+
 unsigned int Lesson::CalcCost() const {
     return 0;
 }
@@ -69,4 +75,10 @@ unsigned int Ride::CalcCost() const {
 std::ostream &operator<<(std::ostream &out, const activityNonExistant &activity) {
     out << "Activity with ID \"" << activity.id << "\" does not exist." << endl;
     return out;
+}
+
+
+vector<Activity*> eraseAndReturnVector(vector<Activity*> vec,unsigned int i){
+    vec.erase(vec.begin() + i);
+    return vec;
 }

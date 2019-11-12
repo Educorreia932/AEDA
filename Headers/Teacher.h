@@ -5,30 +5,29 @@
 
 #include <vector>
 
-
 class Teacher {
-    public:
-        Teacher();
-        Teacher(string name);
+public:
+    Teacher();
+    Teacher(string name);
 
-        void setID(const unsigned int id);
-        unsigned getID()const ;
-        static unsigned int getLastID( );
-        static void setLastID(const unsigned int id);
-        void setName(string name);
-        string getName() const;
-        void addActivity(Activity* activity);
-        bool isOcuppied(const Time startTime, const Time endTime);
-        string getActivitiesID() const;
-        vector<Activity*> getScheduledActivities() const;
-        vector<Activity*> getScheduleActivitiesByDate(Time Date) const;
+    void setID(const unsigned int id);
+    unsigned getID()const ;
+    static unsigned int getLastID( );
+    static void setLastID(const unsigned int id);
+    void setName(string name);
+    string getName() const;
+    void addActivity(Activity* activity);
+    bool isOcuppied(const Time startTime, const Time endTime);
+    string getActivitiesID() const;
+    vector<Activity*> getScheduledActivities() const;
+    vector<Activity*> getScheduleActivitiesByDate(Time Date) const;
 
-        friend ostream& operator<<(ostream& out, const Teacher& C);
-    private:
-        string name;
-        unsigned int id;
-        static unsigned int last_id;
-        vector<Activity *> Activities;
+    friend ostream& operator<<(ostream& out, const Teacher& C);
+private:
+    string name;
+    unsigned int id;
+    static unsigned int last_id;
+    vector<Activity *> Activities;
 };
 
 class teacherHasActivityAtSameTime : std::exception {
@@ -38,7 +37,7 @@ public:
     teacherHasActivityAtSameTime(unsigned int teacherId,unsigned int activityId){teacherId = teacherId;activityId = activityId;};
 };
 
-std::ostream & operator <<(std::ostream &out,const teacherHasActivityAtSameTime &ids);
+ostream & operator <<(ostream &out,const teacherHasActivityAtSameTime &ids);
 
 class teacherAlreadHasActivity : std::exception {
 public:
@@ -47,6 +46,6 @@ public:
     teacherAlreadHasActivity(unsigned int teacherId,unsigned int activityId){teacherId = teacherId;activityId = activityId;};
 };
 
-std::ostream & operator <<(std::ostream &out,const teacherAlreadHasActivity &ids);
+ostream & operator <<(std::ostream &out,const teacherAlreadHasActivity &ids);
 
 #endif //SUP_SCHOOL_TEACHER_H
