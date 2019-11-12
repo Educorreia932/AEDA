@@ -73,8 +73,9 @@ int Menu::showManageClients() {
          << "1) Create a new client." << endl
          << "2) Change the information of a client." << endl //<- perhaps ask for admin permission/password
          << "3) Add funds "<< endl
-         << "4) Remove an existent client." << endl //<- Remove all information associated with him
-         << "5) Enroll a client in an activity." << endl //<- and remove him from a planned activity
+         << "4) Purchase gold card" << endl
+         << "5) Remove an existent client." << endl //<- Remove all information associated with him
+         << "6) Enroll a client in an activity." << endl //<- and remove him from a planned activity
          << "0) Go back" << endl
          << endl;
 
@@ -124,8 +125,25 @@ void Menu::manageClientsSelection(int selected) {
                 cerr << e;
             }
             break;
+        case 4:
+            cout << "Which client wants to purchase the gold card?" << endl;
 
-        case 5:
+            SUPSchool->viewClients(false);
+
+            cout << endl;
+
+            selected_client = readOption(0, Client::getLastID() - 1);
+
+            try {
+                SUPSchool->Clients[SUPSchool->clientIndex(selected_client)]->purchaseGold();
+            } catch (insufficientFunds &e){
+                cerr << e;
+            } catch (alreadyGoldMember &e){
+                cerr << e;
+            }
+
+            break;
+        case 6:
             cout << "Insert the client ID: " << endl; //Make function to display the clients
             selected_client = readOption(0, Client::getLastID() - 1);
 
@@ -140,7 +158,7 @@ void Menu::manageClientsSelection(int selected) {
                 cerr << e;
             }
 
-            catch (NonExistantClient &e) {
+            catch (NonExistentClient &e) {
                 cerr << e;
             }
 
@@ -255,7 +273,7 @@ void Menu::manageTeachersSelection(int selected) {
 
             try {
                 SUPSchool->removeTeacher(selected_teacher);
-            }catch(NonExistantTeacher &e){
+            }catch(NonExistentTeacher &e){
                 cout << e;
             }
 
@@ -279,10 +297,10 @@ void Menu::manageTeachersSelection(int selected) {
                 cerr << e;
             }
 
-            catch (NonExistantTeacher &e) {
+            catch (NonExistentTeacher &e) {
                 cerr << e;
 
-            } catch(activityNonExistant &e){
+            } catch(activityNonExistent &e){
 
                 cerr << e;
             }
