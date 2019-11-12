@@ -36,7 +36,7 @@ void Menu::mainMenuSelection(int selected) {
             return;
         case 4: //Manage activities
             manageActivitiesSelection(showManageActivities());
-            pause();
+            return;
         case 5: // Consult clients
             SUPSchool->viewClients();
             pause();
@@ -268,7 +268,6 @@ void Menu::createTeacher() {
     t->setName(aux);
     cout << endl;
 
-
     try {
         SUPSchool->addTeacher(t);
     }
@@ -290,7 +289,6 @@ void Menu::createTeacher() {
 }
 
 void Menu::changeTeachers(int teacherId) {
-
     cout << "What information do you want to change? Insert the corresponding key." << endl
          << endl
          << "1) Change the teacher name" << endl
@@ -313,7 +311,6 @@ void Menu::changeTeachers(int teacherId) {
     }
 }
 
-
 int Menu::showManageActivities(){
     clearScreen();
 
@@ -328,138 +325,42 @@ int Menu::showManageActivities(){
     return readOption(0, 3);
 }
 
-
 void Menu::manageActivitiesSelection(int selected) {
     clearScreen();
 
     switch (selected) {
         case 1:
             createActivity();
+            return;
         case 2:
             removeActivity();
-        case 0: return;
+            return;
+        case 0:
+            return;
     }
 }
 
-void Menu::createActivity(){
+void Menu::createActivity() {
+    auto *a = new Activity();
+    string aux;
 
-    cout << "Add Activity:" << endl << endl;
-    cout << "Name " << endl;
-    string thing;
-    string name;
-    getline(cin, name);
-    cout << "Start Date (DD/MM/YYYY HH:MM) " << endl;
-    getline(cin, thing);
-    string currentDatePart = "";
-    int streamPhase = 0;
-    int date[5] = {};
-    try { //Parsing strings
-        cout << "Date: " << endl;
-        for (int i = 0; i < thing.length(); i++) {
-            if (thing[i] == '/') {
-                if (streamPhase < 2) {
-                    date[streamPhase] = stoi(currentDatePart);
-                    streamPhase++;
-                    currentDatePart = "";
-                } else {
-                    throw ImproperString("Too many forward slashes in date\n.");
-                }
-            } else if (thing[i] == ' ') {
-                if(streamPhase == 2){
-                    date[streamPhase] = stoi(currentDatePart);
-                    streamPhase++;
-                    currentDatePart = "";
-                }
-                else{
-                    throw ImproperString("Too many spaces in date\n.");
-                }
-            } else if (thing[i] == ':') {
-                if(streamPhase == 3){
-                    date[streamPhase] = stoi(currentDatePart);
-                    streamPhase++;
-                    currentDatePart = "";
-                }
-                else{
-                    throw ImproperString("Too many colons in date\n.");
-                }
-            }
-            else if (!isdigit(thing[i])){
-                throw ImproperString("Non number included in date\n.");
-            }
-            else{
-                currentDatePart += thing[i];
-            }
-        }
-        date[4] = stoi(currentDatePart);
-    }
-    catch(ImproperString &s){
-        cerr << s.getMsg();
-        cin.ignore(1000, '\n');
-    }
-    int date2[5] ={};
-    date2[0] = date[0];
-    date2[1] = date[1];
-    date2[2] = date[2];
+    cout << "What's the name of the new activity? ";
 
-    cout << "End Date (HH:MM) " << endl;
-    streamPhase = 3;
-    getline(cin, thing);
-    currentDatePart = "";
-    try{
-        for(int i = 0; i < thing.length(); i++){
-            if(thing[i] == ':'){
-                if(streamPhase < 4){
-                    date2[streamPhase] = stoi(currentDatePart);
-                    streamPhase++;
-                    currentDatePart = "";
-                }
-                else{
-                    throw ImproperString("Too many colons in string.\n");
-                }
-            }
-            else if(!isdigit(thing[i])){
-                throw ImproperString("Invalid symbol in string.\n");
-            }
-            else{
-                currentDatePart += thing[i];
-            }
-        }
-        date2[4] = stoi(currentDatePart);
-    }
-    catch(ImproperString &e){
-        cerr << e.getMsg();
-    }
-    //Setting times and creating activities
-    //Activity *ac;
-    try{
-        Time t1(date[0], date[1], date[2], date[3], date[4]);
-        Time t2(date2[0], date2[1], date2[2], date2[3], date2[4]);
-        Activity a(t1, t2, name);
-        SUPSchool->addActivity(&a);
-        cout << (*SUPSchool->getActivities()[7]) << endl;
-        cout << (*SUPSchool->getActivities()[7]) << endl;
-        cout << (*SUPSchool->getActivities()[7]) << endl;
-        cout << (*SUPSchool->getActivities()[7]) << endl;
-        cout << (*SUPSchool->getActivities()[7]) << endl;
-        cout << (*SUPSchool->getActivities()[7]) << endl;
-        cout << (*SUPSchool->getActivities()[7]) << endl;
-        cout << (*SUPSchool->getActivities()[7]) << endl;
-        cout << (*SUPSchool->getActivities()[7]) << endl;
-        cout << (*SUPSchool->getActivities()[7]) << endl;
-        cout << (*SUPSchool->getActivities()[7]) << endl;
-        cout << (*SUPSchool->getActivities()[7]) << endl;
-        cout << (*SUPSchool->getActivities()[7]) << endl;
-        cout << (*SUPSchool->getActivities()[7]) << endl;
-        cout << (*SUPSchool->getActivities()[7]) << endl;
-        cout << (*SUPSchool->getActivities()[7]) << endl;
-        cout << (*SUPSchool->getActivities()[7]) << endl;
-    }
-    catch(InvalidActivity &e){
-        cerr << e.getMsg();
-    }
-    cin.ignore(1000, '\n');
+    getline(cin, aux);
+    a->setName(aux);
+
+    cout << endl << "What's the start date (DD/MM/YYYY HH:MM) of the activity? ";
+
+    getline(cin, aux);
+    a->setStartTime(aux);
+
+    cout << endl << "What's the end date (HH:MM) of the activity? ";
+
+    getline(cin, aux);
+    a->setEndTime(aux);
+
+    SUPSchool->addActivity(a);
 }
-
 
 void Menu::removeActivity() {
     string IDstring;
