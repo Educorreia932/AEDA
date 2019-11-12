@@ -72,8 +72,9 @@ int Menu::showManageClients() {
          << endl
          << "1) Create a new client." << endl
          << "2) Change the information of a client." << endl //<- perhaps ask for admin permission/password
-         << "3) Remove an existent client." << endl //<- Remove all information associated with him
-         << "4) Enroll a client in an activity." << endl //<- and remove him from a planned activity
+         << "3) Add funds "<< endl
+         << "4) Remove an existent client." << endl //<- Remove all information associated with him
+         << "5) Enroll a client in an activity." << endl //<- and remove him from a planned activity
          << "0) Go back" << endl
          << endl;
 
@@ -82,6 +83,7 @@ int Menu::showManageClients() {
 
 void Menu::manageClientsSelection(int selected) {
     int selected_client, selected_activity;
+    double amount;
 
     clearScreen();
 
@@ -101,7 +103,29 @@ void Menu::manageClientsSelection(int selected) {
 
             pause();
             return;
-        case 4:
+        case 3:
+            cout << "Which client do you wish to add funds to?" << endl;
+
+            SUPSchool->viewClients(false);
+
+            cout << endl;
+
+            selected_client = readOption(0, Client::getLastID() - 1);
+
+            cout << "Current balance: " << SUPSchool->Clients[SUPSchool->clientIndex(selected_client)]->getBalance()
+                 << endl;
+
+
+            amount = readOption(0,999999);
+
+            try {
+                SUPSchool->Clients[SUPSchool->clientIndex(selected_client)]->addBalance(amount);
+            } catch (insufficientFunds &e){
+                cerr << e;
+            }
+            break;
+
+        case 5:
             cout << "Insert the client ID: " << endl; //Make function to display the clients
             selected_client = readOption(0, Client::getLastID() - 1);
 
@@ -133,6 +157,7 @@ void Menu::createClient() {
     auto *c = new Client();
     string aux;
     stringstream aux_stream;
+    double balance;
 
     cout << "What's the name of the new client? " << endl;
     getline(cin, aux);
@@ -144,6 +169,19 @@ void Menu::createClient() {
     cout << endl;
 
     c->setGoldMember(aux == "Y");
+
+    cout << "What is the starting balance of the client?" << endl;
+    balance = readOption(0,999999);
+
+    try{
+        c->addBalance(balance);
+        //Probably wont fail because of readOption
+    } catch(insufficientFunds &e){
+       cerr << e;
+    }
+
+
+    cout << endl;
 
     try {
         SUPSchool->addClient(c);
