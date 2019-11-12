@@ -132,11 +132,12 @@ void School::readClients() {
     ifstream File("../Data/" + Files["Clients"]);
     int counter = 0;
     auto* auxClient = new Client();
-    auto* planned_activities = new stringstream;
+    auto* scheduledActivities = new stringstream;
+    auto* pastActivities = new stringstream;
 
     if (File.is_open()) {
         while (getline(File, line)) {
-                switch (counter % 5) {
+                switch (counter % 6) {
                     case 0:
                         auxClient->setName(line);
                         break;
@@ -151,14 +152,17 @@ void School::readClients() {
                         auxClient->setGoldMember(stob(line));
                         break;
                     case 3:
-                        *planned_activities << line;
+                        *pastActivities << line;
                         break;
                     case 4:
+                        *scheduledActivities << line;
+                        break;
+                    case 5:
                         Clients.push_back(auxClient);
 
-                        readClientsActivities(planned_activities, auxClient);
+                        readClientsActivities(scheduledActivities, pastActivities, auxClient);
 
-                        planned_activities->clear();
+                        scheduledActivities->clear();
                         auxClient = new Client();
                         break;
             }
@@ -287,10 +291,10 @@ void School::assign(const unsigned int teacherId, const unsigned int activityId)
         throw activityNonExistant(activityId);
 }
 
-void School::readClientsActivities(stringstream* planned_activities, Client* c) {
+void School::readClientsActivities(stringstream* scheduledActivities, stringstream* pastActivities, Client* c) {
     int activity_id;
 
-    while (*planned_activities >> activity_id) {
+    while (*scheduledActivities >> activity_id) {
         try {
             enroll(c->getId(), activity_id);
         }
@@ -311,6 +315,7 @@ void School::readClientsActivities(stringstream* planned_activities, Client* c) 
         }
     }
 
+    // Include past activities
 }
 
 void School::readTeachersActivities(stringstream* planned_activities, Teacher* t) {
@@ -358,8 +363,6 @@ void School::viewClients(bool detailed) {
         for (auto & Client : Clients)
             cout << Client->getName() << " - " << Client->getId() << endl;
 }
-
-
 
 //Exceptions
 
@@ -422,11 +425,11 @@ void School::saveClients() {
             f << c->getName() << endl
               << c->getId() << endl
               << btos(c->getGoldMember()) << endl
+              << c->getPastActivitiesID() << endl
               << c->getScheduledActivitiesID() << endl;
 
             if (counter == size(Clients) - 1)
                 f << "---END---";
-
 
             else
                 f << "::::::::::" << endl;
@@ -512,6 +515,7 @@ int School::teacherIndex(unsigned int id) {
 void School::addActivity(Activity* activity){
     Activities.push_back(activity);
 }
+
 void School::removeTeacher(unsigned id) {
 
     if (teacherIndex(id) == -1)

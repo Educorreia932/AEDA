@@ -23,12 +23,12 @@ class Client {
         vector<Activity*> getScheduleActivitiesByDate(Time Date) const;
         string getScheduledActivitiesID() const;
 
+        string getPastActivitiesID() const;
         //Setters
         void setName(const string newName);
         static void setLastID(const unsigned int id);
         void setID(const unsigned int id);
         void setGoldMember(const bool gold_member);
-        //test -v
         void setActivities(const vector<Activity *> Activities);
 
         //Misc.

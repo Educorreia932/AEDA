@@ -128,6 +128,15 @@ vector<Activity *> Client::getScheduleActivitiesByDate(Time Date) const {
     return result;
 }
 
+string Client::getPastActivitiesID() const {
+    stringstream result;
+
+    for (auto a : PastActivities)
+        result << a->getId() << " ";
+
+    return result.str();
+}
+
 ostream &operator<<(ostream &out, const alreadyGoldMember &member) {
     out << "Client with ID \"" << member.id << "\" already has a gold card." << endl;
     return out;
