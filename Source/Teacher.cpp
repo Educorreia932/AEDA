@@ -69,6 +69,7 @@ bool Teacher::isOcuppied(const Time startTime, const Time endTime) {
 
 
 void Teacher::addActivity(Activity* activity) {
+
     for (const auto &ac : Activities)
         if (ac->getId() == activity->getId())
             throw teacherAlreadHasActivity(this->id,activity->getId()); //Not catching

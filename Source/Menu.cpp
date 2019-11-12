@@ -94,13 +94,13 @@ void Menu::manageClientsSelection(int selected) {
 
             cout << endl;
 
-            selected_client = readOption(0, SUPSchool->Clients[0]->getLastID() - 1);
+            selected_client = readOption(0, Client::getLastID() - 1);
 
             pause();
             return;
         case 4:
             cout << "Insert the client ID: " << endl; //Make function to display the clients
-            selected_client = readOption(0, SUPSchool->Clients[0]->getLastID() - 1);
+            selected_client = readOption(0, Client::getLastID() - 1);
 
             cout << "Insert the activity ID: " << endl;
             selected_activity = readOption(0, SUPSchool->Activities.size() - 1);
@@ -196,7 +196,7 @@ void Menu::manageTeachersSelection(int selected) {
 
             cout << endl;
 
-            selected_teacher = readOption(0, SUPSchool->Teachers[0]->getLastID() - 1);
+            selected_teacher = readOption(0, Teacher::getLastID() - 1);
 
             pause();
             return;
@@ -208,7 +208,7 @@ void Menu::manageTeachersSelection(int selected) {
 
             cout << endl;
 
-            selected_teacher = readOption(0, SUPSchool->Teachers[0]->getLastID() - 1);
+            selected_teacher = readOption(0, Teacher::getLastID() - 1);
 
             try {
                 SUPSchool->removeTeacher(selected_teacher);
@@ -223,7 +223,7 @@ void Menu::manageTeachersSelection(int selected) {
         case 4:
             cout << "Insert the teacher ID: " << endl; //Make function to display the clients
             SUPSchool->viewTeachers(false);
-            selected_teacher = readOption(0, SUPSchool->Teachers[0]->getLastID() - 1);
+            selected_teacher = readOption(0, Teacher::getLastID() - 1);
 
             cout << "Insert the activity ID: " << endl;
             SUPSchool->viewActivities(false);
@@ -322,7 +322,7 @@ void Menu::consultScheduleSelection(int selected) {
 
             cout << endl;
 
-            selected_client = readOption(0, SUPSchool->Clients[0]->getLastID());
+            selected_client = readOption(0, Client::getLastID());
             client_index = SUPSchool->clientIndex(selected_client);
 
             clearScreen();
