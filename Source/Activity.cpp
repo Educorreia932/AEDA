@@ -72,7 +72,7 @@ unsigned int Ride::CalcCost() const {
     return cost;
 }
 
-std::ostream &operator<<(std::ostream &out, const activityNonExistant &activity) {
+std::ostream &operator<<(std::ostream &out, const activityNonExistent &activity) {
     out << "Activity with ID \"" << activity.id << "\" does not exist." << endl;
     return out;
 }

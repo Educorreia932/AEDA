@@ -66,13 +66,13 @@ class Windsurf : public Lesson {
 
 //Exceptions
 
-class activityNonExistant : std::exception {
+class activityNonExistent : std::exception {
 public:
     unsigned int id;
-    activityNonExistant(unsigned int id){id = id;};
+    activityNonExistent(unsigned int id){id = id;};
 };
 
-std::ostream & operator <<(std::ostream &out,const activityNonExistant &activity);
+std::ostream & operator <<(std::ostream &out,const activityNonExistent &activity);
 
 vector<Activity*> eraseAndReturnVector(vector<Activity*> vec,unsigned int i);
 

@@ -1,6 +1,10 @@
 #include "../Headers/School.h"
 #include "../Headers/Menu.h"
 
+
+//Price of gold card
+double School::goldCardPrice = 40;
+
 School::School() {
 
 }
@@ -60,7 +64,7 @@ void School::removeClient(unsigned int id) {
         }
 
     if (!exists)
-        throw NonExistantClient(id);
+        throw NonExistentClient(id);
 }
 
 void School::addClient(Client* client) {
@@ -234,7 +238,7 @@ void School::enroll(const unsigned int clientId, const unsigned int activityId) 
     }
 
     if(!clientExists)
-        throw NonExistantClient(clientId);
+        throw NonExistentClient(clientId);
 
     bool activityExists = false;
 
@@ -252,7 +256,7 @@ void School::enroll(const unsigned int clientId, const unsigned int activityId) 
     }
 
     if(!activityExists)
-        throw activityNonExistant(activityId);
+        throw activityNonExistent(activityId);
 }
 
 void School::assign(const unsigned int teacherId, const unsigned int activityId) {
@@ -270,7 +274,7 @@ void School::assign(const unsigned int teacherId, const unsigned int activityId)
     }
 
     if(!teacherExists)
-        throw NonExistantTeacher(teacherId);
+        throw NonExistentTeacher(teacherId);
 
     bool activityExists = false;
 
@@ -291,7 +295,7 @@ void School::assign(const unsigned int teacherId, const unsigned int activityId)
     }
 
     if(!activityExists)
-        throw activityNonExistant(activityId);
+        throw activityNonExistent(activityId);
 }
 
 void School::readClientsActivities(stringstream* scheduledActivities, stringstream* pastActivities, Client* c) {
@@ -302,7 +306,7 @@ void School::readClientsActivities(stringstream* scheduledActivities, stringstre
             enroll(c->getId(), activity_id);
         }
 
-        catch (activityNonExistant &e) {
+        catch (activityNonExistent &e) {
             cout << e;
             Menu::pause();
         }
@@ -329,7 +333,7 @@ void School::readTeachersActivities(stringstream* planned_activities, Teacher* t
             assign(t->getID(), activity_id);
         }
 
-        catch (activityNonExistant &e) {
+        catch (activityNonExistent &e) {
             cout << e;
             Menu::pause();
         }
@@ -369,7 +373,7 @@ void School::viewClients(bool detailed) {
 
 //Exceptions
 
-std::ostream &operator<<(std::ostream &out, const NonExistantClient &client) {
+std::ostream &operator<<(std::ostream &out, const NonExistentClient &client) {
     out << "Client with ID " << client.id << " does not exist in school." << endl;
     return out;
 }
@@ -379,7 +383,7 @@ std::ostream &operator<<(std::ostream &out, const ClientAlreadyExists &client) {
     return out;
 }
 
-std::ostream &operator<<(std::ostream &out, const NonExistantTeacher &teacher) {
+std::ostream &operator<<(std::ostream &out, const NonExistentTeacher &teacher) {
     out << "Teacher with ID " << teacher.id << " does not exist in school." << endl;
     return out;
 }
@@ -523,7 +527,7 @@ void School::addActivity(Activity* activity){
 void School::removeTeacher(unsigned id) {
 
     if (teacherIndex(id) == -1)
-        throw NonExistantTeacher(id);
+        throw NonExistentTeacher(id);
 
     Teachers.erase(Teachers.begin()+teacherIndex(id));
 

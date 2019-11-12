@@ -1,4 +1,5 @@
 #include "../Headers/Client.h"
+#include "../Headers/School.h"
 
 using namespace std;
 
@@ -23,9 +24,16 @@ bool Client::isGoldMember() const {
 void Client::purchaseGold() {
     if (this->gold_member)
         throw alreadyGoldMember (this->id);
+    else {
 
-    else
-        gold_member = true;
+        try{
+            addBalance(-School::goldCardPrice);
+            gold_member = true;
+        } catch(insufficientFunds &e){
+            cerr << e;
+        }
+
+    }
 }
 
 string Client::getName() const {
