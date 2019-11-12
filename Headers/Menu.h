@@ -34,6 +34,7 @@ class Menu {
         static int showManageTeachers();
         void manageTeachersSelection(int selected);
         void createTeacher();
+        void changeTeachers(int teacherId);
         
         // Schedule related
         static int showConsultSchedule();

@@ -69,9 +69,10 @@ bool Teacher::isOcuppied(const Time startTime, const Time endTime) {
 
 
 void Teacher::addActivity(Activity* activity) {
+
     for (const auto &ac : Activities)
         if (ac->getId() == activity->getId())
-            throw teacherAlreadHasActivity(id,activity->getId()); //Not catching
+            throw teacherAlreadHasActivity(this->id,activity->getId()); //Not catching
 
     if(isOcuppied(activity->getStartTime(), activity->getEndTime()))
         throw teacherHasActivityAtSameTime(this->id,activity->getId());
@@ -103,7 +104,7 @@ ostream &operator<<(ostream &out, const teacherHasActivityAtSameTime &ids) {
 }
 
 ostream &operator<<(std::ostream &out, const teacherAlreadHasActivity &ids) {
-    out << "Teacher with ID \"" << ids.teacherId << "\" already is already enrolled in activity with ID \"" << ids.activityId << "\"." << endl;
+    out << "Teacher with ID \"" << ids.teacherId << "\" already is already assigned to an activity with ID \"" << ids.activityId << "\"." << endl;
     return out;
 }
 

@@ -60,6 +60,10 @@ ostream &operator<<(ostream &out, const Activity &A) {
     return out;
 }
 
+unsigned int Activity::getLastID() {
+    return last_id;
+}
+
 unsigned int Lesson::CalcCost() const {
     return 0;
 }

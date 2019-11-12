@@ -40,11 +40,12 @@ class School {
 
         void addTeacher(Teacher* teacher);
         int teacherIndex(unsigned int id);
+        void removeTeacher(unsigned id);
 
     private:
         // View Functions ← Display detailed information
         void viewClients(bool detailed = true);
-        void viewActivities();
+        void viewActivities(bool detailed = true);
         void viewMaterial();
         void viewTeachers(bool detailed = true);
         vector<Time> getDatesFromActivicties(vector <Activity*> Activities);

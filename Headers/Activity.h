@@ -20,6 +20,7 @@ class Activity {
         Time getEndTime();
         string getName() const;
         unsigned int getId() const;
+        static unsigned int getLastID();
 
         //Setters
         void setName(string name);

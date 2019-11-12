@@ -97,13 +97,13 @@ void Menu::manageClientsSelection(int selected) {
 
             cout << endl;
 
-            selected_client = readOption(0, SUPSchool->Clients[0]->getLastID() - 1);
+            selected_client = readOption(0, Client::getLastID() - 1);
 
             pause();
             return;
         case 4:
             cout << "Insert the client ID: " << endl; //Make function to display the clients
-            selected_client = readOption(0, SUPSchool->Clients[0]->getLastID() - 1);
+            selected_client = readOption(0, Client::getLastID() - 1);
 
             cout << "Insert the activity ID: " << endl;
             selected_activity = readOption(0, SUPSchool->Activities.size() - 1);
@@ -199,16 +199,40 @@ void Menu::manageTeachersSelection(int selected) {
 
             cout << endl;
 
-            selected_teacher = readOption(0, SUPSchool->Teachers[0]->getLastID() - 1);
+            selected_teacher = readOption(0, Teacher::getLastID() - 1);
+
+            changeTeachers(selected_teacher); //Needs to catch exception in client index inside function
+
+            pause();
+            return;
+        case 3:
+            cout << "Which client do you wish to remove? Insert the corresponding ID." << endl
+                 << endl;
+
+            SUPSchool->viewTeachers(false);
+
+            cout << endl;
+
+            selected_teacher = readOption(0, Teacher::getLastID() - 1);
+
+            try {
+                SUPSchool->removeTeacher(selected_teacher);
+            }catch(NonExistantTeacher &e){
+                cout << e;
+            }
+
+
 
             pause();
             return;
         case 4:
             cout << "Insert the teacher ID: " << endl; //Make function to display the clients
-            selected_teacher = readOption(0, SUPSchool->Teachers[0]->getLastID() - 1);
+            SUPSchool->viewTeachers(false);
+            selected_teacher = readOption(0, Teacher::getLastID() - 1);
 
             cout << "Insert the activity ID: " << endl;
-            selected_activity = readOption(0, SUPSchool->Teachers.size() - 1);
+            SUPSchool->viewActivities(false);
+            selected_activity = readOption(0, Activity::getLastID() - 1);
 
             try {
                 SUPSchool->assign(selected_teacher, selected_activity);
@@ -219,6 +243,10 @@ void Menu::manageTeachersSelection(int selected) {
             }
 
             catch (NonExistantTeacher &e) {
+                cerr << e;
+
+            } catch(activityNonExistant &e){
+
                 cerr << e;
             }
 
@@ -262,7 +290,30 @@ void Menu::createTeacher() {
     pause();
 }
 
-//Activity
+void Menu::changeTeachers(int teacherId) {
+
+    cout << "What information do you want to change? Insert the corresponding key." << endl
+         << endl
+         << "1) Change the teacher name" << endl
+         << "0) Go back" << endl
+         << endl;
+
+    int selected_option = readOption(0, 4);
+    string aux;
+
+    switch (selected_option) {
+        case 1:
+            cout << "What's the name of the new teacher? " << endl;
+            getline(cin, aux);
+            SUPSchool->Teachers[SUPSchool->teacherIndex(teacherId)]->setName(aux);
+            cout << endl;
+            break;
+        case 0:
+            return;
+
+    }
+}
+
 
 int Menu::showManageActivities(){
     clearScreen();
@@ -492,7 +543,7 @@ void Menu::consultScheduleSelection(int selected) {
 
             cout << endl;
 
-            selected_client = readOption(0, SUPSchool->Clients[0]->getLastID());
+            selected_client = readOption(0, Client::getLastID());
             client_index = SUPSchool->clientIndex(selected_client);
 
             clearScreen();
