@@ -20,6 +20,7 @@ class Client {
         unsigned int getId() const;
         bool getGoldMember() const;
         vector<Activity*> getScheduledActivities() const;
+        vector<Activity*> getScheduleActivitiesByDate(Time Date) const;
         string getScheduledActivitiesID() const;
 
         //Setters

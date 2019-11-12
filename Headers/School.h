@@ -46,6 +46,8 @@ class School {
         void viewActivities();
         void viewMaterial();
         void viewTeachers(bool detailed = true);
+        vector<Time> getDatesFromActivicties(vector <Activity*> Activities);
+        void viewDates(vector <Time> Dates);
 
         friend ostream& operator<<(ostream& out, const School& S);
     private:
@@ -57,6 +59,8 @@ class School {
         vector<Material*> Materials;
         vector<Teacher*> Teachers;
         vector<Activity*> Activities;
+        vector<Activity*> PastActivities;
+        vector<Activity*> ScheduledActivities;
 };
 
 //Exceptions

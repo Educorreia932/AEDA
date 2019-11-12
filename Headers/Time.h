@@ -31,6 +31,11 @@ class Time{
         void setDay(const short day);
         void setHours(const short hours);
         void setMinutes(const short minutes);
+
+        bool sameDate(Time Date) const;
+        string toString() const;
+
+        Time operator++(int);
     private:
         short year, month, day, hours, minutes;
 

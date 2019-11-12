@@ -3,6 +3,7 @@
 
 #include "Activity.h"
 #include "Auxiliary.h"
+#include "Client.h"
 
 #include <map>
 
@@ -23,11 +24,13 @@ struct CharacterCodes {
 class Schedule {
     public:
         Schedule();
-        Schedule(const vector<Activity*> &Activities);
-        Schedule(map <Time, Activity*> Activities);
-        void view(Time Date, int width);
+        Schedule(Time BeginDate, Time EndDate, const Client *c);
+        vector<map <Time, Activity*>> getActivities() const;
+        Time getBeginDate() const;
+        friend ostream &operator<<(ostream &out, const Schedule &s);
     private:
-        map <Time, Activity*> Activities;
+        Time BeginDate, EndDate;
+        vector<map <Time, Activity*>> Activities;
 };
 
 #endif //SUP_SCHOOL_SCHEDULE_H

@@ -70,7 +70,7 @@ int Menu::showManageClients() {
          << "1) Create a new client." << endl
          << "2) Change the information of a client." << endl //<- perhaps ask for admin permission/password
          << "3) Remove an existent client." << endl //<- Remove all information associated with him
-         << "4) Enrole a client in an activity." << endl //<- and remove him from a planned activity
+         << "4) Enroll a client in an activity." << endl //<- and remove him from a planned activity
          << "0) Go back" << endl
          << endl;
 
@@ -278,9 +278,12 @@ int Menu::showConsultSchedule() {
 
 void Menu::consultScheduleSelection(int selected) {
     //test -v
-    int selected_client;
-    int client_index;
+    int selected_client, client_index, begin_date, end_date;
     Schedule* s;
+    vector<Time> PossibleDates;
+    bool not_finished = true;
+    Time beginDate, endDate;
+    vector<Schedule> Schedules;
 
     switch (selected) {
         case 1:
@@ -298,11 +301,37 @@ void Menu::consultScheduleSelection(int selected) {
 
             clearScreen();
 
+            PossibleDates = SUPSchool->getDatesFromActivicties(SUPSchool->Clients[client_index]->getScheduledActivities());
+
+            cout << "Which one is the begin date? Insert the corresponding key." << endl
+                 << endl;
+
+            SUPSchool->viewDates(PossibleDates);
+
+            cout << endl;
+
+            begin_date = readOption(1, PossibleDates.size());
+            beginDate = PossibleDates[begin_date - 1];
+
+            clearScreen();
+
+            cout << "Which one is the end date? Insert the corresponding key." << endl
+                 << endl;
+
+            SUPSchool->viewDates(PossibleDates);
+
+            cout << endl;
+
+            end_date = readOption(1, PossibleDates.size());
+            endDate = PossibleDates[end_date - 1];
+
+            clearScreen();
+
             cout << "You're seeing the schedule of " << SUPSchool->Clients[client_index]->getName() << '.' << endl
                  << endl;
 
-            s = new Schedule(SUPSchool->Clients[client_index]->getScheduledActivities());
-            s->view(Time(18, 10, 2019), 30);
+            s = new Schedule(beginDate, endDate, SUPSchool->Clients[client_index]);
+            cout << *s << endl;
 
             pause();
             return;
@@ -329,5 +358,6 @@ void Menu::pause() {
     cout << "Press any key to continue ...";
     cin.get();
 }
+
 
 
