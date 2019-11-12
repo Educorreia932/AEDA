@@ -97,6 +97,20 @@ string Teacher::getActivitiesID() const {
     return result.str();
 }
 
+vector<Activity *> Teacher::getScheduledActivities() const {
+    return Activities;
+}
+
+vector<Activity *> Teacher::getScheduleActivitiesByDate(Time Date) const {
+    vector<Activity *> result;
+
+    for (auto a : Activities)
+        if (a->getStartTime().sameDate(Date))
+            result.push_back(a);
+
+    return result;
+}
+
 
 ostream &operator<<(ostream &out, const teacherHasActivityAtSameTime &ids) {
     out << "Teacher with ID \"" << ids.teacherId << "\" already has an activity at the same time as activity with ID \"" << ids.activityId << "\"." << endl;
