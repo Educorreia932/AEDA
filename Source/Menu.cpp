@@ -221,12 +221,11 @@ void Menu::manageTeachersSelection(int selected) {
                 cout << e;
             }
 
-
-
             pause();
             return;
         case 4:
             cout << "Insert the teacher ID: " << endl; //Make function to display the clients
+
             SUPSchool->viewTeachers(false);
             selected_teacher = readOption(0, Teacher::getLastID() - 1);
 
@@ -328,6 +327,7 @@ int Menu::showManageActivities(){
 
     return readOption(0, 3);
 }
+
 
 void Menu::manageActivitiesSelection(int selected) {
     clearScreen();
@@ -460,6 +460,7 @@ void Menu::createActivity(){
     cin.ignore(1000, '\n');
 }
 
+
 void Menu::removeActivity() {
     string IDstring;
     cout << "Insert ID of the activity:\n";
@@ -524,18 +525,16 @@ int Menu::showConsultSchedule() {
 }
 
 void Menu::consultScheduleSelection(int selected) {
-    //test -v
-    int selected_client, client_index, begin_date, end_date;
-    Schedule* s;
+    int selected_client, selected_teacher, client_index, teacher_index, begin_date, end_date;
+    Schedule<Client>* s1;
+    Schedule<Teacher>* s2;
     vector<Time> PossibleDates;
-    bool not_finished = true;
     Time beginDate, endDate;
-    vector<Schedule> Schedules;
+
+    clearScreen();
 
     switch (selected) {
         case 1:
-            clearScreen();
-
             cout << "Which client's schedule do you wish to see? Insert the corresponding key." << endl
                  << endl;
 
@@ -543,7 +542,7 @@ void Menu::consultScheduleSelection(int selected) {
 
             cout << endl;
 
-            selected_client = readOption(0, Client::getLastID());
+            selected_client = readOption(0, SUPSchool->Clients[0]->getLastID() - 1);
             client_index = SUPSchool->clientIndex(selected_client);
 
             clearScreen();
@@ -577,8 +576,55 @@ void Menu::consultScheduleSelection(int selected) {
             cout << "You're seeing the schedule of " << SUPSchool->Clients[client_index]->getName() << '.' << endl
                  << endl;
 
-            s = new Schedule(beginDate, endDate, SUPSchool->Clients[client_index]);
-            cout << *s << endl;
+            s1 = new Schedule<Client>(beginDate, endDate, SUPSchool->Clients[client_index]);
+            cout << *s1 << endl;
+
+            pause();
+            return;
+        case 2:
+            cout << "Which teacher's schedule do you wish to see? Insert the corresponding key." << endl
+                 << endl;
+
+            SUPSchool->viewTeachers(false);
+
+            cout << endl;
+
+            selected_teacher = readOption(0, SUPSchool->Teachers[0]->getLastID() - 1);
+            teacher_index = SUPSchool->teacherIndex(selected_teacher);
+
+            clearScreen();
+
+            PossibleDates = SUPSchool->getDatesFromActivicties(SUPSchool->Teachers[teacher_index]->getScheduledActivities());
+
+            cout << "Which one is the begin date? Insert the corresponding key." << endl
+                 << endl;
+
+            SUPSchool->viewDates(PossibleDates);
+
+            cout << endl;
+
+            begin_date = readOption(1, PossibleDates.size());
+            beginDate = PossibleDates[begin_date - 1];
+
+            clearScreen();
+
+            cout << "Which one is the end date? Insert the corresponding key." << endl
+                 << endl;
+
+            SUPSchool->viewDates(PossibleDates);
+
+            cout << endl;
+
+            end_date = readOption(1, PossibleDates.size());
+            endDate = PossibleDates[end_date - 1];
+
+            clearScreen();
+
+            cout << "You're seeing the schedule of " << SUPSchool->Teachers[teacher_index]->getName() << '.' << endl
+                 << endl;
+
+            s2 = new Schedule<Teacher>(beginDate, endDate, SUPSchool->Teachers[teacher_index]);
+            cout << *s2 << endl;
 
             pause();
             return;

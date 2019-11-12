@@ -69,10 +69,9 @@ bool Teacher::isOcuppied(const Time startTime, const Time endTime) {
 
 
 void Teacher::addActivity(Activity* activity) {
-
     for (const auto &ac : Activities)
         if (ac->getId() == activity->getId())
-            throw teacherAlreadHasActivity(this->id,activity->getId()); //Not catching
+            throw teacherAlreadHasActivity(id,activity->getId()); //Not catching
 
     if(isOcuppied(activity->getStartTime(), activity->getEndTime()))
         throw teacherHasActivityAtSameTime(this->id,activity->getId());
@@ -97,6 +96,20 @@ string Teacher::getActivitiesID() const {
     return result.str();
 }
 
+vector<Activity *> Teacher::getScheduledActivities() const {
+    return Activities;
+}
+
+vector<Activity *> Teacher::getScheduleActivitiesByDate(Time Date) const {
+    vector<Activity *> result;
+
+    for (auto a : Activities)
+        if (a->getStartTime().sameDate(Date))
+            result.push_back(a);
+
+    return result;
+}
+
 
 ostream &operator<<(ostream &out, const teacherHasActivityAtSameTime &ids) {
     out << "Teacher with ID \"" << ids.teacherId << "\" already has an activity at the same time as activity with ID \"" << ids.activityId << "\"." << endl;
@@ -104,7 +117,6 @@ ostream &operator<<(ostream &out, const teacherHasActivityAtSameTime &ids) {
 }
 
 ostream &operator<<(std::ostream &out, const teacherAlreadHasActivity &ids) {
-    out << "Teacher with ID \"" << ids.teacherId << "\" already is already assigned to an activity with ID \"" << ids.activityId << "\"." << endl;
+    out << "Teacher with ID \"" << ids.teacherId << "\" already is already enrolled in activity with ID \"" << ids.activityId << "\"." << endl;
     return out;
 }
-

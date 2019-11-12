@@ -28,10 +28,10 @@ Time::Time(const string& t) {
         if(day <= 0 || day > numberOfdays()){
             throw InvalidDate("Invalid Day.\n");
         }
-        if(hours <= 0 || hours > 24){
+        if(hours < 0 || hours >= 24){
             throw InvalidDate("Invalid Hour.\n");
         }
-        if(minutes <= 0 || minutes > 60){
+        if(minutes < 0 || minutes >= 60){
             throw InvalidDate("Invalid Minute.\n");
         }
     }
@@ -80,10 +80,10 @@ Time::Time(short day, short month, short year, short hours, short minutes) {
         if(day <= 0 || day > numberOfdays()){
             throw InvalidDate("Invalid Day.\n");
         }
-        if(hours <= 0 || hours > 24){
+        if(hours < 0 || hours >= 24){
             throw InvalidDate("Invalid Hour.\n");
         }
-        if(minutes <= 0 || minutes > 60){
+        if(minutes < 0 || minutes >= 60){
             throw InvalidDate("Invalid Minute.\n");
         }
     }

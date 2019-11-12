@@ -1,13 +1,12 @@
 #include "../Headers/Schedule.h"
 
-vector<string> Times = {"07:00", "07:45", "08:30", "09:15", "10:00", "10:45", "11:30", "12:15", "13:00", "13:45",
-                        "14:30", "15:15", "16:00", "16:45", "17:30", "18:15", "19:00", "19:45", "20:30"};
-
-Schedule::Schedule() {
+template<class T>
+Schedule<T>::Schedule() {
 
 }
 
-Schedule::Schedule(Time BeginDate, Time EndDate, const Client *c) {
+template <class T>
+Schedule<T>::Schedule(Time BeginDate, Time EndDate, const T *c) {
     map <Time, Activity*> day;
     this->BeginDate = BeginDate;
     this->EndDate = EndDate; // Could put ++ here?
@@ -24,15 +23,21 @@ Schedule::Schedule(Time BeginDate, Time EndDate, const Client *c) {
     }
 }
 
-vector<map<Time, Activity *>> Schedule::getActivities() const {
+template<class T>
+vector<map<Time, Activity *>> Schedule<T>::getActivities() const {
     return Activities;
 }
 
-Time Schedule::getBeginDate() const {
+template<class T>
+Time Schedule<T>::getBeginDate() const {
     return BeginDate;
 }
 
-ostream &operator<<(ostream &out, const Schedule &s) {
+template<class T1>
+ostream &operator<<(ostream &out, const Schedule<T1> &s) {
+    vector<string> Times = {"07:00", "07:45", "08:30", "09:15", "10:00", "10:45", "11:30", "12:15", "13:00", "13:45",
+                            "14:30", "15:15", "16:00", "16:45", "17:30", "18:15", "19:00", "19:45", "20:30"};
+
     CharacterCodes Chars;
     int width = 35;
 
@@ -139,7 +144,7 @@ ostream &operator<<(ostream &out, const Schedule &s) {
                         t1 << s.getActivities()[j][*t2]->getName();
 
                     if (!j)
-                         out << centerString(width, t1.str());
+                        out << centerString(width, t1.str());
 
                     else
                         out << centerString(width + 1, t1.str());
@@ -171,6 +176,7 @@ ostream &operator<<(ostream &out, const Schedule &s) {
     return out;
 }
 
-
-
-
+template class Schedule<Client>;
+template class Schedule<Teacher>;
+template ostream &operator<<(ostream &out, const Schedule<Client> &s);
+template ostream &operator<<(ostream &out, const Schedule<Teacher> &s);
