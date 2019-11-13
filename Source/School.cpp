@@ -84,6 +84,32 @@ int School::clientIndex(unsigned int id) {
     return -1;
 }
 
+vector<Activity *> School::getPastActivities() const {
+    return PastActivities;
+}
+
+vector<Activity *> School::getScheduledActivities() const {
+    return ScheduledActivities;
+}
+
+vector<int> School::getPastActivitiesID() const {
+    vector<int> result;
+
+    for (auto a : PastActivities)
+        result.push_back(a->getId());
+
+    return result;
+}
+
+vector<int> School::getSheduledActivitiesID() const {
+    vector<int> result;
+
+    for (auto a : ScheduledActivities)
+        result.push_back(a->getId());
+
+    return result;
+}
+
 vector<Client *> School::getClients() const{
     return this->Clients;
 }
@@ -97,24 +123,25 @@ void School::readActivities() {
     ifstream File("../Data/" + Files["Activities"]);
     int counter = 0;
 
-    auto* auxActivity = new Activity();
+    auto* AuxActivity = new Activity();
 
     if (File.is_open()) {
         while (getline(File, line)) {
             switch (counter % 6) {
                 case 0:
-                    auxActivity->setID(stoi(line));
+                    AuxActivity->setID(stoi(line));
                     break;
                 case 1:
+                    // Lesson or ride
                     break;
                 case 2:
-                    auxActivity->setName(line);
+                    AuxActivity->setName(line);
                     break;
                 case 3:
-                    auxActivity->setStartTime(line);
+                    AuxActivity->setStartTime(line);
                     break;
                 case 4:
-                    auxActivity->setEndTime(line);
+                    AuxActivity->setEndTime(line);
                     break;
                 case 5:
                     if (auxActivity->getEndTime() < currentTime)
@@ -406,6 +433,11 @@ std::ostream &operator<<(std::ostream &out, const TeacherAlreadyExists &teacher)
     return out;
 }
 
+std::ostream &operator<<(std::ostream &out, const NonExistentMaterial &material) {
+    out << "Material with ID " << material.id << " does not exist in school." << endl;
+    return out;
+}
+
 void School::viewActivities(bool detailed){
     if(detailed) {
         cout << "All activities:\n";
@@ -541,13 +573,22 @@ void School::addActivity(Activity* activity, bool past) {
 }
 
 void School::removeTeacher(unsigned id) {
-
     if (teacherIndex(id) == -1)
         throw NonExistentTeacher(id);
 
     Teachers.erase(Teachers.begin()+teacherIndex(id));
+}
 
+Time School::getCurrentTime() const {
+    return currentTime;
+}
 
+bool School::isPastActivity(unsigned int id) {
+    for (auto a : PastActivities)
+        if (a->getId() == id)
+            return true;
+
+    return false;
 }
 
 int School::activityIndex(unsigned int id, bool past) {

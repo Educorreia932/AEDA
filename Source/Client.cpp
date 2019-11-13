@@ -124,6 +124,10 @@ bool Client::getGoldMember() const {
     return gold_member;
 }
 
+vector<Activity *> Client::getPastActivities() const {
+    return PastActivities;
+}
+
 string Client::getScheduledActivitiesID() const {
     stringstream result;
 
