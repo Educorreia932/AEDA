@@ -52,6 +52,7 @@ class School {
         void readClientsActivities(stringstream* activities, Client* c);
         void readTeachersActivities(stringstream* planned_activities, Teacher* t);
         void assign(const unsigned int teacherId, const unsigned int activityId);
+        //Verifica pouca coisa
         void rent(const unsigned int materialId,const unsigned int clientId, Time startTime, Time endTime);
 
         /** @name Save Functions
