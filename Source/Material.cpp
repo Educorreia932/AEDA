@@ -73,6 +73,6 @@ unsigned int Material::getLastID(){
     return last_id;
 }
 
-static unsigned int Material::getCapacity(){
+unsigned int Material::getCapacity(){
     return capacity;
 }

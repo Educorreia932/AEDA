@@ -116,7 +116,7 @@ void Menu::manageClientsSelection(int selected) {
                 cerr << e;
             }
 
-            catch (NonExistantClient &e) {
+            catch (NonExistentClient &e) {
                 cerr << e;
             }
 
@@ -159,7 +159,7 @@ void Menu::createClient() {
     getline(cin, aux);
     aux_stream << aux;
 
-    SUPSchool->readClientsActivities(&aux_stream, c);
+    SUPSchool->readClientsActivities(&aux_stream,&aux_stream, c); //Change in the future
 
     cout << endl;
     pause();
@@ -217,7 +217,7 @@ void Menu::manageTeachersSelection(int selected) {
 
             try {
                 SUPSchool->removeTeacher(selected_teacher);
-            }catch(NonExistantTeacher &e){
+            }catch(NonExistentTeacher &e){
                 cout << e;
             }
 
@@ -241,10 +241,10 @@ void Menu::manageTeachersSelection(int selected) {
                 cerr << e;
             }
 
-            catch (NonExistantTeacher &e) {
+            catch (NonExistentTeacher &e) {
                 cerr << e;
 
-            } catch(activityNonExistant &e){
+            } catch(activityNonExistent &e){
 
                 cerr << e;
             }
