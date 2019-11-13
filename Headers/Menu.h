@@ -23,6 +23,7 @@ class Menu {
         void manageClientsSelection(int selected);
         void createClient();
         void changeClient(int client_id);
+        void monthlyReport();
 
         //Activity related
         static int showManageActivities();

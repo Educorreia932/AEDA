@@ -64,12 +64,32 @@ unsigned int Activity::getLastID() {
     return last_id;
 }
 
+char Activity::getType() const {
+    return 'A';
+}
+
 unsigned int Lesson::CalcCost() const {
     return 0;
 }
 
+char Lesson::getType() const {
+    return 'L';
+}
+
+Lesson::Lesson() {
+
+}
+
 unsigned int Ride::CalcCost() const {
     return cost;
+}
+
+char Ride::getType() const {
+    return 'R';
+}
+
+Ride::Ride() {
+
 }
 
 std::ostream &operator<<(std::ostream &out, const activityNonExistent &activity) {

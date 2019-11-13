@@ -71,15 +71,16 @@ int Menu::showManageClients() {
     cout << "What do you want to do? Insert the corresponding key." << endl
          << endl
          << "1) Create a new client." << endl
-         << "2) Change the information of a client." << endl //<- perhaps ask for admin permission/password
+         << "2) Change the information of a client." << endl
          << "3) Add funds." << endl
          << "4) Purchase gold card." << endl
-         << "5) Remove an existent client." << endl //<- Remove all information associated with him
-         << "6) Enroll a client in an activity." << endl //<- and remove him from a planned activity
+         << "5) Remove an existent client." << endl
+         << "6) Enroll a client in an activity." << endl
+         << "7) Generate monthly report." << endl
          << "0) Go back" << endl
          << endl;
 
-    return readOption(0, 6);
+    return readOption(0, 7);
 }
 
 void Menu::manageClientsSelection(int selected) {
@@ -104,7 +105,6 @@ void Menu::manageClientsSelection(int selected) {
 
             pause();
             return;
-
         case 3:
             cout << "Which client do you want to add funds to? Insert the corresponding key." << endl
                  << endl;
@@ -118,19 +118,18 @@ void Menu::manageClientsSelection(int selected) {
 
                 if(selected_client == 0)
                     return;
-            }while(SUPSchool->clientIndex(selected_client) == -1);
+            } while(SUPSchool->clientIndex(selected_client) == -1);
 
             cout << "Current funds: " << SUPSchool->Clients[SUPSchool->clientIndex(selected_client)]->getBalance() << endl;
 
-            cout << "How much do you want to add?(Only positive amounts)" << endl;
+            cout << "How much do you want to add (Only positive amounts)? " << endl;
 
-            amount = readOption(0,9999999);
+            amount = readOption(0.0, 1.79769e+308);
 
             SUPSchool->Clients[SUPSchool->clientIndex(selected_client)]->addBalance(amount);
 
             pause();
             return;
-
         case 4:
             cout << "Which client wants to purchase the gold card?" << endl
                  << endl;
@@ -138,19 +137,24 @@ void Menu::manageClientsSelection(int selected) {
             SUPSchool->viewClients(false);
 
             cout << endl;
+
             do {
                 selected_client = readOption(0, Client::getLastID() - 1);
 
                 if(selected_client == 0)
                     return;
-            }while(SUPSchool->clientIndex(selected_client) == -1);
+            } while(SUPSchool->clientIndex(selected_client) == -1);
 
             try{
                 SUPSchool->Clients[SUPSchool->clientIndex(selected_client)]->purchaseGold();
 
-            }catch(insufficientFunds &e){
+            }
+
+            catch(insufficientFunds &e){
                 cerr << e;
-            }catch(alreadyGoldMember &e){
+            }
+
+            catch(alreadyGoldMember &e){
                 cerr << e;
             }
 
@@ -163,17 +167,20 @@ void Menu::manageClientsSelection(int selected) {
             SUPSchool->viewClients(false);
 
             cout << endl;
+
             do {
                 selected_client = readOption(0, Client::getLastID() - 1);
 
                 if(selected_client == 0)
                     return;
-            }while(SUPSchool->clientIndex(selected_client) == -1);
+            } while(SUPSchool->clientIndex(selected_client) == -1);
 
-            try{
+            try {
                 SUPSchool->removeClient(selected_client);
 
-            }catch(NonExistentClient &e){
+            }
+
+            catch(NonExistentClient &e){
                 cerr << e;
             }
 
@@ -181,6 +188,7 @@ void Menu::manageClientsSelection(int selected) {
             return;
         case 6:
             cout << "Insert the client ID: " << endl; //Make function to display the clients
+
             do {
                 selected_client = readOption(0, Client::getLastID() - 1);
 
@@ -204,6 +212,19 @@ void Menu::manageClientsSelection(int selected) {
             }
 
             pause();
+            return;
+        case 7:
+            cout << "Which gold member client wants to generate its monthly report? Insert the corresponding key." << endl
+                 << endl;
+
+            do {
+                selected_client = readOption(0, Client::getLastID() - 1);
+
+                if (!selected_client)
+                    return;
+            } while(SUPSchool->clientIndex(selected_client) == -1);
+
+            monthlyReport();
             return;
         case 0:
             return;
@@ -249,6 +270,10 @@ void Menu::createClient() {
 
     cout << endl;
     pause();
+}
+
+void Menu::monthlyReport() {
+
 }
 
 // Teacher --------------------
@@ -309,11 +334,11 @@ void Menu::manageTeachersSelection(int selected) {
 
                 if(selected_teacher == 0)
                     return;
-            }while(SUPSchool->teacherIndex(selected_teacher) == -1);
+            } while(SUPSchool->teacherIndex(selected_teacher) == -1);
 
             try {
                 SUPSchool->removeTeacher(selected_teacher);
-            }catch(NonExistentTeacher &e){
+            } catch(NonExistentTeacher &e){
                 cout << e;
             }
 
@@ -323,12 +348,13 @@ void Menu::manageTeachersSelection(int selected) {
             cout << "Insert the teacher ID: " << endl; //Make function to display the clients
 
             SUPSchool->viewTeachers(false);
+
             do {
                 selected_teacher = readOption(0, Teacher::getLastID() - 1);
 
                 if(selected_teacher == 0)
                     return;
-            }while(SUPSchool->teacherIndex(selected_teacher) == -1);
+            } while(SUPSchool->teacherIndex(selected_teacher) == -1);
 
             cout << "Insert the activity ID: " << endl;
             SUPSchool->viewActivities(false);
@@ -678,6 +704,8 @@ void Menu::pause() {
     cout << "Press any key to continue ...";
     cin.get();
 }
+
+
 
 
 

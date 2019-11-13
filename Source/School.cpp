@@ -98,18 +98,25 @@ vector<Teacher *> School::getTeachers() const{
 void School::readActivities() {
     string line;
     ifstream File("../Data/" + Files["Activities"]);
-    int counter = 0;
+    int counter = 0, activity_id;
 
-    auto* AuxActivity = new Activity();
+    Activity* AuxActivity;
 
     if (File.is_open()) {
         while (getline(File, line)) {
             switch (counter % 6) {
                 case 0:
-                    AuxActivity->setID(stoi(line));
+                    activity_id = stoi(line);
                     break;
                 case 1:
-                    // Lesson or ride
+                    if (line == "R")
+                        AuxActivity = new Ride();
+
+                    else if (line == "L")
+                        AuxActivity = new Lesson();
+
+                    AuxActivity->setID(activity_id);
+
                     break;
                 case 2:
                     AuxActivity->setName(line);
@@ -222,7 +229,6 @@ void School::readTeachers() {
     }
 }
 
-
 void School::readMaterials() {
     string line;
     ifstream File("../Data/" + Files["Materials"]);
@@ -286,7 +292,6 @@ void School::readMaterials() {
         File.close();
     }
 }
-
 
 void School::enroll(const unsigned int clientId, const unsigned int activityId) {
     //Time needs to be checked if is ahead of the set current time
@@ -427,7 +432,6 @@ void School::readTeachersActivities(stringstream* activities, Teacher* t) {
     }
 }
 
-
 void School::readMaterialActivities(stringstream* activities, Material* m) {
     int activity_id;
 
@@ -438,7 +442,6 @@ void School::readMaterialActivities(stringstream* activities, Material* m) {
             m->addActivity(AuxActivity);
     }
 }
-
 
 ostream &operator<<(ostream &out, const School& S) {
     out << "Name: " << S.name << endl
@@ -458,10 +461,12 @@ void School::viewClients(bool detailed) {
 
     else
         for (auto & Client : Clients) {
-            cout << Client->getName() << " - " << Client->getId() << endl;
+            cout << Client->getName() << " - " << Client->getId();
 
             if (Client->isGoldMember())
-                cout << " $ ";
+                cout << " ($)";
+
+            cout << endl;
         }
 }
 
@@ -492,9 +497,9 @@ std::ostream &operator<<(std::ostream &out, const NonExistentMaterial &material)
     return out;
 }
 
-void School::viewActivities(bool detailed){
-    if(detailed) {
-        cout << "All activities:\n";
+void School::viewActivities(bool detailed) {
+    if (detailed) {
+        cout << "Scheduled Activities:\n";
         cout << "---------------------" << endl;
 
         for (const auto &Activity : ScheduledActivities) {
@@ -502,11 +507,9 @@ void School::viewActivities(bool detailed){
             cout << "---------------------" << endl;
         }
     }
-    else{
+    else
         for (auto & activity : ScheduledActivities)
             cout << activity->getName() << " - " << activity->getId() << endl;
-
-    }
 }
 
 void School::viewTeachers(bool detailed) {
@@ -518,6 +521,34 @@ void School::viewTeachers(bool detailed) {
     else
         for (auto & teacher : Teachers)
             cout << teacher->getName() << " - " << teacher->getID() << endl;
+}
+
+void School::saveActivities() {
+    ofstream f;
+    int counter = 0;
+
+    f.open("../Data/" + Files["Activities"]);
+
+    vector<Activity*> Activities = PastActivities;
+    Activities.insert(Activities.end(), ScheduledActivities.begin(), ScheduledActivities.end());
+
+    if (f.is_open()) {
+        for (auto &a : Activities) {
+            f << a->getId() << endl
+              << a->getType() << endl
+              << a->getName() << endl
+              << a->getStartTime() << endl
+              << a->getEndTime() << endl;
+
+            if (counter == size(Activities) - 1)
+                f << "---END---";
+
+            else
+                f << "::::::::::" << endl;
+
+            counter++;
+        }
+    }
 }
 
 void School::saveClients() {

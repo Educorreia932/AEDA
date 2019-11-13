@@ -13,6 +13,7 @@ int main() {
             SUPMenu.mainMenuSelection(selected);
 
         else {
+            PortoSUPSchool->saveActivities();
             PortoSUPSchool->saveClients();
             PortoSUPSchool->saveTeachers();
             PortoSUPSchool->saveMaterials();

@@ -3,6 +3,7 @@
 
 #include "Time.h"
 #include <vector>
+
 class Activity {
     protected:
         string name;
@@ -10,7 +11,6 @@ class Activity {
         static unsigned int last_id;
         Time startTime;
         Time endTime;
-
     public:
         Activity();
         Activity(Time startTime,Time endTime,string name);
@@ -21,6 +21,7 @@ class Activity {
         string getName() const;
         unsigned int getId() const;
         static unsigned int getLastID();
+        virtual char getType() const;
 
         //Setters
         void setName(string name);
@@ -30,7 +31,6 @@ class Activity {
 
         virtual unsigned int CalcCost() const;
 
-
         friend ostream& operator<<(ostream& out, const Activity& A);
 };
 
@@ -38,14 +38,18 @@ class Ride : public Activity {
     protected:
         unsigned int cost;
     public:
+        Ride();
         Ride(Time startTime,Time endTime,string name) : Activity(startTime,endTime,name){};
         unsigned int CalcCost() const;
+        virtual char getType() const;
 };
 
 class Lesson : public Activity {
     public:
-    Lesson(Time startTime,Time endTime,string name) : Activity(startTime,endTime,name){};
-    unsigned int CalcCost() const;
+        Lesson();
+        Lesson(Time startTime,Time endTime,string name) : Activity(startTime,endTime,name){};
+        unsigned int CalcCost() const;
+        virtual char getType() const;
 };
 
 class StandUpPaddle : public Lesson {
