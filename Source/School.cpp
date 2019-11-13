@@ -54,17 +54,19 @@ School::School(const string& filename) {
 }
 
 void School::removeClient(unsigned int id) {
-    bool exists = false;
+    if(Clients[clientIndex(id)]->getId() == -1)
+        throw NonExistentClient(id);
+
+    for(auto &m: Materials) {
+        auto it = m->Clients.find(Clients[clientIndex(id)]);
+        m->Clients.erase(it);
+    }
 
     for(size_t i = 0; i < Clients.size() ; i++)
         if (Clients.at(i)->getId() == id) {
             Clients.erase(Clients.begin()+i);
-            exists = true;
             break;
         }
-
-    if (!exists)
-        throw NonExistentClient(id);
 }
 
 void School::addClient(Client* client) {
@@ -579,6 +581,10 @@ Activity * School::getActivity(unsigned int id) const {
             return a;
 
     return nullptr;
+}
+
+void School::rent(const unsigned int materialId, const unsigned int clientId, Time startTime, Time endTime) {
+
 }
 
 
