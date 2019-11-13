@@ -86,22 +86,8 @@ ostream &operator<<(ostream &out, const Client &C) {
     out << "Name: " << C.name << endl
         << "ID: " << C.id << endl
         << "Balance: " << C.balance << " EUR" << endl
-        << "Past activities: ";
-
-    if (C.getPastActivities().empty())
-        out << "None";
-
-    else
-        for (auto a : C.getPastActivities())
-            out << a->getId() << ' ';
-
-    if (C.getScheduledActivities().empty())
-        out << "None";
-
-    out << endl << "Scheduled activities: ";
-
-    for (auto a : C.getScheduledActivities())
-        out << a->getId() << " ";
+        << "Past activities: " << C.getPastActivitiesID() << endl
+        << "Scheduled activities: " << C.getScheduledActivitiesID();
 
     return out;
 }
@@ -118,7 +104,7 @@ void Client::addActivity(Activity* activity, bool past) {
     if (past)
         PastActivities.push_back(activity);
 
-    else
+    else {
         for (const auto &ac : ScheduledActivities)
             if (ac->getId() == activity->getId())
                 throw clientAlreadHasActivity(id,activity->getId()); //Not catching
@@ -127,6 +113,7 @@ void Client::addActivity(Activity* activity, bool past) {
             throw hasActivityAtSameTime(this->id,activity->getId());
 
         ScheduledActivities.push_back(activity);
+    }
 }
 
 void Client::setLastID(const unsigned int id) {

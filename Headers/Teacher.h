@@ -16,9 +16,10 @@ public:
     static void setLastID(const unsigned int id);
     void setName(string name);
     string getName() const;
-    void addActivity(Activity* activity);
+    void addActivity(Activity* activity, bool past);
     bool isOcuppied(const Time startTime, const Time endTime);
-    string getActivitiesID() const;
+    string getPastActivitiesID() const;
+    string getScheduledActivitiesID() const;
     vector<Activity*> getScheduledActivities() const;
     vector<Activity*> getScheduleActivitiesByDate(Time Date) const;
 
@@ -27,7 +28,8 @@ private:
     string name;
     unsigned int id;
     static unsigned int last_id;
-    vector<Activity *> Activities;
+    vector<Activity *> PastActivities;
+    vector<Activity *> ScheduledActivities;
 };
 
 /*! \cond */

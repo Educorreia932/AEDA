@@ -24,17 +24,12 @@ class School {
         int clientIndex(unsigned int id);
         void removeClient(unsigned int id);
 
-        void addActivity(Activity* activity);
-        bool isPastActivity(unsigned int id);
-        int activityIndex(unsigned int id);
+        void addActivity(Activity* activity, bool past);
+        int activityIndex(unsigned int id, bool past);
 
         /*! @name Getters */
         ///@{
-        Time getCurrentTime() const;
-        vector<Activity*> getPastActivities() const;
-        vector<Activity*> getScheduledActivities() const;
-        vector<int> getPastActivitiesID() const;
-        vector<int> getSheduledActivitiesID() const;
+        Activity* getActivity(unsigned int id) const;
         vector<Teacher *> getTeachers() const;
         vector<Client *> getClients() const;
         ///@}
@@ -97,13 +92,13 @@ class School {
 
 /*! \cond */
 
-class NonExistentClient : std::exception {
+class NonExistentClient : exception {
     public:
         unsigned int id;
         NonExistentClient(unsigned int id){this->id = id;};
 };
 
-std::ostream & operator <<(std::ostream &out,const NonExistentClient &client);
+std::ostream & operator <<(ostream &out,const NonExistentClient &client);
 
 class NonExistentTeacher : exception {
 public:

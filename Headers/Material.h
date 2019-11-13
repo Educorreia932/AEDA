@@ -22,7 +22,6 @@ public:
     static void setLastID(const unsigned int id);
     static void setCapacity(unsigned int capacity);
 
-
     //Getter functions
     unsigned int getID() const;
     string getType() const;
@@ -38,9 +37,6 @@ private:
     unsigned int ID;
     unsigned int capacity;
     static unsigned int last_id;
-
-
-
 
     friend ostream &operator<<(ostream out, Material material);
 };

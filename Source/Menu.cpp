@@ -208,8 +208,6 @@ void Menu::manageClientsSelection(int selected) {
             return;
         case 0:
             return;
-        default:
-            cout << "NOT IMPLEMENTED YET" << endl;
     }
 }
 
@@ -488,7 +486,7 @@ void Menu::createActivity() {
         return;
     }
 
-    SUPSchool->addActivity(a);
+    SUPSchool->addActivity(a, false);
 }
 
 void Menu::removeActivity() {
