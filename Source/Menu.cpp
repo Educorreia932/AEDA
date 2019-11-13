@@ -72,8 +72,10 @@ int Menu::showManageClients() {
          << endl
          << "1) Create a new client." << endl
          << "2) Change the information of a client." << endl //<- perhaps ask for admin permission/password
-         << "3) Remove an existent client." << endl //<- Remove all information associated with him
-         << "4) Enroll a client in an activity." << endl //<- and remove him from a planned activity
+         << "3) Add funds." << endl
+         << "4) Purchase gold card." << endl
+         << "5) Remove an existent client." << endl //<- Remove all information associated with him
+         << "6) Enroll a client in an activity." << endl //<- and remove him from a planned activity
          << "0) Go back" << endl
          << endl;
 
@@ -82,6 +84,7 @@ int Menu::showManageClients() {
 
 void Menu::manageClientsSelection(int selected) {
     int selected_client, selected_activity;
+    double amount;
 
     clearScreen();
 
@@ -101,7 +104,59 @@ void Menu::manageClientsSelection(int selected) {
 
             pause();
             return;
+
+        case 3:
+            cout << "Which client do you want to add funds to? Insert the corresponding key." << endl
+                 << endl;
+
+            SUPSchool->viewClients(false);
+
+            cout << endl;
+
+            do {
+                selected_client = readOption(0, Client::getLastID() - 1);
+
+                if(selected_client == 0)
+                    return;
+            }while(SUPSchool->clientIndex(selected_client) == -1);
+
+            cout << "Current funds: " << SUPSchool->Clients[SUPSchool->clientIndex(selected_client)]->getBalance() << endl;
+
+            cout << "How much do you want to add?(Only positive amounts)" << endl;
+
+            amount = readOption(0,9999999);
+
+            SUPSchool->Clients[SUPSchool->clientIndex(selected_client)]->addBalance(amount);
+
+            pause();
+            return;
+
         case 4:
+            cout << "Which client wants to purchase the gold card?" << endl
+                 << endl;
+
+            SUPSchool->viewClients(false);
+
+            cout << endl;
+            do {
+                selected_client = readOption(0, Client::getLastID() - 1);
+
+                if(selected_client == 0)
+                    return;
+            }while(SUPSchool->clientIndex(selected_client) == -1);
+
+            try{
+                SUPSchool->Clients[SUPSchool->clientIndex(selected_client)]->purchaseGold();
+
+            }catch(insufficientFunds &e){
+                cerr << e;
+            }catch(alreadyGoldMember &e){
+                cerr << e;
+            }
+
+            pause();
+            return;
+        case 6:
             cout << "Insert the client ID: " << endl; //Make function to display the clients
             selected_client = readOption(0, Client::getLastID() - 1);
 
