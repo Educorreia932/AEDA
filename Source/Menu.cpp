@@ -161,7 +161,7 @@ void Menu::manageClientsSelection(int selected) {
             selected_client = readOption(0, Client::getLastID() - 1);
 
             cout << "Insert the activity ID: " << endl;
-            selected_activity = readOption(0, SUPSchool->Activities.size() - 1);
+            selected_activity = readOption(0, SUPSchool->ScheduledActivities.size() - 1);
 
             try {
                 SUPSchool->enroll(selected_client, selected_activity);
@@ -179,15 +179,13 @@ void Menu::manageClientsSelection(int selected) {
             return;
         case 0:
             return;
-        default:
-            cout << "NOT IMPLEMENTED YET" << endl;
     }
 }
 
 void Menu::createClient() {
     auto *c = new Client();
     string aux;
-    stringstream aux_stream;
+    stringstream activities;
 
     cout << "What's the name of the new client? " << endl;
     getline(cin, aux);
@@ -209,12 +207,17 @@ void Menu::createClient() {
         pause();
     }
 
+    cout << "Which are the past activities of the new client (insert IDs separated by Space)? " << endl;
+    cin.ignore();
+    getline(cin, aux);
+    activities << aux;
+
     cout << "Which are the scheduled activities of the new client (insert IDs separated by Space)? " << endl;
     cin.ignore();
     getline(cin, aux);
-    aux_stream << aux;
+    activities << aux;
 
-    SUPSchool->readClientsActivities(&aux_stream,&aux_stream, c); //Change in the future
+    SUPSchool->readClientsActivities(&activities, c);
 
     cout << endl;
     pause();
@@ -434,7 +437,7 @@ void Menu::createActivity() {
         return;
     }
 
-    SUPSchool->addActivity(a);
+    SUPSchool->addActivity(a, false);
 }
 
 void Menu::removeActivity() {
@@ -461,8 +464,8 @@ void Menu::removeActivity() {
     int index = -1;
     //Check if ID already exists
     try {
-        for(int i = 0; i < SUPSchool->Activities.size(); i++){
-            if(SUPSchool->Activities[i]->getId() == ID){
+        for(int i = 0; i < SUPSchool->ScheduledActivities.size(); i++){
+            if(SUPSchool->ScheduledActivities[i]->getId() == ID){
                 index = i;
             }
         }

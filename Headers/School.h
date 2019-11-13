@@ -24,11 +24,12 @@ class School {
         int clientIndex(unsigned int id);
         void removeClient(unsigned int id);
 
-        void addActivity(Activity* activity);
+        void addActivity(Activity* activity, bool past);
+        int activityIndex(unsigned int id, bool past);
 
         /*! @name Getters */
         ///@{
-        vector<Activity*> getActivities() const;
+        Activity* getActivity(unsigned int id) const;
         vector<Teacher *> getTeachers() const;
         vector<Client *> getClients() const;
         ///@}
@@ -43,7 +44,7 @@ class School {
         ///@}
 
         void enroll(const unsigned int clientId, const unsigned int activityId);
-        void readClientsActivities(stringstream* scheduledActivities, stringstream* pastActivities, Client* c);
+        void readClientsActivities(stringstream* activities, Client* c);
         void readTeachersActivities(stringstream* planned_activities, Teacher* t);
         void assign(const unsigned int teacherId, const unsigned int activityId);
 
@@ -84,20 +85,19 @@ class School {
         vector<Client*> Clients;
         vector<Material*> Materials;
         vector<Teacher*> Teachers;
-        vector<Activity*> Activities;
         vector<Activity*> PastActivities;
         vector<Activity*> ScheduledActivities;
 };
 
 /*! \cond */
 
-class NonExistentClient : std::exception {
+class NonExistentClient : exception {
     public:
         unsigned int id;
         NonExistentClient(unsigned int id){this->id = id;};
 };
 
-std::ostream & operator <<(std::ostream &out,const NonExistentClient &client);
+std::ostream & operator <<(ostream &out,const NonExistentClient &client);
 
 class NonExistentTeacher : exception {
 public:

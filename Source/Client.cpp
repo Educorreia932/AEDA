@@ -86,10 +86,8 @@ ostream &operator<<(ostream &out, const Client &C) {
     out << "Name: " << C.name << endl
         << "ID: " << C.id << endl
         << "Balance: " << C.balance << " EUR" << endl
-        << "Scheduled activities: ";
-
-    for (auto a : C.getScheduledActivities())
-        out << a->getId() << " ";
+        << "Past activities: " << C.getPastActivitiesID() << endl
+        << "Scheduled activities: " << C.getScheduledActivitiesID();
 
     return out;
 }
@@ -102,15 +100,20 @@ vector<Activity *> Client::getScheduledActivities() const {
     return this->ScheduledActivities;
 }
 
-void Client::addActivity(Activity* activity) {
-    for (const auto &ac : ScheduledActivities)
-        if (ac->getId() == activity->getId())
-            throw clientAlreadHasActivity(id,activity->getId()); //Not catching
+void Client::addActivity(Activity* activity, bool past) {
+    if (past)
+        PastActivities.push_back(activity);
 
-    if(isOcuppied(activity->getStartTime(), activity->getEndTime()))
-        throw hasActivityAtSameTime(this->id,activity->getId());
+    else {
+        for (const auto &ac : ScheduledActivities)
+            if (ac->getId() == activity->getId())
+                throw clientAlreadHasActivity(id,activity->getId()); //Not catching
 
-    ScheduledActivities.push_back(activity);
+        if(isOcuppied(activity->getStartTime(), activity->getEndTime()))
+            throw hasActivityAtSameTime(this->id,activity->getId());
+
+        ScheduledActivities.push_back(activity);
+    }
 }
 
 void Client::setLastID(const unsigned int id) {

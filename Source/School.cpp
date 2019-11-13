@@ -88,10 +88,6 @@ vector<Client *> School::getClients() const{
     return this->Clients;
 }
 
-vector<Activity *> School::getActivities() const {
-    return this->Activities;
-}
-
 vector<Teacher *> School::getTeachers() const{
     return this->Teachers;
 }
@@ -121,7 +117,12 @@ void School::readActivities() {
                     auxActivity->setEndTime(line);
                     break;
                 case 5:
-                    Activities.push_back(auxActivity);
+                    if (auxActivity->getEndTime() < currentTime)
+                        PastActivities.push_back(auxActivity);
+
+                    else
+                        ScheduledActivities.push_back(auxActivity);
+
                     auxActivity = new Activity();
                     break;
             }
@@ -136,12 +137,11 @@ void School::readClients() {
     ifstream File("../Data/" + Files["Clients"]);
     int counter = 0;
     auto* auxClient = new Client();
-    auto* scheduledActivities = new stringstream;
-    auto* pastActivities = new stringstream;
+    auto* activities = new stringstream;
 
     if (File.is_open()) {
         while (getline(File, line)) {
-                switch (counter % 7) {
+                switch (counter % 6) {
                     case 0: // Name
                         auxClient->setName(line);
                         break;
@@ -158,18 +158,15 @@ void School::readClients() {
                     case 3: // Balance
                         auxClient->addBalance(stod(line));
                         break;
-                    case 4: // Past Activities
-                        *pastActivities << line;
+                    case 4: // Activities
+                        *activities << line;
                         break;
-                    case 5: // Scheduled Activities
-                        *scheduledActivities << line;
-                        break;
-                    case 6:
+                    case 5:
                         Clients.push_back(auxClient);
 
-                        readClientsActivities(scheduledActivities, pastActivities, auxClient);
+                        readClientsActivities(activities, auxClient);
 
-                        scheduledActivities->clear();
+                        activities->clear();
                         auxClient = new Client();
                         break;
             }
@@ -186,7 +183,7 @@ void School::readTeachers() {
     ifstream File("../Data/" + Files["Teachers"]);
     int counter = 0;
     auto* auxTeacher = new Teacher();
-    auto* planned_activities = new stringstream;
+    auto* activities = new stringstream;
 
     if (File.is_open()) {
         while (getline(File, line)) {
@@ -202,14 +199,14 @@ void School::readTeachers() {
 
                     break;
                 case 2:
-                    *planned_activities << line;
+                    *activities << line;
                     break;
                 case 3:
                     Teachers.push_back(auxTeacher);
 
-                    readTeachersActivities(planned_activities, auxTeacher);
+                    readTeachersActivities(activities, auxTeacher); ///ERROR
 
-                    planned_activities->clear();
+                    activities->clear();
                     auxTeacher = new Teacher();
                     break;
             }
@@ -242,10 +239,10 @@ void School::enroll(const unsigned int clientId, const unsigned int activityId) 
 
     bool activityExists = false;
 
-    for (const auto &ac : Activities) {
+    for (const auto &ac : ScheduledActivities) {
         if (activityId == ac->getId()){
             try {
-                client->addActivity(ac);
+                client->addActivity(ac, false);
                 activityExists = true;
             }
 
@@ -278,10 +275,10 @@ void School::assign(const unsigned int teacherId, const unsigned int activityId)
 
     bool activityExists = false;
 
-    for (const auto &ac : Activities) {
+    for (const auto &ac : ScheduledActivities) {
         if (activityId == ac->getId()){
             try {
-                teacher->addActivity(ac);
+                teacher->addActivity(ac, false);
                 activityExists = true;
             }
 
@@ -298,64 +295,76 @@ void School::assign(const unsigned int teacherId, const unsigned int activityId)
         throw activityNonExistent(activityId);
 }
 
-void School::readClientsActivities(stringstream* scheduledActivities, stringstream* pastActivities, Client* c) {
+void School::readClientsActivities(stringstream* activities, Client* c) {
     int activity_id;
 
-    while (*scheduledActivities >> activity_id) {
-        try {
-            enroll(c->getId(), activity_id);
-        }
+    while (*activities >> activity_id) {
+        Activity* AuxActivity = getActivity(activity_id);
 
-        catch (activityNonExistent &e) {
-            cout << e;
-            Menu::pause();
-        }
+        if (AuxActivity->getEndTime() < currentTime)
+            c->addActivity(AuxActivity, true);
 
-        catch (hasActivityAtSameTime &e) {
-            cout << e;
-            Menu::pause();
-        }
+        else {
+            try {
+                enroll(c->getId(), activity_id);
+            }
 
-        catch (clientAlreadHasActivity &e) {
-            cout << e;
-            Menu::pause();
+            catch (activityNonExistent &e) {
+                cout << e;
+                Menu::pause();
+            }
+
+            catch (hasActivityAtSameTime &e) {
+                cout << e;
+                Menu::pause();
+            }
+
+            catch (clientAlreadHasActivity &e) {
+                cout << e;
+                Menu::pause();
+            }
         }
     }
-
-    // Include past activities
 }
 
-void School::readTeachersActivities(stringstream* planned_activities, Teacher* t) {
+void School::readTeachersActivities(stringstream* activities, Teacher* t) {
     int activity_id;
 
-    while (*planned_activities >> activity_id) {
-        try {
-            assign(t->getID(), activity_id);
-        }
+    while (*activities >> activity_id) {
+        Activity* AuxActivity = getActivity(activity_id);
 
-        catch (activityNonExistent &e) {
-            cout << e;
-            Menu::pause();
-        }
+        if (AuxActivity->getEndTime() < currentTime)
+            t->addActivity(AuxActivity, true);
 
-        catch (teacherHasActivityAtSameTime &e) {
-            cout << e;
-            Menu::pause();
-        }
+        else {
+            try {
+                assign(t->getID(), activity_id);
+            }
 
-        catch (teacherAlreadHasActivity &e) {
-            cout << e;
-            Menu::pause();
+            catch (activityNonExistent &e) {
+                cout << e;
+                Menu::pause();
+            }
+
+            catch (teacherHasActivityAtSameTime &e) {
+                cout << e;
+                Menu::pause();
+            }
+
+            catch (teacherAlreadHasActivity &e) {
+                cout << e;
+                Menu::pause();
+            }
         }
     }
-
 }
 
 ostream &operator<<(ostream &out, const School& S) {
     out << "Name: " << S.name << endl
         << "Current date: " << S.currentTime << endl
         << "Number of enrolled clients: " << S.Clients.size() << endl
-        << "Number of planned activities: " << S.Activities.size() << endl;
+        << "Number of occured acitvities: " << S.PastActivities.size() << endl
+        << "Number of planned activities: " << S.ScheduledActivities.size() << endl;
 
     return out;
 }
@@ -367,8 +376,12 @@ void School::viewClients(bool detailed) {
                  << "---------------------" << endl;
 
     else
-        for (auto & Client : Clients)
+        for (auto & Client : Clients) {
             cout << Client->getName() << " - " << Client->getId() << endl;
+
+            if (Client->isGoldMember())
+                cout << " $ ";
+        }
 }
 
 //Exceptions
@@ -398,13 +411,13 @@ void School::viewActivities(bool detailed){
         cout << "All activities:\n";
         cout << "---------------------" << endl;
 
-        for (const auto &Activity : Activities) {
+        for (const auto &Activity : ScheduledActivities) {
             cout << *Activity;
             cout << "---------------------" << endl;
         }
     }
     else{
-        for (auto & activity : Activities)
+        for (auto & activity : ScheduledActivities)
             cout << activity->getName() << " - " << activity->getId() << endl;
 
     }
@@ -433,8 +446,7 @@ void School::saveClients() {
               << c->getId() << endl
               << btos(c->getGoldMember()) << endl
               << c->getBalance() << endl
-              << c->getPastActivitiesID() << endl
-              << c->getScheduledActivitiesID() << endl;
+              << c->getPastActivitiesID() << c->getScheduledActivitiesID() << endl;
 
             if (counter == size(Clients) - 1)
                 f << "---END---";
@@ -488,7 +500,7 @@ void School::saveTeachers() {
         for (auto t : Teachers) {
             f << t->getName() << endl
               << t->getID() << endl
-              << t->getActivitiesID() << endl;
+              << t->getPastActivitiesID() << t->getScheduledActivitiesID() << endl;
 
             if (counter == size(Teachers) - 1)
                 f << "---END---";
@@ -520,8 +532,12 @@ int School::teacherIndex(unsigned int id) {
     return -1;
 }
 
-void School::addActivity(Activity* activity){
-    Activities.push_back(activity);
+void School::addActivity(Activity* activity, bool past) {
+    if (past)
+        PastActivities.push_back(activity);
+
+    else
+        ScheduledActivities.push_back(activity);
 }
 
 void School::removeTeacher(unsigned id) {
@@ -532,6 +548,34 @@ void School::removeTeacher(unsigned id) {
     Teachers.erase(Teachers.begin()+teacherIndex(id));
 
 
+}
+
+int School::activityIndex(unsigned int id, bool past) {
+    if (past) {
+        for (size_t i = 0; i < PastActivities.size();i++)
+            if (PastActivities.at(i)->getId() == id)
+                return i;
+    }
+
+    else {
+        for (size_t i = 0; i < ScheduledActivities.size();i++)
+            if (ScheduledActivities.at(i)->getId() == id)
+                return i;
+    }
+
+    return -1;
+}
+
+Activity * School::getActivity(unsigned int id) const {
+    for (auto a : PastActivities)
+        if (a->getId() == id)
+            return a;
+
+    for (auto a : ScheduledActivities)
+        if (a->getId() == id)
+            return a;
+
+    return nullptr;
 }
 
 

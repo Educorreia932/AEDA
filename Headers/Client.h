@@ -33,7 +33,7 @@ class Client {
         void setActivities(const vector<Activity *>& Activities);
 
         //Misc.
-        void addActivity(Activity* activity);
+        void addActivity(Activity* activity, bool past);
         //Amount can be negative(will throw exception if tries to make it negative)
         void addBalance(double amount);
         void purchaseGold();

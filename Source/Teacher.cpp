@@ -4,13 +4,15 @@ unsigned int Teacher::last_id = 0;
 
 Teacher::Teacher(){
     this->id = last_id++;
-    Activities = {};
+    PastActivities = {};
+    ScheduledActivities = {};
 }
 
 Teacher::Teacher(string name){
     this->id = last_id++;
     this->name = name;
-    Activities = {};
+    ScheduledActivities = {};
+    PastActivities = {};
 }
 
 void Teacher::setID(const unsigned int id) {
@@ -21,18 +23,17 @@ void Teacher::setName(string name) {
     this->name = name;
 }
 
-
 ostream &operator<<(ostream &out, const Teacher &T) {
 
     out << "ID: " << T.id << endl;
     out << "Name: " << T.name << endl;
 
-    if(T.Activities.size() == 0)
+    if(T.ScheduledActivities.size() == 0)
         out << "No activities associated" << endl;
     else {
         out << "Associated activities: ";
 
-        for (auto a : T.Activities){
+        for (auto a : T.ScheduledActivities){
             out << a->getId() << " ";
         }
     }
@@ -50,7 +51,7 @@ void Teacher::setLastID(unsigned int id) {
 }
 
 bool Teacher::isOcuppied(const Time startTime, const Time endTime) {
-    for (const auto &ac : this->Activities) {
+    for (const auto &ac : this->ScheduledActivities) {
         if(ac->getStartTime() == startTime)
             return true;
 
@@ -67,16 +68,20 @@ bool Teacher::isOcuppied(const Time startTime, const Time endTime) {
     return false;
 }
 
+void Teacher::addActivity(Activity* activity, bool past) {
+    if (past)
+        PastActivities.push_back(activity);
 
-void Teacher::addActivity(Activity* activity) {
-    for (const auto &ac : Activities)
-        if (ac->getId() == activity->getId())
-            throw teacherAlreadHasActivity(id,activity->getId()); //Not catching
+    else {
+        for (const auto &ac : ScheduledActivities)
+            if (ac->getId() == activity->getId())
+                throw teacherAlreadHasActivity(id,activity->getId()); //Not catching
 
-    if(isOcuppied(activity->getStartTime(), activity->getEndTime()))
-        throw teacherHasActivityAtSameTime(this->id,activity->getId());
+        if(isOcuppied(activity->getStartTime(), activity->getEndTime()))
+            throw teacherHasActivityAtSameTime(this->id,activity->getId());
 
-    Activities.push_back(activity);
+        ScheduledActivities.push_back(activity);
+    }
 }
 
 unsigned Teacher::getID() const {
@@ -87,29 +92,37 @@ string Teacher::getName() const {
     return name;
 }
 
-string Teacher::getActivitiesID() const {
+string Teacher::getScheduledActivitiesID() const {
     stringstream result;
 
-    for (auto a : Activities)
+    for (auto a : ScheduledActivities)
+        result << a->getId() << " ";
+
+    return result.str();
+}
+
+string Teacher::getPastActivitiesID() const {
+    stringstream result;
+
+    for (auto a : PastActivities)
         result << a->getId() << " ";
 
     return result.str();
 }
 
 vector<Activity *> Teacher::getScheduledActivities() const {
-    return Activities;
+    return ScheduledActivities;
 }
 
 vector<Activity *> Teacher::getScheduleActivitiesByDate(Time Date) const {
     vector<Activity *> result;
 
-    for (auto a : Activities)
+    for (auto a : ScheduledActivities)
         if (a->getStartTime().sameDate(Date))
             result.push_back(a);
 
     return result;
 }
-
 
 ostream &operator<<(ostream &out, const teacherHasActivityAtSameTime &ids) {
     out << "Teacher with ID \"" << ids.teacherId << "\" already has an activity at the same time as activity with ID \"" << ids.activityId << "\"." << endl;
