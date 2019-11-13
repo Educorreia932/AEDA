@@ -419,6 +419,11 @@ std::ostream &operator<<(std::ostream &out, const TeacherAlreadyExists &teacher)
     return out;
 }
 
+std::ostream &operator<<(std::ostream &out, const NonExistentMaterial &material) {
+    out << "Material with ID " << material.id << " does not exist in school." << endl;
+    return out;
+}
+
 void School::viewActivities(bool detailed){
     if(detailed) {
         cout << "All activities:\n";
@@ -583,3 +588,37 @@ int School::activityIndex(unsigned int id) {
 }
 
 
+void School::rent(const unsigned int materialId,const unsigned int clientId, Time startTime, Time endTime) {
+    //Time needs to be checked if is ahead of the set current time
+
+    Material* Material;
+    bool materialExists = false;
+
+    for (const auto &m : this->Materials) {
+        if(m->getID() == materialId){
+            Material = m;
+            materialExists = true;
+            break;
+        }
+    }
+
+    if(!materialExists)
+        throw NonExistentMaterial(materialId);
+
+    if(clientIndex(clientId) == -1){
+        throw NonExistentClient(clientId);
+    }
+
+    for(const auto &a : Material->getActivities()){
+        if(Material->beingUsed(a->getStartTime(),a->getEndTime()))
+            throw alreadyInUse(materialId,startTime,endTime);
+    }
+
+    vector<Time> times = {startTime,endTime};
+    Client* client = Clients[clientIndex(clientId)];
+
+
+    Material->Clients[client] = times;
+
+
+}

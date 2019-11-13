@@ -78,3 +78,18 @@ unsigned int Material::getLastID(){
 unsigned int Material::getCapacity(){
     return capacity;
 }
+
+map<Client *, vector<Time>>* Material::getClients() {
+    return &Clients;
+}
+
+Material::Material() {
+    this->ID = last_id++;
+    map<Client* ,vector<Time>> Clients;
+
+}
+
+std::ostream &operator<<(std::ostream &out, const alreadyInUse &info) {
+    out << "Material with ID \"" << info.materialId << "\" is already being used between " << info.startTime << " and " << info.endTime << endl;
+    return out;
+}
