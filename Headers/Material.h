@@ -1,8 +1,10 @@
 #ifndef SUP_SCHOOL_MATERIAL_H
 #define SUP_SCHOOL_MATERIAL_H
 #include "Activity.h"
+#include "Client.h"
 #include <string>
 #include <vector>
+#include "map"
 
 class Material {
 public:
@@ -14,7 +16,7 @@ public:
     void setID(int ID);
     void setType(string type);
     static void setLastID(const unsigned int id);
-    static void setCapacity(unsigned int capac);
+    static void setCapacity(unsigned int capacity);
 
 
     //Getter functions
@@ -22,25 +24,34 @@ public:
     string getType() const;
     static unsigned int getLastID();
     vector<Activity*> getActivities() const;
-    static unsigned int getCapacity();
+    unsigned int getCapacity();
 private:
     string type;  //The type of material
-    vector<Activity*> activities;
+    vector<Activity*> Activities;
+    vector<Client*> Clients;
     unsigned int ID;
+    unsigned int capacity;
     static unsigned int last_id;
 
-    static unsigned int capacity;
+
+
 
     friend ostream &operator<<(ostream out, Material material);
 };
 
 class Boat : public Material {
+public:
+    static unsigned int maxCapacity;
 };
 
 class Suits : public Material {
+public:
+    static unsigned int maxCapacity;
 };
 
 class Board : public Material {
+public:
+    static unsigned int maxCapacity;
 };
 
 
