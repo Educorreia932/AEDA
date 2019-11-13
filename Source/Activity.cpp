@@ -59,18 +59,41 @@ ostream &operator<<(ostream &out, const Activity &A) {
     cout << "End Time: " << A.endTime << endl;
     return out;
 }
-
+ostream &operator<<(ostream &out, const Ride &R){
+    cout << "Name: " << R.name << endl;
+    cout << "ID: " << R.id << endl;
+    cout << "Start Time: " << R.startTime << endl;
+    cout << "End Time: " << R.endTime << endl;
+    cout << "Cost: " << R.cost << endl;
+}
 unsigned int Activity::getLastID() {
     return last_id;
+}
+
+Lesson::Lesson() {
+    this->id = Activity::last_id++;
 }
 
 unsigned int Lesson::CalcCost() const {
     return 0;
 }
 
+Ride::Ride() {
+    this->id = Activity::last_id++;
+}
+
+void Ride::SetCost(unsigned int cost){
+    this->cost = cost;
+}
+
 unsigned int Ride::CalcCost() const {
     return cost;
 }
+
+void Ride::setCost(unsigned int i) {
+
+}
+
 
 std::ostream &operator<<(std::ostream &out, const activityNonExistent &activity) {
     out << "Activity with ID \"" << activity.id << "\" does not exist." << endl;

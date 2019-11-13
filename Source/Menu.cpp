@@ -417,6 +417,8 @@ void Menu::changeTeachers(int teacherId) {
     }
 }
 
+//Activity --------------------
+
 int Menu::showManageActivities(){
     clearScreen();
 

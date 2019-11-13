@@ -100,34 +100,62 @@ void School::readActivities() {
     ifstream File("../Data/" + Files["Activities"]);
     int counter = 0;
 
-    auto* AuxActivity = new Activity();
+    //Things for the new activity
+    int id;
+    string type;
+    string acName;
+    string startTime;
+    string endTime;
+    int cost;
+
 
     if (File.is_open()) {
         while (getline(File, line)) {
-            switch (counter % 6) {
+            switch (counter % 7) {
                 case 0:
-                    AuxActivity->setID(stoi(line));
+                    id = stoul(line);
                     break;
                 case 1:
-                    // Lesson or ride
+                    type = line;
                     break;
                 case 2:
-                    AuxActivity->setName(line);
+                    acName = line;
                     break;
                 case 3:
-                    AuxActivity->setStartTime(line);
+                    startTime = line;
                     break;
                 case 4:
-                    AuxActivity->setEndTime(line);
+                    endTime = line;
                     break;
                 case 5:
-                    if (AuxActivity->getEndTime() < currentTime)
-                        PastActivities.push_back(AuxActivity);
+                    //Check if it's a lesson "L" or ride "R"
+                    if(type == "L"){
+                        Lesson* AuxLesson = new Lesson();
+                        AuxLesson->setID(id);
+                        AuxLesson->setName(acName);
+                        AuxLesson->setStartTime(startTime);
+                        AuxLesson->setEndTime(endTime);
+                        if (AuxLesson->getStartTime() < currentTime)
+                            PastActivities.push_back(AuxLesson);
+                        else
+                            ScheduledActivities.push_back((AuxLesson));
+                    }
+                    else if(type == "R"){
+                        Ride* AuxActivity = new Ride();
+                        AuxActivity->setID(id);
+                        AuxActivity->setName(acName);
+                        AuxActivity->setStartTime(startTime);
+                        AuxActivity->setEndTime(endTime);
+                        AuxActivity->setCost(stoul(line));
+                        if (AuxActivity->getStartTime() < currentTime)
+                            PastActivities.push_back(AuxActivity);
 
-                    else
-                        ScheduledActivities.push_back(AuxActivity);
-
-                    AuxActivity = new Activity();
+                        else
+                            ScheduledActivities.push_back((AuxActivity));
+                    }
+                    else{
+                        cerr << "Non activity and non file found whilst reading activities" << endl;
+                    }
                     break;
             }
 

@@ -38,13 +38,19 @@ class Ride : public Activity {
     protected:
         unsigned int cost;
     public:
-        Ride(Time startTime,Time endTime,string name) : Activity(startTime,endTime,name){};
+        Ride();
+        Ride(Time startTime,Time endTime,string name) : Activity(startTime,endTime,name){this->cost = cost;}
+        void SetCost(unsigned int cost);
         unsigned int CalcCost() const;
+        void setCost(unsigned int cost);
+
+        friend ostream& operator<<(ostream& out, const Ride& R);
 };
 
 class Lesson : public Activity {
     public:
-    Lesson(Time startTime,Time endTime,string name) : Activity(startTime,endTime,name){};
+    Lesson();
+    Lesson(Time startTime, Time endTime, string name) : Activity(startTime, endTime, name){};
     unsigned int CalcCost() const;
 };
 
