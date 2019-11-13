@@ -8,6 +8,7 @@
 using namespace std;
 
 int readOption(int min, unsigned int max);
+double readOption(double min, double max);
 bool stob(const string &s);
 string btos(const bool &b);
 string centerString(int width, const string& s);

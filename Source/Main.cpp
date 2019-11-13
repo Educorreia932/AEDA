@@ -3,6 +3,7 @@
 using namespace std;
 
 int main() {
+
     auto* PortoSUPSchool = new School("../Data/School.txt");
     Menu SUPMenu(PortoSUPSchool);
     int selected;

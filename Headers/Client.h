@@ -51,7 +51,7 @@ class Client {
         bool isOcuppied(const Time startTime,const Time endTime);
 };
 
-//Exceptions
+/*! \cond */
 
 class alreadyGoldMember : std::exception {
     public:
@@ -88,5 +88,7 @@ public:
 };
 
 std::ostream & operator <<(std::ostream &out,const insufficientFunds &info);
+
+/*! \endcond */
 
 #endif //SUP_SCHOOL_CLIENT_H

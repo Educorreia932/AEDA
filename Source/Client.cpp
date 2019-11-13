@@ -30,7 +30,8 @@ void Client::purchaseGold() {
             addBalance(-School::goldCardPrice);
             gold_member = true;
         } catch(insufficientFunds &e){
-            cerr << e;
+
+            throw e;
         }
 
     }

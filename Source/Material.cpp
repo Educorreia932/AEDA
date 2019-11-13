@@ -1,7 +1,10 @@
 #include "../Headers/Material.h"
 
-using namespace std;
 
+using namespace std;
+unsigned int Boat::maxCapacity = 10;
+unsigned int Suits::maxCapacity = 6;
+unsigned int Board::maxCapacity = 4;
 unsigned int Material::last_id = 0;
 
 bool Material::beingUsed(Time startTime, Time endTime){
@@ -15,12 +18,12 @@ bool Material::beingUsed(Time startTime, Time endTime){
         cerr << "Start time of " << i.getStartTime() << " is after end time of " << i.getEndTime() << endl;
     }
 
-    if (activities.size() == 0) //Or activity == NULL
+    if (Activities.size() == 0) //Or activity == NULL
         return true;
 
-    for(int i = 0; i < activities.size(); i++){
+    for(int i = 0; i < Activities.size(); i++){
         //if(*(activity[i]))
-        if(!(endTime < activities[i]->getStartTime() || startTime > activities[i]->getEndTime())){
+        if(!(endTime < Activities[i]->getStartTime() || startTime > Activities[i]->getEndTime())){
              return true;
         }
     }
@@ -52,6 +55,9 @@ void Material::setLastID(unsigned int id) {
     last_id = id;
 }
 
+void Material::setCapacity(unsigned int capacity){
+    capacity = capacity;
+}
 //Getters
 unsigned int Material::getID() const{
     return ID;
@@ -62,9 +68,13 @@ string Material::getType() const{
 }
 
 vector<Activity *> Material::getActivities() const {
-    return activities;
+    return Activities;
 }
 
 unsigned int Material::getLastID(){
     return last_id;
+}
+
+unsigned int Material::getCapacity(){
+    return capacity;
 }

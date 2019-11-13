@@ -72,8 +72,8 @@ int Menu::showManageClients() {
          << endl
          << "1) Create a new client." << endl
          << "2) Change the information of a client." << endl //<- perhaps ask for admin permission/password
-         << "3) Add funds "<< endl
-         << "4) Purchase gold card" << endl
+         << "3) Add funds." << endl
+         << "4) Purchase gold card." << endl
          << "5) Remove an existent client." << endl //<- Remove all information associated with him
          << "6) Enroll a client in an activity." << endl //<- and remove him from a planned activity
          << "0) Go back" << endl
@@ -102,48 +102,60 @@ void Menu::manageClientsSelection(int selected) {
 
             selected_client = readOption(0, Client::getLastID() - 1);
 
-            clearScreen();
-            changeClient(selected_client);
+            pause();
             return;
+
         case 3:
-            cout << "Which client do you wish to add funds to?" << endl;
-
-            SUPSchool->viewClients(false);
-
-            cout << endl;
-
-            selected_client = readOption(0, Client::getLastID() - 1);
-
-            cout << "Current balance: " << SUPSchool->Clients[SUPSchool->clientIndex(selected_client)]->getBalance()
+            cout << "Which client do you want to add funds to? Insert the corresponding key." << endl
                  << endl;
 
-
-            amount = readOption(0,999999);
-
-            try {
-                SUPSchool->Clients[SUPSchool->clientIndex(selected_client)]->addBalance(amount);
-            } catch (insufficientFunds &e){
-                cerr << e;
-            }
-            break;
-        case 4:
-            cout << "Which client wants to purchase the gold card?" << endl;
-
             SUPSchool->viewClients(false);
 
             cout << endl;
 
-            selected_client = readOption(0, Client::getLastID() - 1);
+            do {
+                selected_client = readOption(0, Client::getLastID() - 1);
 
-            try {
+                if(selected_client == 0)
+                    return;
+            }while(SUPSchool->clientIndex(selected_client) == -1);
+
+            cout << "Current funds: " << SUPSchool->Clients[SUPSchool->clientIndex(selected_client)]->getBalance() << endl;
+
+            cout << "How much do you want to add?(Only positive amounts)" << endl;
+
+            amount = readOption(0,9999999);
+
+            SUPSchool->Clients[SUPSchool->clientIndex(selected_client)]->addBalance(amount);
+
+            pause();
+            return;
+
+        case 4:
+            cout << "Which client wants to purchase the gold card?" << endl
+                 << endl;
+
+            SUPSchool->viewClients(false);
+
+            cout << endl;
+            do {
+                selected_client = readOption(0, Client::getLastID() - 1);
+
+                if(selected_client == 0)
+                    return;
+            }while(SUPSchool->clientIndex(selected_client) == -1);
+
+            try{
                 SUPSchool->Clients[SUPSchool->clientIndex(selected_client)]->purchaseGold();
-            } catch (insufficientFunds &e){
+
+            }catch(insufficientFunds &e){
                 cerr << e;
-            } catch (alreadyGoldMember &e){
+            }catch(alreadyGoldMember &e){
                 cerr << e;
             }
 
-            break;
+            pause();
+            return;
         case 6:
             cout << "Insert the client ID: " << endl; //Make function to display the clients
             selected_client = readOption(0, Client::getLastID() - 1);
@@ -175,8 +187,7 @@ void Menu::manageClientsSelection(int selected) {
 void Menu::createClient() {
     auto *c = new Client();
     string aux;
-    stringstream aux_stream, aux_stream2;
-    double balance;
+    stringstream aux_stream;
 
     cout << "What's the name of the new client? " << endl;
     getline(cin, aux);
@@ -189,19 +200,6 @@ void Menu::createClient() {
 
     c->setGoldMember(aux == "Y");
 
-    cout << "What is the starting balance of the client?" << endl;
-    balance = readOption(0,999999);
-
-    try{
-        c->addBalance(balance);
-        //Probably wont fail because of readOption
-    } catch(insufficientFunds &e){
-       cerr << e;
-    }
-
-
-    cout << endl;
-
     try {
         SUPSchool->addClient(c);
     }
@@ -211,42 +209,15 @@ void Menu::createClient() {
         pause();
     }
 
-    cout << "Which are the past activities of the new client (insert IDs separated by Space)? " << endl;
+    cout << "Which are the scheduled activities of the new client (insert IDs separated by Space)? " << endl;
     cin.ignore();
     getline(cin, aux);
     aux_stream << aux;
 
-    cout << "Which are the scheduled activities of the new client (insert IDs separated by Space)? " << endl;
-    cin.ignore();
-    getline(cin, aux);
-    aux_stream2 << aux;
-
-    SUPSchool->readClientsActivities(&aux_stream2, &aux_stream, c);
+    SUPSchool->readClientsActivities(&aux_stream,&aux_stream, c); //Change in the future
 
     cout << endl;
     pause();
-}
-
-void Menu::changeClient(int client_id) {
-    cout << "What information do you want to change? Insert the corresponding key." << endl
-         << endl
-         << "1) Change the client's name" << endl
-         << "0) Go back" << endl
-         << endl;
-
-    int selected_option = readOption(0, 1);
-    string aux;
-
-    switch (selected_option) {
-        case 1:
-            cout << "What's the name of the new client? " << endl;
-            getline(cin, aux);
-            SUPSchool->Clients[SUPSchool->clientIndex(client_id)]->setName(aux);
-            cout << endl;
-            break;
-        case 0:
-            return;
-    }
 }
 
 // Teacher --------------------
@@ -361,7 +332,7 @@ void Menu::createTeacher() {
         pause();
     }
 
-    cout << "Which are the scheduled activities of the new teacher (insert IDs separated by Space)? " << endl; // Only one activity per teacher?
+    cout << "Which are the scheduled activities of the new teacher(insert IDs separated by Space)? " << endl;
     cin.ignore();
     getline(cin, aux);
     aux_stream << aux;
@@ -379,7 +350,7 @@ void Menu::changeTeachers(int teacherId) {
          << "0) Go back" << endl
          << endl;
 
-    int selected_option = readOption(0, 1);
+    int selected_option = readOption(0, 4);
     string aux;
 
     switch (selected_option) {
@@ -394,8 +365,6 @@ void Menu::changeTeachers(int teacherId) {
 
     }
 }
-
-// Activity --------------------
 
 int Menu::showManageActivities(){
     clearScreen();
@@ -433,17 +402,37 @@ void Menu::createActivity() {
     cout << "What's the name of the new activity? ";
 
     getline(cin, aux);
+    if(aux[0] >= 97 && aux[0] <= 122){
+        aux[0] -= 32;
+    }
+
+
     a->setName(aux);
 
     cout << endl << "What's the start date (DD/MM/YYYY HH:MM) of the activity? ";
 
     getline(cin, aux);
-    a->setStartTime(aux);
-
+    try {
+        a->setStartTime(aux);
+    }
+    catch(exception &e){
+        cerr << e.what();
+        return;
+    }
+    catch(InvalidDate &a){
+        cerr << a.getMsg();
+        return;
+    }
     cout << endl << "What's the end date (HH:MM) of the activity? ";
 
     getline(cin, aux);
-    a->setEndTime(aux);
+    try {
+        a->setEndTime(a->getStartTime().toString() + ' ' + aux);
+    }
+    catch(exception &e){
+        cerr << e.what();
+        return;
+    }
 
     SUPSchool->addActivity(a);
 }
@@ -638,3 +627,6 @@ void Menu::pause() {
     cout << "Press any key to continue ...";
     cin.get();
 }
+
+
+
