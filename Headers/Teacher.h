@@ -38,7 +38,7 @@ class teacherHasActivityAtSameTime : std::exception {
 public:
     unsigned teacherId;
     unsigned int activityId;
-    teacherHasActivityAtSameTime(unsigned int teacherId,unsigned int activityId){teacherId = teacherId;activityId = activityId;};
+    teacherHasActivityAtSameTime(unsigned int teacherId,unsigned int activityId){this->teacherId = teacherId;this->activityId = activityId;};
 };
 
 ostream & operator <<(ostream &out,const teacherHasActivityAtSameTime &ids);
@@ -47,7 +47,7 @@ class teacherAlreadHasActivity : std::exception {
 public:
     unsigned teacherId;
     unsigned int activityId;
-    teacherAlreadHasActivity(unsigned int teacherId,unsigned int activityId){teacherId = teacherId;activityId = activityId;};
+    teacherAlreadHasActivity(unsigned int teacherId,unsigned int activityId){this->teacherId = teacherId;this->activityId = activityId;};
 };
 
 ostream & operator <<(std::ostream &out,const teacherAlreadHasActivity &ids);

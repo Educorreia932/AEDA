@@ -41,11 +41,13 @@ class School {
         void readClients();
         void readActivities();
         void readTeachers();
+        void readMaterials();
         ///@}
 
         void enroll(const unsigned int clientId, const unsigned int activityId);
         void readClientsActivities(stringstream* activities, Client* c);
         void readTeachersActivities(stringstream* planned_activities, Teacher* t);
+        void readMaterialActivities(stringstream* activities, Material* m);
         void assign(const unsigned int teacherId, const unsigned int activityId);
         //Verifica pouca coisa
         void rent(const unsigned int materialId,const unsigned int clientId, Time startTime, Time endTime);
@@ -57,6 +59,7 @@ class School {
         void saveClients();
         void saveActivities();
         void saveTeachers();
+        void saveMaterials();
         ///@}
 
         void addTeacher(Teacher* teacher);

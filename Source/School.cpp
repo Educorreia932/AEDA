@@ -45,6 +45,7 @@ School::School(const string& filename) {
         File.close();
 
         readActivities();
+        readMaterials();
         readClients();
         readTeachers();
     }
@@ -219,9 +220,73 @@ void School::readTeachers() {
 
         File.close();
     }
-
-
 }
+
+
+void School::readMaterials() {
+    string line;
+    ifstream File("../Data/" + Files["Materials"]);
+    int counter = 0;
+    auto* auxBoat = new Boat();
+    auto* auxSuits = new Suits();
+    auto* auxBoard = new Board();
+
+    auto* activities = new stringstream;
+
+    string type;
+
+    if (File.is_open()) {
+        while (getline(File, line)) {
+            switch (counter % 4) {
+                case 0:
+                    type = line;
+                    break;
+                case 1:
+
+                    if(type == "boat"){
+                        auxBoat->setType(type);
+                        auxBoat->setID(stoi(line));
+                    } else if (type == "suits"){
+                        auxSuits->setType(type);
+                        auxSuits->setID(stoi(line));
+                    } else if (type == "board"){
+                        auxBoard->setType(type);
+                        auxBoard->setID(stoi(line));
+                    }
+
+                    if (stoi(line) > Material::getLastID())
+                        Material::setLastID(stoi(line));
+
+                    break;
+                case 2:
+                    *activities << line;
+                    break;
+                case 3:
+                    if(type == "boat"){
+                        Materials.push_back(auxBoat);
+                        readMaterialActivities(activities, auxBoat);
+                    } else if (type == "suits"){
+                        Materials.push_back(auxSuits);
+                        readMaterialActivities(activities, auxSuits);
+                    } else if (type == "board"){
+                        Materials.push_back(auxBoard);
+                        readMaterialActivities(activities, auxBoard);
+                    }
+
+                    activities->clear();
+                    auxBoard = new Board();
+                    auxSuits = new Suits();
+                    auxBoat  = new Boat();
+                    break;
+            }
+
+            counter++;
+        }
+
+        File.close();
+    }
+}
+
 
 void School::enroll(const unsigned int clientId, const unsigned int activityId) {
     //Time needs to be checked if is ahead of the set current time
@@ -362,11 +427,24 @@ void School::readTeachersActivities(stringstream* activities, Teacher* t) {
     }
 }
 
+
+void School::readMaterialActivities(stringstream* activities, Material* m) {
+    int activity_id;
+
+    while (*activities >> activity_id) {
+        Activity* AuxActivity = getActivity(activity_id);
+
+        if (AuxActivity->getEndTime() < currentTime)
+            m->addActivity(AuxActivity);
+    }
+}
+
+
 ostream &operator<<(ostream &out, const School& S) {
     out << "Name: " << S.name << endl
         << "Current date: " << S.currentTime << endl
         << "Number of enrolled clients: " << S.Clients.size() << endl
-        << "Number of occured acitvities: " << S.PastActivities.size() << endl
+        << "Number of occured activities: " << S.PastActivities.size() << endl
         << "Number of planned activities: " << S.ScheduledActivities.size() << endl;
 
     return out;
@@ -457,6 +535,30 @@ void School::saveClients() {
               << c->getPastActivitiesID() << c->getScheduledActivitiesID() << endl;
 
             if (counter == size(Clients) - 1)
+                f << "---END---";
+
+            else
+                f << "::::::::::" << endl;
+
+            counter++;
+        }
+
+    f.close();
+}
+
+void School::saveMaterials() {
+    ofstream f;
+    int counter = 0;
+
+    f.open("../Data/" + Files["Materials"]);
+
+    if (f.is_open())
+        for (auto m : Materials) {
+            f << m->getType() << endl
+              << m->getID() << endl
+              << m->getActivitiesID() << endl;
+
+            if (counter == size(Materials) - 1)
                 f << "---END---";
 
             else

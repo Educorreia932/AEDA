@@ -82,3 +82,4 @@ vector<Activity*> eraseAndReturnVector(vector<Activity*> vec,unsigned int i){
     vec.erase(vec.begin() + i);
     return vec;
 }
+

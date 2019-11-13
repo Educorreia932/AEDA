@@ -76,6 +76,8 @@ public:
 
 std::ostream & operator <<(std::ostream &out,const activityNonExistent &activity);
 
+
+
 /*! \endcond */
 
 #endif //SUP_SCHOOL_ACTIVITY_H

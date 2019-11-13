@@ -15,6 +15,7 @@ public:
     //Miscellaneous
     bool beingUsed(Time startTime, Time endTime);
     string getObjectType() const;
+    void addActivity(Activity* activity);
 
     //Setter functions
     void setID(int ID);
@@ -27,6 +28,7 @@ public:
     string getType() const;
     static unsigned int getLastID();
     vector<Activity*> getActivities() const;
+    string getActivitiesID() const;
     unsigned int getCapacity();
     map<Client* ,vector<Time>>* getClients();
 
@@ -65,6 +67,15 @@ public:
 };
 
 std::ostream & operator <<(std::ostream &out,const alreadyInUse &info);
+
+class materialAlreadyHasActivity : std::exception {
+public:
+    unsigned materialId;
+    unsigned int activityId;
+    materialAlreadyHasActivity(unsigned int materialId,unsigned int activityId){this->materialId = materialId;this->activityId = activityId;};
+};
+
+ostream & operator <<(std::ostream &out,const materialAlreadyHasActivity &ids);
 
 
 /*! \endcond */
