@@ -25,10 +25,16 @@ class School {
         void removeClient(unsigned int id);
 
         void addActivity(Activity* activity);
+        bool isPastActivity(unsigned int id);
+        int activityIndex(unsigned int id);
 
         /*! @name Getters */
         ///@{
-        vector<Activity*> getActivities() const;
+        Time getCurrentTime() const;
+        vector<Activity*> getPastActivities() const;
+        vector<Activity*> getScheduledActivities() const;
+        vector<int> getPastActivitiesID() const;
+        vector<int> getSheduledActivitiesID() const;
         vector<Teacher *> getTeachers() const;
         vector<Client *> getClients() const;
         ///@}
@@ -43,7 +49,7 @@ class School {
         ///@}
 
         void enroll(const unsigned int clientId, const unsigned int activityId);
-        void readClientsActivities(stringstream* scheduledActivities, stringstream* pastActivities, Client* c);
+        void readClientsActivities(stringstream* activities, Client* c);
         void readTeachersActivities(stringstream* planned_activities, Teacher* t);
         void assign(const unsigned int teacherId, const unsigned int activityId);
 
@@ -76,7 +82,6 @@ class School {
 
         friend ostream& operator<<(ostream& out, const School& S);
     private:
-
         string name;
         unsigned int id;
         Time currentTime;
@@ -84,7 +89,6 @@ class School {
         vector<Client*> Clients;
         vector<Material*> Materials;
         vector<Teacher*> Teachers;
-        vector<Activity*> Activities;
         vector<Activity*> PastActivities;
         vector<Activity*> ScheduledActivities;
 };

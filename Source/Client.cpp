@@ -86,7 +86,19 @@ ostream &operator<<(ostream &out, const Client &C) {
     out << "Name: " << C.name << endl
         << "ID: " << C.id << endl
         << "Balance: " << C.balance << " EUR" << endl
-        << "Scheduled activities: ";
+        << "Past activities: ";
+
+    if (C.getPastActivities().empty())
+        out << "None";
+
+    else
+        for (auto a : C.getPastActivities())
+            out << a->getId() << ' ';
+
+    if (C.getScheduledActivities().empty())
+        out << "None";
+
+    out << endl << "Scheduled activities: ";
 
     for (auto a : C.getScheduledActivities())
         out << a->getId() << " ";
@@ -102,15 +114,19 @@ vector<Activity *> Client::getScheduledActivities() const {
     return this->ScheduledActivities;
 }
 
-void Client::addActivity(Activity* activity) {
-    for (const auto &ac : ScheduledActivities)
-        if (ac->getId() == activity->getId())
-            throw clientAlreadHasActivity(id,activity->getId()); //Not catching
+void Client::addActivity(Activity* activity, bool past) {
+    if (past)
+        PastActivities.push_back(activity);
 
-    if(isOcuppied(activity->getStartTime(), activity->getEndTime()))
-        throw hasActivityAtSameTime(this->id,activity->getId());
+    else
+        for (const auto &ac : ScheduledActivities)
+            if (ac->getId() == activity->getId())
+                throw clientAlreadHasActivity(id,activity->getId()); //Not catching
 
-    ScheduledActivities.push_back(activity);
+        if(isOcuppied(activity->getStartTime(), activity->getEndTime()))
+            throw hasActivityAtSameTime(this->id,activity->getId());
+
+        ScheduledActivities.push_back(activity);
 }
 
 void Client::setLastID(const unsigned int id) {
@@ -119,6 +135,10 @@ void Client::setLastID(const unsigned int id) {
 
 bool Client::getGoldMember() const {
     return gold_member;
+}
+
+vector<Activity *> Client::getPastActivities() const {
+    return PastActivities;
 }
 
 string Client::getScheduledActivitiesID() const {

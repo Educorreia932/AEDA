@@ -8,32 +8,41 @@
 #include "Activity.h"
 #include "Auxiliary.h"
 
+/*! @brief Client of the SUP School */
+
 class Client {
     public:
-        //Constructors
+        /*! @name Getters */
+        ///@{
         Client();
         Client(string name, bool has_gold_card,int balance);
+        ///@}
 
-        //Getters
+        /*! @name Getters */
+        ///@{
         string getName() const;
         static unsigned int getLastID();
         unsigned int getId() const;
         bool getGoldMember() const;
+        vector<Activity*> getPastActivities() const;
+        string getPastActivitiesID() const;
         vector<Activity*> getScheduledActivities() const;
         vector<Activity*> getScheduleActivitiesByDate(Time Date) const;
         string getScheduledActivitiesID() const;
         double getBalance() const;
+        ///@}
 
-        string getPastActivitiesID() const;
-        //Setters
+        /*! @name Setters */
+        ///@{
         void setName(const string newName);
         static void setLastID(const unsigned int id);
         void setID(const unsigned int id);
         void setGoldMember(const bool gold_member);
         void setActivities(const vector<Activity *>& Activities);
+        ///@}
 
         //Misc.
-        void addActivity(Activity* activity);
+        void addActivity(Activity* activity, bool past);
         //Amount can be negative(will throw exception if tries to make it negative)
         void addBalance(double amount);
         void purchaseGold();
