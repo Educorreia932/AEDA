@@ -16,9 +16,10 @@ public:
     static void setLastID(const unsigned int id);
     void setName(string name);
     string getName() const;
-    void addActivity(Activity* activity);
+    void addActivity(Activity* activity, bool past);
     bool isOcuppied(const Time startTime, const Time endTime);
-    string getActivitiesID() const;
+    string getPastActivitiesID() const;
+    string getScheduledActivitiesID() const;
     vector<Activity*> getScheduledActivities() const;
     vector<Activity*> getScheduleActivitiesByDate(Time Date) const;
 
@@ -27,7 +28,8 @@ private:
     string name;
     unsigned int id;
     static unsigned int last_id;
-    vector<Activity *> Activities;
+    vector<Activity *> PastActivities;
+    vector<Activity *> ScheduledActivities;
 };
 
 /*! \cond */
@@ -36,7 +38,7 @@ class teacherHasActivityAtSameTime : std::exception {
 public:
     unsigned teacherId;
     unsigned int activityId;
-    teacherHasActivityAtSameTime(unsigned int teacherId,unsigned int activityId){teacherId = teacherId;activityId = activityId;};
+    teacherHasActivityAtSameTime(unsigned int teacherId,unsigned int activityId){this->teacherId = teacherId;this->activityId = activityId;};
 };
 
 ostream & operator <<(ostream &out,const teacherHasActivityAtSameTime &ids);
@@ -45,7 +47,7 @@ class teacherAlreadHasActivity : std::exception {
 public:
     unsigned teacherId;
     unsigned int activityId;
-    teacherAlreadHasActivity(unsigned int teacherId,unsigned int activityId){teacherId = teacherId;activityId = activityId;};
+    teacherAlreadHasActivity(unsigned int teacherId,unsigned int activityId){this->teacherId = teacherId;this->activityId = activityId;};
 };
 
 ostream & operator <<(std::ostream &out,const teacherAlreadHasActivity &ids);

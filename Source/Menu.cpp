@@ -79,7 +79,7 @@ int Menu::showManageClients() {
          << "0) Go back" << endl
          << endl;
 
-    return readOption(0, 4);
+    return readOption(0, 6);
 }
 
 void Menu::manageClientsSelection(int selected) {
@@ -156,12 +156,40 @@ void Menu::manageClientsSelection(int selected) {
 
             pause();
             return;
+        case 5:
+            cout << "Which client do you want to remove?" << endl
+                 << endl;
+
+            SUPSchool->viewClients(false);
+
+            cout << endl;
+            do {
+                selected_client = readOption(0, Client::getLastID() - 1);
+
+                if(selected_client == 0)
+                    return;
+            }while(SUPSchool->clientIndex(selected_client) == -1);
+
+            try{
+                SUPSchool->removeClient(selected_client);
+
+            }catch(NonExistentClient &e){
+                cerr << e;
+            }
+
+            pause();
+            return;
         case 6:
             cout << "Insert the client ID: " << endl; //Make function to display the clients
-            selected_client = readOption(0, Client::getLastID() - 1);
+            do {
+                selected_client = readOption(0, Client::getLastID() - 1);
+
+                if(selected_client == 0)
+                    return;
+            } while(SUPSchool->clientIndex(selected_client) == -1);
 
             cout << "Insert the activity ID: " << endl;
-            selected_activity = readOption(0, SUPSchool->Activities.size() - 1);
+            selected_activity = readOption(0, SUPSchool->ScheduledActivities.size() - 1);
 
             try {
                 SUPSchool->enroll(selected_client, selected_activity);
@@ -179,15 +207,13 @@ void Menu::manageClientsSelection(int selected) {
             return;
         case 0:
             return;
-        default:
-            cout << "NOT IMPLEMENTED YET" << endl;
     }
 }
 
 void Menu::createClient() {
     auto *c = new Client();
     string aux;
-    stringstream aux_stream;
+    stringstream activities;
 
     cout << "What's the name of the new client? " << endl;
     getline(cin, aux);
@@ -209,12 +235,17 @@ void Menu::createClient() {
         pause();
     }
 
+    cout << "Which are the past activities of the new client (insert IDs separated by Space)? " << endl;
+    cin.ignore();
+    getline(cin, aux);
+    activities << aux;
+
     cout << "Which are the scheduled activities of the new client (insert IDs separated by Space)? " << endl;
     cin.ignore();
     getline(cin, aux);
-    aux_stream << aux;
+    activities << aux;
 
-    SUPSchool->readClientsActivities(&aux_stream,&aux_stream, c); //Change in the future
+    SUPSchool->readClientsActivities(&activities, c);
 
     cout << endl;
     pause();
@@ -254,7 +285,12 @@ void Menu::manageTeachersSelection(int selected) {
 
             cout << endl;
 
-            selected_teacher = readOption(0, Teacher::getLastID() - 1);
+            do {
+                selected_teacher = readOption(0, Teacher::getLastID() - 1);
+
+                if(selected_teacher == 0)
+                    return;
+            }while(SUPSchool->teacherIndex(selected_teacher) == -1);
 
             changeTeachers(selected_teacher); //Needs to catch exception in client index inside function
 
@@ -268,7 +304,12 @@ void Menu::manageTeachersSelection(int selected) {
 
             cout << endl;
 
-            selected_teacher = readOption(0, Teacher::getLastID() - 1);
+            do {
+                selected_teacher = readOption(0, Teacher::getLastID() - 1);
+
+                if(selected_teacher == 0)
+                    return;
+            }while(SUPSchool->teacherIndex(selected_teacher) == -1);
 
             try {
                 SUPSchool->removeTeacher(selected_teacher);
@@ -282,11 +323,21 @@ void Menu::manageTeachersSelection(int selected) {
             cout << "Insert the teacher ID: " << endl; //Make function to display the clients
 
             SUPSchool->viewTeachers(false);
-            selected_teacher = readOption(0, Teacher::getLastID() - 1);
+            do {
+                selected_teacher = readOption(0, Teacher::getLastID() - 1);
+
+                if(selected_teacher == 0)
+                    return;
+            }while(SUPSchool->teacherIndex(selected_teacher) == -1);
 
             cout << "Insert the activity ID: " << endl;
             SUPSchool->viewActivities(false);
-            selected_activity = readOption(0, Activity::getLastID() - 1);
+            do {
+                selected_activity = readOption(0, Activity::getLastID() - 1);
+
+                if(selected_activity == 0)
+                    return;
+            }while(SUPSchool->activityIndex(selected_activity, false) == -1);
 
             try {
                 SUPSchool->assign(selected_teacher, selected_activity);
@@ -434,7 +485,7 @@ void Menu::createActivity() {
         return;
     }
 
-    SUPSchool->addActivity(a);
+    SUPSchool->addActivity(a, false);
 }
 
 void Menu::removeActivity() {
@@ -461,8 +512,8 @@ void Menu::removeActivity() {
     int index = -1;
     //Check if ID already exists
     try {
-        for(int i = 0; i < SUPSchool->Activities.size(); i++){
-            if(SUPSchool->Activities[i]->getId() == ID){
+        for(int i = 0; i < SUPSchool->ScheduledActivities.size(); i++){
+            if(SUPSchool->ScheduledActivities[i]->getId() == ID){
                 index = i;
             }
         }

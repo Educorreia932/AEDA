@@ -11,7 +11,6 @@ bool Material::beingUsed(Time startTime, Time endTime){
     try{
         if (startTime > endTime) { //Implement >=
             throw ImpossibleTimeDifference(startTime, endTime);
-
         }
     }
     catch(ImpossibleTimeDifference &i){
@@ -78,3 +77,44 @@ unsigned int Material::getLastID(){
 unsigned int Material::getCapacity(){
     return capacity;
 }
+
+map<Client *, vector<Time>>* Material::getClients() {
+    return &Clients;
+}
+
+Material::Material() {
+    this->ID = last_id++;
+    map<Client* ,vector<Time>> Clients;
+
+}
+
+void Material::addActivity(Activity* activity) {
+
+        for (const auto &ac : Activities)
+            if (ac->getId() == activity->getId())
+                throw materialAlreadyHasActivity(ID,ac->getId()); //Not catching
+
+        Activities.push_back(activity);
+
+}
+
+string Material::getActivitiesID() const {
+    stringstream result;
+
+    for (auto a : Activities)
+        result << a->getId() << " ";
+
+    return result.str();
+}
+
+
+std::ostream &operator<<(std::ostream &out, const alreadyInUse &info) {
+    out << "Material with ID \"" << info.materialId << "\" is already being used between " << info.startTime << " and " << info.endTime << endl;
+    return out;
+}
+
+ostream &operator<<(std::ostream &out, const materialAlreadyHasActivity &ids) {
+    out << "Activity with ID \"" << ids.activityId << "\" is already using material with ID \"" << ids.materialId << endl;
+    return out;
+}
+

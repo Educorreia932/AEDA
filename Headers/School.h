@@ -24,11 +24,12 @@ class School {
         int clientIndex(unsigned int id);
         void removeClient(unsigned int id);
 
-        void addActivity(Activity* activity);
+        void addActivity(Activity* activity, bool past);
+        int activityIndex(unsigned int id, bool past);
 
         /*! @name Getters */
         ///@{
-        vector<Activity*> getActivities() const;
+        Activity* getActivity(unsigned int id) const;
         vector<Teacher *> getTeachers() const;
         vector<Client *> getClients() const;
         ///@}
@@ -40,12 +41,16 @@ class School {
         void readClients();
         void readActivities();
         void readTeachers();
+        void readMaterials();
         ///@}
 
         void enroll(const unsigned int clientId, const unsigned int activityId);
-        void readClientsActivities(stringstream* scheduledActivities, stringstream* pastActivities, Client* c);
+        void readClientsActivities(stringstream* activities, Client* c);
         void readTeachersActivities(stringstream* planned_activities, Teacher* t);
+        void readMaterialActivities(stringstream* activities, Material* m);
         void assign(const unsigned int teacherId, const unsigned int activityId);
+        //Verifica pouca coisa
+        void rent(const unsigned int materialId,const unsigned int clientId, Time startTime, Time endTime);
 
         /** @name Save Functions
          * This functions save the alterations made to the respective data files.
@@ -54,6 +59,7 @@ class School {
         void saveClients();
         void saveActivities();
         void saveTeachers();
+        void saveMaterials();
         ///@}
 
         void addTeacher(Teacher* teacher);
@@ -76,7 +82,6 @@ class School {
 
         friend ostream& operator<<(ostream& out, const School& S);
     private:
-
         string name;
         unsigned int id;
         Time currentTime;
@@ -84,20 +89,19 @@ class School {
         vector<Client*> Clients;
         vector<Material*> Materials;
         vector<Teacher*> Teachers;
-        vector<Activity*> Activities;
         vector<Activity*> PastActivities;
         vector<Activity*> ScheduledActivities;
 };
 
 /*! \cond */
 
-class NonExistentClient : std::exception {
+class NonExistentClient : exception {
     public:
         unsigned int id;
         NonExistentClient(unsigned int id){this->id = id;};
 };
 
-std::ostream & operator <<(std::ostream &out,const NonExistentClient &client);
+std::ostream & operator <<(ostream &out,const NonExistentClient &client);
 
 class NonExistentTeacher : exception {
 public:
@@ -122,6 +126,15 @@ class TeacherAlreadyExists : exception {
 };
 
 ostream & operator <<(std::ostream &out, const TeacherAlreadyExists &client);
+
+class NonExistentMaterial : std::exception {
+public:
+    unsigned int id;
+    NonExistentMaterial(unsigned int id){this->id = id;};
+};
+
+std::ostream & operator <<(std::ostream &out,const NonExistentMaterial &material);
+
 
 /*! \endcond */
 
