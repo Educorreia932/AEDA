@@ -177,7 +177,6 @@ void Menu::manageClientsSelection(int selected) {
                 cerr << e;
             }
 
-
             pause();
             return;
         case 6:
@@ -187,7 +186,7 @@ void Menu::manageClientsSelection(int selected) {
 
                 if(selected_client == 0)
                     return;
-            }while(SUPSchool->clientIndex(selected_client) == -1);
+            } while(SUPSchool->clientIndex(selected_client) == -1);
 
             cout << "Insert the activity ID: " << endl;
             selected_activity = readOption(0, SUPSchool->ScheduledActivities.size() - 1);
@@ -329,7 +328,7 @@ void Menu::manageTeachersSelection(int selected) {
 
                 if(selected_teacher == 0)
                     return;
-            }while(SUPSchool->teacherIndex(selected_teacher) == -1);;
+            }while(SUPSchool->teacherIndex(selected_teacher) == -1);
 
             cout << "Insert the activity ID: " << endl;
             SUPSchool->viewActivities(false);
@@ -338,7 +337,7 @@ void Menu::manageTeachersSelection(int selected) {
 
                 if(selected_activity == 0)
                     return;
-            }while(SUPSchool->activityIndex(selected_activity) == -1);
+            }while(SUPSchool->activityIndex(selected_activity, false) == -1);
 
             try {
                 SUPSchool->assign(selected_teacher, selected_activity);
