@@ -84,32 +84,6 @@ int School::clientIndex(unsigned int id) {
     return -1;
 }
 
-vector<Activity *> School::getPastActivities() const {
-    return PastActivities;
-}
-
-vector<Activity *> School::getScheduledActivities() const {
-    return ScheduledActivities;
-}
-
-vector<int> School::getPastActivitiesID() const {
-    vector<int> result;
-
-    for (auto a : PastActivities)
-        result.push_back(a->getId());
-
-    return result;
-}
-
-vector<int> School::getSheduledActivitiesID() const {
-    vector<int> result;
-
-    for (auto a : ScheduledActivities)
-        result.push_back(a->getId());
-
-    return result;
-}
-
 vector<Client *> School::getClients() const{
     return this->Clients;
 }
@@ -144,13 +118,13 @@ void School::readActivities() {
                     AuxActivity->setEndTime(line);
                     break;
                 case 5:
-                    if (auxActivity->getEndTime() < currentTime)
-                        PastActivities.push_back(auxActivity);
+                    if (AuxActivity->getEndTime() < currentTime)
+                        PastActivities.push_back(AuxActivity);
 
                     else
-                        ScheduledActivities.push_back(auxActivity);
+                        ScheduledActivities.push_back(AuxActivity);
 
-                    auxActivity = new Activity();
+                    AuxActivity = new Activity();
                     break;
             }
 
@@ -577,18 +551,6 @@ void School::removeTeacher(unsigned id) {
         throw NonExistentTeacher(id);
 
     Teachers.erase(Teachers.begin()+teacherIndex(id));
-}
-
-Time School::getCurrentTime() const {
-    return currentTime;
-}
-
-bool School::isPastActivity(unsigned int id) {
-    for (auto a : PastActivities)
-        if (a->getId() == id)
-            return true;
-
-    return false;
 }
 
 int School::activityIndex(unsigned int id, bool past) {
