@@ -27,7 +27,9 @@ class School {
         void addActivity(Activity* activity, bool past);
         int activityIndex(unsigned int id, bool past);
 
-        /*! @name Getters */
+        int materialIndex(unsigned int id);
+
+    /*! @name Getters */
         ///@{
         Activity* getActivity(unsigned int id) const;
         vector<Teacher *> getTeachers() const;
