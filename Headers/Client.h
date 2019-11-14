@@ -28,6 +28,7 @@ class Client {
         string getPastActivitiesID() const;
         vector<Activity*> getScheduledActivities() const;
         vector<Activity*> getScheduleActivitiesByDate(Time Date) const;
+        vector<Activity*> getScheduleActivitiesByDate(Time BeginDate, Time EndDate) const;
         string getScheduledActivitiesID() const;
         double getBalance() const;
         ///@}

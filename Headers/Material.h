@@ -1,29 +1,25 @@
 #ifndef SUP_SCHOOL_MATERIAL_H
 #define SUP_SCHOOL_MATERIAL_H
+
 #include "Activity.h"
 #include "Client.h"
 #include <string>
 #include <vector>
 #include "map"
 
+/*! @brief School's aquatic material, such as Suits, Boats and Boards. Available for the clients to rent or to be used in the school's activities */
+
 class Material {
     friend class School;
-
 public:
-
     Material();
     //Miscellaneous
     bool beingUsed(Time startTime, Time endTime);
     string getObjectType() const;
     void addActivity(Activity* activity);
 
-    //Setter functions
-    void setID(int ID);
-    void setType(string type);
-    static void setLastID(const unsigned int id);
-    static void setCapacity(unsigned int capacity);
-
-    //Getter functions
+    /*! @name Getters */
+    ///@{
     unsigned int getID() const;
     string getType() const;
     static unsigned int getLastID();
@@ -31,7 +27,15 @@ public:
     string getActivitiesID() const;
     unsigned int getCapacity();
     map<Client* ,vector<Time>>* getClients();
+    ///@}
 
+    /*! @name Setters */
+    ///@{
+    void setID(int ID);
+    void setType(string type);
+    static void setLastID(const unsigned int id);
+    static void setCapacity(unsigned int capacity);
+    ///@}
 private:
     string type;  //The type of material
     vector<Activity*> Activities;
@@ -58,6 +62,8 @@ public:
     static unsigned int maxCapacity;
 };
 
+/*! \cond */
+
 class alreadyInUse : std::exception {
 public:
     unsigned int materialId;
@@ -76,7 +82,6 @@ public:
 };
 
 ostream & operator <<(std::ostream &out,const materialAlreadyHasActivity &ids);
-
 
 /*! \endcond */
 

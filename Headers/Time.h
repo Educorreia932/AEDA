@@ -9,6 +9,8 @@
 
 using namespace std;
 
+/*! @brief Our time implementation to coordinate the school's activities occurrence. Includes date (day, month, year) and hours/minutes */
+
 class Time{
     public:
         //Constructors
@@ -51,7 +53,7 @@ class Time{
         friend Time operator -(Time const startTime, Time const endTime);
 };
 
-/*! \cond */
+/*! @cond */
 
 class InvalidDate : exception {
     string msg;
@@ -76,5 +78,6 @@ public:
     }
 };
 
+/*! @endcond */
 
 #endif
