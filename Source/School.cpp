@@ -87,6 +87,16 @@ int School::clientIndex(unsigned int id) {
     return -1;
 }
 
+int School::materialIndex(unsigned int id) {
+    for (size_t i = 0; i < Materials.size();i++){
+        if (Materials.at(i)->getID() == id){
+            return i;
+        }
+    }
+
+    return -1;
+}
+
 vector<Client *> School::getClients() const{
     return this->Clients;
 }
@@ -718,7 +728,23 @@ Activity * School::getActivity(unsigned int id) const {
     return nullptr;
 }
 
+
+//Doesnt check if a client already is using it
 void School::rent(const unsigned int materialId, const unsigned int clientId, Time startTime, Time endTime) {
+
+    if(clientIndex(clientId) == -1)
+        throw NonExistentClient(clientId);
+
+    if (materialIndex(materialId) == -1)
+        throw NonExistentMaterial(materialId);
+
+    if(Materials[materialIndex(materialId)]->beingUsed(startTime,endTime))
+        throw alreadyInUse(materialId,startTime,endTime);
+
+
+
+    Materials[materialIndex(materialId)]->Clients[Clients[clientIndex(clientId)]] = {startTime,endTime};
+
 
 }
 

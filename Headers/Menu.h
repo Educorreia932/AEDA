@@ -36,6 +36,9 @@ class Menu {
         void manageTeachersSelection(int selected);
         void createTeacher();
         void changeTeachers(int teacherId);
+
+        //Material relateed
+        void rentMaterial();
         
         // Schedule related
         static int showConsultSchedule();
