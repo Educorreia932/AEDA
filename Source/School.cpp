@@ -447,7 +447,7 @@ ostream &operator<<(ostream &out, const School& S) {
     out << "Name: " << S.name << endl
         << "Current date: " << S.currentTime << endl
         << "Number of enrolled clients: " << S.Clients.size() << endl
-        << "Number of occured activities: " << S.PastActivities.size() << endl
+        << "Number of occurred activities: " << S.PastActivities.size() << endl
         << "Number of planned activities: " << S.ScheduledActivities.size() << endl;
 
     return out;
@@ -507,6 +507,7 @@ void School::viewActivities(bool detailed) {
             cout << "---------------------" << endl;
         }
     }
+
     else
         for (auto & activity : ScheduledActivities)
             cout << activity->getName() << " - " << activity->getId() << endl;
@@ -629,6 +630,8 @@ void School::viewDates(vector <Time> Dates) {
         cout << counter << ") " << d.toString() << endl;
         counter++;
     }
+
+    cout << "0) Go back." << endl;
 }
 
 void School::saveTeachers() {
@@ -645,7 +648,6 @@ void School::saveTeachers() {
 
             if (counter == size(Teachers) - 1)
                 f << "---END---";
-
 
             else
                 f << "::::::::::" << endl;

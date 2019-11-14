@@ -86,6 +86,7 @@ int Menu::showManageClients() {
 void Menu::manageClientsSelection(int selected) {
     int selected_client, selected_activity;
     double amount;
+    Client* SelectedClient;
 
     clearScreen();
 
@@ -189,6 +190,8 @@ void Menu::manageClientsSelection(int selected) {
         case 6:
             cout << "Insert the client ID: " << endl; //Make function to display the clients
 
+            SUPSchool->viewClients(false);
+
             do {
                 selected_client = readOption(0, Client::getLastID() - 1);
 
@@ -217,14 +220,21 @@ void Menu::manageClientsSelection(int selected) {
             cout << "Which gold member client wants to generate its monthly report? Insert the corresponding key." << endl
                  << endl;
 
-            do {
-                selected_client = readOption(0, Client::getLastID() - 1);
+            SUPSchool->viewClients(false);
 
-                if (!selected_client)
-                    return;
-            } while(SUPSchool->clientIndex(selected_client) == -1);
+            cout << endl;
 
-            monthlyReport();
+            selected_client = readOption(0, Client::getLastID() - 1);
+
+            SelectedClient = SUPSchool->Clients[SUPSchool->clientIndex((selected_client))];
+
+            if (!SelectedClient->isGoldMember()) {
+                cerr << "Not gold member.";
+                pause();
+                return;
+            }
+
+            monthlyReport(SelectedClient);
             return;
         case 0:
             return;
@@ -272,8 +282,25 @@ void Menu::createClient() {
     pause();
 }
 
-void Menu::monthlyReport() {
+void Menu::monthlyReport(Client* C) {
+    clearScreen();
 
+    Time BeginDate = SUPSchool->currentTime;
+    BeginDate.setDay(1);
+
+    Time EndDate = SUPSchool->currentTime;
+
+    vector<Activity*> MonthActivities = C->getScheduleActivitiesByDate(BeginDate, EndDate);
+
+    cout << "The client " << C->getName() << " participated in the following activities during this month (" << BeginDate.getMonth() << '/' << BeginDate.getYear() << "): " << endl
+         << endl;
+
+    for (auto a : MonthActivities) {
+        cout << *a
+             << "---------------------" << endl;
+    }
+
+    pause();
 }
 
 // Teacher --------------------
@@ -579,10 +606,12 @@ int Menu::showConsultSchedule() {
 
 void Menu::consultScheduleSelection(int selected) {
     int selected_client, selected_teacher, client_index, teacher_index, begin_date, end_date;
+    Client* SelectedClient;
     Schedule<Client>* s1;
     Schedule<Teacher>* s2;
     vector<Time> PossibleDates;
     Time beginDate, endDate;
+    bool first = true;
 
     clearScreen();
 
@@ -591,16 +620,31 @@ void Menu::consultScheduleSelection(int selected) {
             cout << "Which client's schedule do you wish to see? Insert the corresponding key." << endl
                  << endl;
 
-            SUPSchool->viewClients(false);
+            do {
+                clearScreen();
 
-            cout << endl;
+                if (first) {
+                    cout << "Which client's schedule do you wish to see? Insert the corresponding key." << endl
+                         << endl;
 
-            selected_client = readOption(0, SUPSchool->Clients[0]->getLastID() - 1);
-            client_index = SUPSchool->clientIndex(selected_client);
+                    first = false;
+                }
+
+                else
+                    cerr << "The selected client doesn't have scheduled activities. Select another: " << endl
+                         << endl;
+
+                SUPSchool->viewClients(false);
+
+                selected_client = readOption(0, Client::getLastID() - 1);
+                client_index = SUPSchool->clientIndex(selected_client);
+
+                SelectedClient = SUPSchool->Clients[client_index];
+
+                PossibleDates = SUPSchool->getDatesFromActivicties(SelectedClient ->getScheduledActivities());
+            } while (PossibleDates.empty());
 
             clearScreen();
-
-            PossibleDates = SUPSchool->getDatesFromActivicties(SUPSchool->Clients[client_index]->getScheduledActivities());
 
             cout << "Which one is the begin date? Insert the corresponding key." << endl
                  << endl;
@@ -609,7 +653,11 @@ void Menu::consultScheduleSelection(int selected) {
 
             cout << endl;
 
-            begin_date = readOption(1, PossibleDates.size());
+            begin_date = readOption(0, PossibleDates.size());
+
+            if (!begin_date)
+                return;
+
             beginDate = PossibleDates[begin_date - 1];
 
             clearScreen();
@@ -621,7 +669,11 @@ void Menu::consultScheduleSelection(int selected) {
 
             cout << endl;
 
-            end_date = readOption(1, PossibleDates.size());
+            end_date = readOption(0, PossibleDates.size());
+
+            if (!end_date)
+                return;
+
             endDate = PossibleDates[end_date - 1];
 
             clearScreen();
@@ -642,12 +694,17 @@ void Menu::consultScheduleSelection(int selected) {
 
             cout << endl;
 
-            selected_teacher = readOption(0, SUPSchool->Teachers[0]->getLastID() - 1);
+            selected_teacher = readOption(0, Teacher::getLastID() - 1);
             teacher_index = SUPSchool->teacherIndex(selected_teacher);
 
             clearScreen();
 
             PossibleDates = SUPSchool->getDatesFromActivicties(SUPSchool->Teachers[teacher_index]->getScheduledActivities());
+
+            if (PossibleDates.empty()) {
+                cerr << "The selected teacher doesn't have scheduled activities." << endl;
+                return;
+            }
 
             cout << "Which one is the begin date? Insert the corresponding key." << endl
                  << endl;
@@ -656,7 +713,7 @@ void Menu::consultScheduleSelection(int selected) {
 
             cout << endl;
 
-            begin_date = readOption(1, PossibleDates.size());
+            begin_date = readOption(0, PossibleDates.size());
             beginDate = PossibleDates[begin_date - 1];
 
             clearScreen();
@@ -696,8 +753,6 @@ void Menu::clearScreen() {
     #ifdef _WIN32
         system("cls");
     #endif
-
-    //cout << string( 100, '\n' );
 }
 
 void Menu::pause() {

@@ -93,7 +93,7 @@ class School {
         vector<Activity*> ScheduledActivities;
 };
 
-/*! \cond */
+/*! @cond */
 
 class NonExistentClient : exception {
     public:
@@ -127,15 +127,14 @@ class TeacherAlreadyExists : exception {
 
 ostream & operator <<(std::ostream &out, const TeacherAlreadyExists &client);
 
-class NonExistentMaterial : std::exception {
+class NonExistentMaterial : exception {
 public:
     unsigned int id;
     NonExistentMaterial(unsigned int id){this->id = id;};
 };
 
-std::ostream & operator <<(std::ostream &out,const NonExistentMaterial &material);
+ostream & operator <<(ostream &out,const NonExistentMaterial &material);
 
-
-/*! \endcond */
+/*! @endcond */
 
 #endif //SUP_SCHOOL_SCHOOL_H

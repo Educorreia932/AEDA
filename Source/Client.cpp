@@ -147,6 +147,16 @@ vector<Activity *> Client::getScheduleActivitiesByDate(Time Date) const {
     return result;
 }
 
+vector<Activity *> Client::getScheduleActivitiesByDate(Time BeginDate, Time EndDate) const {
+    vector<Activity *> result;
+
+    for (auto a : PastActivities)
+        if (a->getStartTime() > BeginDate && a->getEndTime() < EndDate)
+            result.push_back(a);
+
+    return result;
+}
+
 string Client::getPastActivitiesID() const {
     stringstream result;
 

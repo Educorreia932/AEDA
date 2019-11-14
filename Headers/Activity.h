@@ -12,22 +12,30 @@ class Activity {
         Time startTime;
         Time endTime;
     public:
+        /*! @name Constructors */
+        ///@{
         Activity();
         Activity(Time startTime,Time endTime,string name);
+        ///@}
 
-        //Getters
+        /*! @name Getters */
+        ///@{
         Time getStartTime();
         Time getEndTime();
         string getName() const;
         unsigned int getId() const;
         static unsigned int getLastID();
+        /*! @returns The type of activity, either Ride (R) or Lesson (L). */
         virtual char getType() const;
+        ///@}
 
-        //Setters
+        /*! @name Setters */
+        ///@{
         void setName(string name);
         void setID(unsigned int id);
         void setStartTime(string time);
         void setEndTime(string time);
+        ///@}
 
         virtual unsigned int CalcCost() const;
 
@@ -68,20 +76,18 @@ class Windsurf : public Lesson {
         Windsurf(Time startTime,Time endTime,string name) : Lesson(startTime,endTime,name){};
 };
 
-vector<Activity*> eraseAndReturnVector(vector<Activity*> vec,unsigned int i);
+vector<Activity*> eraseAndReturnVector(vector<Activity*> vec, unsigned int i);
 
-/*! \cond */
+/*! @cond */
 
-class activityNonExistent : std::exception {
+class activityNonExistent : exception {
 public:
     unsigned int id;
     activityNonExistent(unsigned int id){id = id;};
 };
 
-std::ostream & operator <<(std::ostream &out,const activityNonExistent &activity);
+ostream & operator <<(ostream &out, const activityNonExistent &activity);
 
-
-
-/*! \endcond */
+/*! @endcond */
 
 #endif //SUP_SCHOOL_ACTIVITY_H
