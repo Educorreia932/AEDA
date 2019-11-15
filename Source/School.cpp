@@ -577,17 +577,19 @@ void School::saveActivities() {
     int counter = 0;
 
     f.open("../Data/" + Files["Activities"]);
-
-    vector<Activity*> Activities = PastActivities;
-    Activities.insert(Activities.end(), ScheduledActivities.begin(), ScheduledActivities.end());
-
-    if (f.is_open()) {
-        for (auto &a : Activities) {
-            f << a->getId() << endl
-              << a->getType() << endl
-              << a->getName() << endl
-              << a->getStartTime() << endl
-              << a->getEndTime() << endl;
+    vector<Activity*> Activities;
+    Activities.reserve(PastActivities.size() + ScheduledActivities.size());
+    Activities.insert(Activities.end(), PastActivities.begin(), PastActivities.end());
+    Activities.insert(Activities.end(), ScheduledActivities.begin(), ScheduledActivities. end());
+    sort(Activities.begin(), Activities.end());
+    if (f.is_open())
+        for (auto c : Activities) {
+            f << c->getId() << endl
+              << c->getType() << endl
+              << c->getName() << endl
+              << c->getStartTime() << endl
+              << c->getEndTime() << endl
+              << c->CalcCost() << endl;
 
             if (counter == size(Activities) - 1)
                 f << "---END---";
@@ -597,7 +599,8 @@ void School::saveActivities() {
 
             counter++;
         }
-    }
+
+    f.close();
 }
 
 void School::saveClients() {
@@ -639,37 +642,6 @@ void School::saveMaterials() {
               << m->getActivitiesID() << endl;
 
             if (counter == size(Materials) - 1)
-                f << "---END---";
-
-            else
-                f << "::::::::::" << endl;
-
-            counter++;
-        }
-
-    f.close();
-}
-
-void School::saveActivities() {
-    ofstream f;
-    int counter = 0;
-
-    f.open("../Data/" + Files["Activities"]);
-    vector<Activity*> Activities;
-    Activities.reserve(PastActivities.size() + ScheduledActivities.size());
-    Activities.insert(Activities.end(), PastActivities.begin(), PastActivities.end());
-    Activities.insert(Activities.end(), ScheduledActivities.begin(), ScheduledActivities. end());
-    sort(Activities.begin(), Activities.end());
-    if (f.is_open())
-        for (auto c : Activities) {
-            f << c->getId() << endl
-              << c->getType() << endl
-              << c->getName() << endl
-              << c->getStartTime() << endl
-              << c->getEndTime() << endl
-              << c->CalcCost() << endl;
-
-            if (counter == size(Activities) - 1)
                 f << "---END---";
 
             else

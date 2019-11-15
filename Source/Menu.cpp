@@ -405,6 +405,7 @@ int Menu::showManageTeachers() {
 
     return readOption(0, 4);
 }
+
 void Menu::manageTeachersSelection(int selected) {
     clearScreen();
 
@@ -501,6 +502,7 @@ void Menu::manageTeachersSelection(int selected) {
             cout << "NOT IMPLEMENTED YET" << endl;
     }
 }
+
 void Menu::createTeacher() {
     auto *t = new Teacher();
     string aux;
@@ -530,6 +532,7 @@ void Menu::createTeacher() {
     cout << endl;
     pause();
 }
+
 void Menu::changeTeachers(int teacherId) {
     cout << "What information do you want to change? Insert the corresponding key." << endl
          << endl
@@ -567,6 +570,7 @@ int Menu::showManageActivities(){
 
     return readOption(0, 3);
 }
+
 void Menu::manageActivitiesSelection(int selected) {
     clearScreen();
 
@@ -581,6 +585,7 @@ void Menu::manageActivitiesSelection(int selected) {
             return;
     }
 }
+
 void Menu::createActivity() {
     //auto *a = new Activity();
     string aux;
@@ -668,6 +673,7 @@ void Menu::createActivity() {
         }
     }
 }
+
 void Menu::removeActivity() {
     string IDstring;
     cout << "Insert ID of the activity:\n";
@@ -757,7 +763,6 @@ void Menu::removeActivity() {
 
 
 }
-
 
 // Schedule --------------------
 
