@@ -30,6 +30,8 @@ class Menu {
         void manageActivitiesSelection(int selected);
         void createActivity();
         void removeActivity();
+        void changeActivity();
+
 
         // Teacher related
         static int showManageTeachers();

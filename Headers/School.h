@@ -32,6 +32,7 @@ class School {
         Activity* getActivity(unsigned int id) const;
         vector<Teacher *> getTeachers() const;
         vector<Client *> getClients() const;
+        vector<Material *> getMaterials() const;
         ///@}
 
         /** @name Read Functions

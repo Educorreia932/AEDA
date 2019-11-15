@@ -18,8 +18,14 @@ public:
     string getObjectType() const;
     void addActivity(Activity* activity);
 
-    /*! @name Getters */
-    ///@{
+    //Setter functions
+    void setID(int ID);
+    void setType(string type);
+    static void setLastID(const unsigned int id);
+    static void setCapacity(unsigned int capacity);
+    void setActivities(vector<Activity *> activities);
+
+    //Getter functions
     unsigned int getID() const;
     string getType() const;
     static unsigned int getLastID();
@@ -27,14 +33,6 @@ public:
     string getActivitiesID() const;
     unsigned int getCapacity();
     map<Client* ,vector<Time>>* getClients();
-    ///@}
-
-    /*! @name Setters */
-    ///@{
-    void setID(int ID);
-    void setType(string type);
-    static void setLastID(const unsigned int id);
-    static void setCapacity(unsigned int capacity);
     ///@}
 private:
     string type;  //The type of material
