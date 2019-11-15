@@ -28,6 +28,9 @@ void Menu::mainMenuSelection(int selected) {
     clearScreen();
 
     switch (selected) {
+        case 1:
+            rentMaterial();
+            return;
         case 2: // Manage clients
             manageClientsSelection(showManageClients());
             return;
@@ -63,6 +66,87 @@ void Menu::mainMenuSelection(int selected) {
     }
 }
 
+void Menu::rentMaterial() {
+    string aux;
+    int selected_client,selected_material;
+    Time startTime, endTime;
+
+
+    cout << "Which client want to rent equipment? Insert the corresponding key." << endl
+         << endl;
+
+    SUPSchool->viewClients(false);
+
+    cout << endl;
+
+    do {
+        selected_client = readOption(0, Client::getLastID() - 1);
+
+        if(selected_client == 0)
+            return;
+    } while(SUPSchool->clientIndex(selected_client) == -1);
+
+
+    cout << "Which material does the client want to rent? " << endl << endl;
+
+    SUPSchool->viewMaterial(false);
+
+
+    do {
+        selected_material = readOption(0, Material::getLastID() - 1);
+
+        if(selected_material == 0)
+            return;
+    } while(SUPSchool->materialIndex(selected_material) == -1);
+
+
+    do{
+        cout << "Starting time(DD/MM/YYYY HH:MM):";
+        getline(cin,aux);
+
+        if(aux == "0")
+            return;
+
+        try{
+            startTime = Time(aux);
+            break;
+        } catch (InvalidDate & e){
+            cerr << e.getMsg();
+        }
+
+    } while (true);
+
+    do{
+        cout << "Ending time(DD/MM/YYYY  HH:MM):";
+        getline(cin,aux);
+
+        if(aux == "0")
+            return;
+
+        try{
+            endTime = Time(aux);
+            break;
+        } catch (InvalidDate & e){
+            cerr << e.getMsg();
+        }
+
+    } while (true);
+
+
+    try{
+        SUPSchool->rent(selected_material,selected_client,startTime,endTime);
+    } catch(NonExistentClient & e){
+        cerr << e;
+    } catch(NonExistentMaterial & e) {
+        cerr << e;
+    } catch(alreadyInUse & e) {
+        cerr << e;
+    }
+
+    cout << endl;
+    pause();
+}
+
 // Client --------------------
 
 int Menu::showManageClients() {
@@ -82,6 +166,8 @@ int Menu::showManageClients() {
 
     return readOption(0, 7);
 }
+
+
 
 void Menu::manageClientsSelection(int selected) {
     int selected_client, selected_activity;
@@ -488,7 +574,7 @@ void Menu::manageActivitiesSelection(int selected) {
         case 1:
             createActivity();
             return;
-        case 2:
+        case 3:
             removeActivity();
             return;
         case 0:
