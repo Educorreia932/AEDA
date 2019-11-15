@@ -92,8 +92,12 @@ ostream &operator<<(ostream &out, const Client &C) {
     return out;
 }
 
-void Client::setActivities(const vector<Activity *> &Activities) {
+void Client::setScheduledActivities(const vector<Activity *> &Activities) {
     ScheduledActivities = Activities;
+}
+
+void Client::setPastActivities(const vector<Activity *>& Activities){
+    PastActivities = Activities;
 }
 
 vector<Activity *> Client::getScheduledActivities() const {

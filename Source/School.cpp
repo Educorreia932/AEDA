@@ -95,6 +95,10 @@ vector<Teacher *> School::getTeachers() const{
     return this->Teachers;
 }
 
+vector<Material *> School::getMaterials() const{
+    return this->Materials;
+}
+
 void School::readActivities() {
     string line;
     ifstream File("../Data/" + Files["Activities"]);

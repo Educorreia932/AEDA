@@ -31,6 +31,8 @@ class Activity {
         virtual unsigned int CalcCost() const = 0;
         virtual void print(ostream& out) const = 0;
 
+
+
         void setStartTime(Time time);
         void setEndTime(Time time);
 };
@@ -83,7 +85,7 @@ class Windsurf : public Lesson {
         Windsurf(Time startTime,Time endTime,string name) : Lesson(startTime,endTime,name){};
 };
 
-vector<Activity*> eraseAndReturnVector(vector<Activity*> vec,unsigned int i);
+vector<Activity*> eraseAndReturnVectorActivity(vector<Activity*> vec,unsigned int i);
 
 /*! \cond */
 

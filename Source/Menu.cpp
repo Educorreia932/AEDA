@@ -267,7 +267,6 @@ int Menu::showManageTeachers() {
 
     return readOption(0, 4);
 }
-
 void Menu::manageTeachersSelection(int selected) {
     clearScreen();
 
@@ -363,7 +362,6 @@ void Menu::manageTeachersSelection(int selected) {
             cout << "NOT IMPLEMENTED YET" << endl;
     }
 }
-
 void Menu::createTeacher() {
     auto *t = new Teacher();
     string aux;
@@ -393,7 +391,6 @@ void Menu::createTeacher() {
     cout << endl;
     pause();
 }
-
 void Menu::changeTeachers(int teacherId) {
     cout << "What information do you want to change? Insert the corresponding key." << endl
          << endl
@@ -425,14 +422,12 @@ int Menu::showManageActivities(){
     cout << "What do you want to do? Insert the corresponding key." << endl
          << endl
          << "1) Create a new activity." << endl
-         << "2) Change the information of a activity." << endl
-         << "3) Remove an existent activity." << endl //Remove from everything
+         << "2) Remove an existent activity." << endl //Remove from everything
          << "0) Go back" << endl
          << endl;
 
     return readOption(0, 3);
 }
-
 void Menu::manageActivitiesSelection(int selected) {
     clearScreen();
 
@@ -555,12 +550,21 @@ void Menu::removeActivity() {
     int ID = stoi(IDstring);
 
 
+    bool scheduled;
+
     int index = -1;
-    //Check if ID already exists
+    //Check if ID exists
     try {
         for(int i = 0; i < SUPSchool->ScheduledActivities.size(); i++){
             if(SUPSchool->ScheduledActivities[i]->getId() == ID){
                 index = i;
+                scheduled = true;
+            }
+        }
+        for(int e = 0; e < SUPSchool->PastActivities.size(); e++) {
+            if (SUPSchool->PastActivities[e]->getId() == ID){
+                index = e;
+                scheduled = false;
             }
         }
         if(index == -1){
@@ -568,18 +572,53 @@ void Menu::removeActivity() {
         }
     }
     catch(IdAlreadyExists &e){
-        cerr << "ID already exists.\n";
+        cerr << "ID doesn't exists.\n";
+        return;
     }
-    //Removing the activity
+    //Removing the activity from every client
     for(int i = 0; i < SUPSchool->getClients().size(); i++){
-        if(SUPSchool->getClients()[i]->getId() == ID){
-            SUPSchool->getClients()[i]->setActivities(eraseAndReturnVector(SUPSchool->getClients()[i]->getScheduledActivities(), i));
-            //Make the materials used by the client unused
+        if(!scheduled) {
+            for (int e = 0; e < SUPSchool->getClients()[i]->getPastActivities().size(); e++) //Itera pelas atividades passadas dos clientes, remove-as a adiciona o dinheiro de volta se for uma ride
+                if (SUPSchool->getClients()[i]->getPastActivities()[e]->getId() == ID) {
+                    //SUPSchool->getClients()[i]->setActivities(eraseAndReturnVectorClient(SUPSchool->getClients()[i]->getScheduledActivities(), i));
+                    //Make the materials used by the client unused
+                    SUPSchool->getClients()[i]->setPastActivities(eraseAndReturnVectorActivity(SUPSchool->getClients()[i]->getPastActivities(), e)); //Algo está mal
+
+                    //Add balance back to client, if and only if it's a ride (Don't do it if it's a past activity
+                    //if(SUPSchool->PastActivities[index]->getType() == "R") {
+                    //    SUPSchool->getClients()[i]->addBalance(SUPSchool->PastActivities[index]->CalcCost());
+                    //}
+                }
         }
+        for(int j = 0; j < SUPSchool->getClients()[i]->getScheduledActivities().size(); j++){
+            if(SUPSchool->getClients()[i]->getScheduledActivities()[j]->getId() == ID){
+                SUPSchool->getClients()[i]->setScheduledActivities(eraseAndReturnVectorActivity(SUPSchool->getClients()[i]->getScheduledActivities(), j)); //Algo está mal
+
+                //Add balance back to client, if and only if it's a ride
+                if(SUPSchool->PastActivities[index]->getType() == "R") {
+                    SUPSchool->getClients()[i]->addBalance(SUPSchool->PastActivities[index]->CalcCost());
+                }
+            }
+        }
+
+    }
+    for(int mat = 0; mat < SUPSchool->getMaterials().size(); mat++){
+        for(int ac = 0; ac < SUPSchool->getMaterials()[mat]->getActivities().size(); ac++){
+            if(SUPSchool->getMaterials()[mat]->getActivities()[ac]->getId() == ID){
+                SUPSchool->getMaterials()[mat]->setActivities(eraseAndReturnVectorActivity(SUPSchool->getMaterials()[mat]->getActivities(), ac));
+            }
+        }
+    }
+    if(scheduled){
+        SUPSchool->ScheduledActivities.erase(SUPSchool->ScheduledActivities.begin() + index);
+    }
+    else{
+        SUPSchool->PastActivities.erase(SUPSchool->PastActivities.begin() + index);
     }
 
 
 }
+
 
 // Schedule --------------------
 

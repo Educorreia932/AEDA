@@ -38,7 +38,8 @@ class Client {
         static void setLastID(const unsigned int id);
         void setID(const unsigned int id);
         void setGoldMember(const bool gold_member);
-        void setActivities(const vector<Activity *>& Activities);
+        void setScheduledActivities(const vector<Activity *>& Activities);
+        void setPastActivities(const vector<Activity *>& Activities);
         ///@}
 
         //Misc.

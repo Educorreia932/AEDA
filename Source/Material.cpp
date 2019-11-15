@@ -57,6 +57,10 @@ void Material::setLastID(unsigned int id) {
 void Material::setCapacity(unsigned int capacity){
     capacity = capacity;
 }
+void Material::setActivities(vector<Activity *> activities){
+    this->Activities = activities;
+}
+
 //Getters
 unsigned int Material::getID() const{
     return ID;

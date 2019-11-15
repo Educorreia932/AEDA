@@ -146,7 +146,7 @@ std::ostream &operator<<(std::ostream &out, const activityNonExistent &activity)
 }
 
 
-vector<Activity*> eraseAndReturnVector(vector<Activity*> vec,unsigned int i){
+vector<Activity*> eraseAndReturnVectorActivity(vector<Activity*> vec,unsigned int i){
     vec.erase(vec.begin() + i);
     return vec;
 }

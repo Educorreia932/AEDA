@@ -22,6 +22,7 @@ public:
     void setType(string type);
     static void setLastID(const unsigned int id);
     static void setCapacity(unsigned int capacity);
+    void setActivities(vector<Activity *> activities);
 
     //Getter functions
     unsigned int getID() const;
