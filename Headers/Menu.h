@@ -30,12 +30,17 @@ class Menu {
         void manageActivitiesSelection(int selected);
         void createActivity();
         void removeActivity();
+        void changeActivity();
+
 
         // Teacher related
         static int showManageTeachers();
         void manageTeachersSelection(int selected);
         void createTeacher();
         void changeTeachers(int teacherId);
+
+        //Material relateed
+        void rentMaterial();
         
         // Schedule related
         static int showConsultSchedule();

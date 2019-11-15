@@ -17,6 +17,7 @@ int main() {
             PortoSUPSchool->saveClients();
             PortoSUPSchool->saveTeachers();
             PortoSUPSchool->saveMaterials();
+            PortoSUPSchool->saveActivities();
             break;
         }
     }

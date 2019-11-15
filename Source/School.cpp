@@ -1,6 +1,6 @@
 #include "../Headers/School.h"
 #include "../Headers/Menu.h"
-
+#include <Algorithm>
 
 //Price of gold card
 double School::goldCardPrice = 40;
@@ -87,6 +87,16 @@ int School::clientIndex(unsigned int id) {
     return -1;
 }
 
+int School::materialIndex(unsigned int id) {
+    for (size_t i = 0; i < Materials.size();i++){
+        if (Materials.at(i)->getID() == id){
+            return i;
+        }
+    }
+
+    return -1;
+}
+
 vector<Client *> School::getClients() const{
     return this->Clients;
 }
@@ -95,46 +105,72 @@ vector<Teacher *> School::getTeachers() const{
     return this->Teachers;
 }
 
+vector<Material *> School::getMaterials() const{
+    return this->Materials;
+}
+
 void School::readActivities() {
     string line;
     ifstream File("../Data/" + Files["Activities"]);
     int counter = 0, activity_id;
 
-    Activity* AuxActivity;
+    //Things for the new activity
+    int id;
+    string type;
+    string acName;
+    string startTime;
+    string endTime;
+    //int cost; //N é preciso pois é a linha atual
+
 
     if (File.is_open()) {
         while (getline(File, line)) {
-            switch (counter % 6) {
+            switch (counter % 7) {
                 case 0:
-                    activity_id = stoi(line);
+                    id = stoul(line);
                     break;
                 case 1:
-                    if (line == "R")
-                        AuxActivity = new Ride();
-
-                    else if (line == "L")
-                        AuxActivity = new Lesson();
-
-                    AuxActivity->setID(activity_id);
-
+                    type = line;
                     break;
                 case 2:
-                    AuxActivity->setName(line);
+                    acName = line;
                     break;
                 case 3:
-                    AuxActivity->setStartTime(line);
+                    startTime = line;
                     break;
                 case 4:
-                    AuxActivity->setEndTime(line);
+                    endTime = line;
                     break;
                 case 5:
-                    if (AuxActivity->getEndTime() < currentTime)
-                        PastActivities.push_back(AuxActivity);
+                    //Check if it's a lesson "L" or ride "R"
+                    if(type == "L"){
+                        Lesson* AuxLesson = new Lesson(id);
+                        //AuxLesson->setID(id);
+                        AuxLesson->setName(acName);
+                        AuxLesson->setStartTime(startTime);
+                        AuxLesson->setEndTime(endTime);
 
-                    else
-                        ScheduledActivities.push_back(AuxActivity);
+                        if (AuxLesson->getStartTime() < currentTime)
+                            PastActivities.push_back(AuxLesson);
+                        else
+                            ScheduledActivities.push_back((AuxLesson));
+                    }
+                    else if(type == "R"){
+                        Ride* AuxActivity = new Ride(id);
+                        //AuxActivity->setID(id);
+                        AuxActivity->setName(acName);
+                        AuxActivity->setStartTime(startTime);
+                        AuxActivity->setEndTime(endTime);
+                        AuxActivity->setCost(stoul(line));
+                        if (AuxActivity->getStartTime() < currentTime)
+                            PastActivities.push_back(AuxActivity);
 
-                    AuxActivity = new Activity();
+                        else
+                            ScheduledActivities.push_back((AuxActivity));
+                    }
+                    else{
+                        cerr << "Non activity and non file found whilst reading activities" << endl;
+                    }
                     break;
             }
 
@@ -470,6 +506,18 @@ void School::viewClients(bool detailed) {
         }
 }
 
+void School::viewMaterial(bool detailed){
+    if (detailed)
+        for (auto & Material : Materials)
+            cout << *Material << endl
+                 << "---------------------" << endl;
+
+    else
+        for (auto & Material : Materials) {
+            cout << Material->getType() << " - " << Material->getID() << endl;
+        }
+}
+
 //Exceptions
 
 std::ostream &operator<<(std::ostream &out, const NonExistentClient &client) {
@@ -529,17 +577,19 @@ void School::saveActivities() {
     int counter = 0;
 
     f.open("../Data/" + Files["Activities"]);
-
-    vector<Activity*> Activities = PastActivities;
-    Activities.insert(Activities.end(), ScheduledActivities.begin(), ScheduledActivities.end());
-
-    if (f.is_open()) {
-        for (auto &a : Activities) {
-            f << a->getId() << endl
-              << a->getType() << endl
-              << a->getName() << endl
-              << a->getStartTime() << endl
-              << a->getEndTime() << endl;
+    vector<Activity*> Activities;
+    Activities.reserve(PastActivities.size() + ScheduledActivities.size());
+    Activities.insert(Activities.end(), PastActivities.begin(), PastActivities.end());
+    Activities.insert(Activities.end(), ScheduledActivities.begin(), ScheduledActivities. end());
+    sort(Activities.begin(), Activities.end());
+    if (f.is_open())
+        for (auto c : Activities) {
+            f << c->getId() << endl
+              << c->getType() << endl
+              << c->getName() << endl
+              << c->getStartTime() << endl
+              << c->getEndTime() << endl
+              << c->CalcCost() << endl;
 
             if (counter == size(Activities) - 1)
                 f << "---END---";
@@ -549,7 +599,8 @@ void School::saveActivities() {
 
             counter++;
         }
-    }
+
+    f.close();
 }
 
 void School::saveClients() {
@@ -718,7 +769,23 @@ Activity * School::getActivity(unsigned int id) const {
     return nullptr;
 }
 
+
+//Doesnt check if a client already is using it
 void School::rent(const unsigned int materialId, const unsigned int clientId, Time startTime, Time endTime) {
+
+    if(clientIndex(clientId) == -1)
+        throw NonExistentClient(clientId);
+
+    if (materialIndex(materialId) == -1)
+        throw NonExistentMaterial(materialId);
+
+    if(Materials[materialIndex(materialId)]->beingUsed(startTime,endTime))
+        throw alreadyInUse(materialId,startTime,endTime);
+
+
+
+    Materials[materialIndex(materialId)]->Clients[Clients[clientIndex(clientId)]] = {startTime,endTime};
+
 
 }
 

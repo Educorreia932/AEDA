@@ -32,11 +32,10 @@ bool Material::beingUsed(Time startTime, Time endTime){
 
 ostream &operator<<(ostream &out, Material material) {
     out << "This is a" <<  material.getType() << ", which is going to be used by:\n";
-    for(int i= 0; i < material.getType().size(); i++){
+    for(int i= 0; i < material.Activities.size(); i++){
         cout << (material.getActivities())[i]->getName();
-        if(i != material.getActivities().size() - 1){
+        if(i != material.getActivities().size() - 1)
             cout << ", ";
-        }
     }
     return out;
 }
@@ -57,6 +56,10 @@ void Material::setLastID(unsigned int id) {
 void Material::setCapacity(unsigned int capacity){
     capacity = capacity;
 }
+void Material::setActivities(vector<Activity *> activities){
+    this->Activities = activities;
+}
+
 //Getters
 unsigned int Material::getID() const{
     return ID;
