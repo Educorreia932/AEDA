@@ -447,49 +447,93 @@ void Menu::manageActivitiesSelection(int selected) {
             return;
     }
 }
-
 void Menu::createActivity() {
-    auto *a = new Activity();
+    //auto *a = new Activity();
     string aux;
 
+    string name;
+    string type;
+    Time startTime;
+    Time endTime;
+
+    //Ask for name
     cout << "What's the name of the new activity? ";
 
-    getline(cin, aux);
-    if(aux[0] >= 97 && aux[0] <= 122){
-        aux[0] -= 32;
+    getline(cin, name);
+    if(name[0] >= 97 && name[0] <= 122){
+        name[0] -= 32;
     }
 
+    //Ask for the type of activity
+    cout << "Is it a ride (R) or a Lesson (L)? ";
 
-    a->setName(aux);
+    getline(cin, type);
+    try {
+        if (type != "R" && type != "L") {
+            throw(ImproperString("Type isn't \"R\" nor \"L\".\n"));
+        }
+    }
+    catch(ImproperString &i){
+        cerr << i.getMsg();
+        return;
+    }
 
+    //Ask for start date
     cout << endl << "What's the start date (DD/MM/YYYY HH:MM) of the activity? ";
-
     getline(cin, aux);
+
     try {
-        a->setStartTime(aux);
+        startTime = Time(aux);
     }
-    catch(exception &e){
-        cerr << e.what();
+    catch(InvalidDate &d){
+        cerr << d.getMsg();
         return;
     }
-    catch(InvalidDate &a){
-        cerr << a.getMsg();
-        return;
-    }
+
+
+    //Ask for end date
     cout << endl << "What's the end date (HH:MM) of the activity? ";
-
     getline(cin, aux);
     try {
-        a->setEndTime(a->getStartTime().toString() + ' ' + aux);
+        endTime = Time(aux);
     }
-    catch(exception &e){
-        cerr << e.what();
+    catch(InvalidDate &d){
+        cerr << d.getMsg();
         return;
     }
 
-    SUPSchool->addActivity(a, false);
+    //Check if it's a ride or lesson
+    if(type == "R"){
+        cout << "What's the cost of the Ride? ";
+        getline(cin, aux);
+        try{
+            unsigned int cost = stoul(aux);
+            auto* a = new Ride();
+            a->setName(name);
+            a->setStartTime(startTime);
+            a->setEndTime(endTime);
+            a->setCost(cost);
+            SUPSchool->addActivity(a, false);
+        }
+        catch(exception &e){
+            cerr << e.what();
+            return;
+        }
+    }
+    else if(type == "L"){
+        try {
+            auto *a = new Lesson();
+            a->setName(name);
+            a->setStartTime(startTime);
+            a->setEndTime(endTime);
+            SUPSchool->addActivity(a, false);
+        }
+        catch(exception &e){
+            cerr << e.what();
+            return;
+        }
+    }
 }
-
 void Menu::removeActivity() {
     string IDstring;
     cout << "Insert ID of the activity:\n";

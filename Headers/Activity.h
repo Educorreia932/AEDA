@@ -21,39 +21,52 @@ class Activity {
         string getName() const;
         unsigned int getId() const;
         static unsigned int getLastID();
-
+        virtual string getType() const = 0;
         //Setters
         void setName(string name);
         void setID(unsigned int id);
         void setStartTime(string time);
         void setEndTime(string time);
 
-        virtual unsigned int CalcCost() const;
+        virtual unsigned int CalcCost() const = 0;
+        virtual void print(ostream& out) const = 0;
 
-
-        friend ostream& operator<<(ostream& out, const Activity& A);
+        void setStartTime(Time time);
+        void setEndTime(Time time);
 };
-
+ostream& operator<<(ostream& out, const Activity& A);
 class Ride : public Activity {
     protected:
         unsigned int cost;
     public:
-        Ride();
+        Ride(); //DO NOT USE WHEN READING
+        Ride(unsigned int id); //For use when reading
         Ride(Time startTime,Time endTime,string name) : Activity(startTime,endTime,name){this->cost = cost;}
         void SetCost(unsigned int cost);
         unsigned int CalcCost() const;
         void setCost(unsigned int cost);
+        string getType() const;
+        bool operator>(Ride b);
+        void print(ostream& out) const;
 
-        friend ostream& operator<<(ostream& out, const Ride& R);
+        //void setStartTime(Time time);
+        //void setEndTime(Time time);
 };
-
+ostream& operator<<(ostream& out, const Ride& R);
 class Lesson : public Activity {
     public:
     Lesson();
+    Lesson(unsigned int id);
     Lesson(Time startTime, Time endTime, string name) : Activity(startTime, endTime, name){};
     unsigned int CalcCost() const;
-};
+    string getType() const;
+    void print(ostream& out) const;
 
+    //void setStartTime(Time time);
+    //void setEndTime(Time time);
+
+};
+ostream& operator<<(ostream& out, const Lesson& L);
 class StandUpPaddle : public Lesson {
     public:
     unsigned int CalcCost() const;

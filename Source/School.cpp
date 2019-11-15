@@ -1,6 +1,6 @@
 #include "../Headers/School.h"
 #include "../Headers/Menu.h"
-
+#include <Algorithm>
 
 //Price of gold card
 double School::goldCardPrice = 40;
@@ -106,7 +106,7 @@ void School::readActivities() {
     string acName;
     string startTime;
     string endTime;
-    int cost;
+    //int cost; //N é preciso pois é a linha atual
 
 
     if (File.is_open()) {
@@ -130,19 +130,20 @@ void School::readActivities() {
                 case 5:
                     //Check if it's a lesson "L" or ride "R"
                     if(type == "L"){
-                        Lesson* AuxLesson = new Lesson();
-                        AuxLesson->setID(id);
+                        Lesson* AuxLesson = new Lesson(id);
+                        //AuxLesson->setID(id);
                         AuxLesson->setName(acName);
                         AuxLesson->setStartTime(startTime);
                         AuxLesson->setEndTime(endTime);
+
                         if (AuxLesson->getStartTime() < currentTime)
                             PastActivities.push_back(AuxLesson);
                         else
                             ScheduledActivities.push_back((AuxLesson));
                     }
                     else if(type == "R"){
-                        Ride* AuxActivity = new Ride();
-                        AuxActivity->setID(id);
+                        Ride* AuxActivity = new Ride(id);
+                        //AuxActivity->setID(id);
                         AuxActivity->setName(acName);
                         AuxActivity->setStartTime(startTime);
                         AuxActivity->setEndTime(endTime);
@@ -587,6 +588,37 @@ void School::saveMaterials() {
               << m->getActivitiesID() << endl;
 
             if (counter == size(Materials) - 1)
+                f << "---END---";
+
+            else
+                f << "::::::::::" << endl;
+
+            counter++;
+        }
+
+    f.close();
+}
+
+void School::saveActivities() {
+    ofstream f;
+    int counter = 0;
+
+    f.open("../Data/" + Files["Activities"]);
+    vector<Activity*> Activities;
+    Activities.reserve(PastActivities.size() + ScheduledActivities.size());
+    Activities.insert(Activities.end(), PastActivities.begin(), PastActivities.end());
+    Activities.insert(Activities.end(), ScheduledActivities.begin(), ScheduledActivities. end());
+    sort(Activities.begin(), Activities.end());
+    if (f.is_open())
+        for (auto c : Activities) {
+            f << c->getId() << endl
+              << c->getType() << endl
+              << c->getName() << endl
+              << c->getStartTime() << endl
+              << c->getEndTime() << endl
+              << c->CalcCost() << endl;
+
+            if (counter == size(Activities) - 1)
                 f << "---END---";
 
             else
