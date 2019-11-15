@@ -75,7 +75,7 @@ class School {
         ///@{
         void viewClients(bool detailed = true);
         void viewActivities(bool detailed = true);
-        void viewMaterial();
+        void viewMaterial(bool detailed = true);
         void viewTeachers(bool detailed = true);
         void viewDates(vector <Time> Dates);
         ///@}

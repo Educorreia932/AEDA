@@ -480,6 +480,18 @@ void School::viewClients(bool detailed) {
         }
 }
 
+void School::viewMaterial(bool detailed){
+    if (detailed)
+        for (auto & Material : Materials)
+            cout << *Material << endl
+                 << "---------------------" << endl;
+
+    else
+        for (auto & Material : Materials) {
+            cout << Material->getType() << " - " << Material->getID() << endl;
+        }
+}
+
 //Exceptions
 
 std::ostream &operator<<(std::ostream &out, const NonExistentClient &client) {

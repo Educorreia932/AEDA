@@ -44,7 +44,7 @@ private:
     unsigned int capacity;
     static unsigned int last_id;
 
-    friend ostream &operator<<(ostream out, Material material);
+    friend ostream &operator<<(ostream &out, Material material);
 };
 
 class Boat : public Material {

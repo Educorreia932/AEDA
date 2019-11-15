@@ -89,7 +89,7 @@ void Menu::rentMaterial() {
 
     cout << "Which material does the client want to rent? " << endl << endl;
 
-    //viewMaterials
+    SUPSchool->viewMaterial(false);
 
 
     do {
@@ -101,7 +101,7 @@ void Menu::rentMaterial() {
 
 
     do{
-        cout << "Starting time(DD/MM/YYYY  HH:MM):";
+        cout << "Starting time(DD/MM/YYYY HH:MM):";
         getline(cin,aux);
 
         if(aux == "0")
