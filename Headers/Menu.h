@@ -41,6 +41,8 @@ class Menu {
 
         //Material relateed
         void createMaterial();
+        int showManageMaterials();
+        void manageMaterialsSelection(int selected);
         void rentMaterial();
         
         // Schedule related

@@ -69,6 +69,18 @@ void School::removeClient(unsigned int id) {
         }
 }
 
+void School::removeMaterial(unsigned int id) {
+    if(Materials[materialIndex(id)]->getID() == -1)
+        throw NonExistentMaterial(id);
+
+    for(size_t i = 0; i < Materials.size() ; i++)
+        if (Materials.at(i)->getID() == id) {
+            Materials.erase(Materials.begin()+i);
+            break;
+        }
+}
+
+
 void School::addClient(Client* client) {
     if (clientIndex(client->getId()) != -1)
         throw ClientAlreadyExists(client->getId());
