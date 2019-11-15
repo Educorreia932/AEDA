@@ -5,8 +5,9 @@
 #include "Material.h"
 #include "Teacher.h"
 #include "Time.h"
-
+#include <algorithm>
 #include <map>
+
 
 class School {
     friend class Menu;

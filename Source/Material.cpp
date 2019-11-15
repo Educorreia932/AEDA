@@ -31,7 +31,7 @@ bool Material::beingUsed(Time startTime, Time endTime){
 }
 
 ostream &operator<<(ostream &out, Material material) {
-    out << "This is a" <<  material.getType() << ", which is going to be used by:\n";
+    out << "This is a " <<  material.getType() << "(ID: " << material.getID() << ")" << ", which is going to be used by:\n";
     for(int i= 0; i < material.Activities.size(); i++){
         cout << (material.getActivities())[i]->getName();
         if(i != material.getActivities().size() - 1)

@@ -17,7 +17,8 @@ int Menu::showMainMenu() {
          << "6) Consult teachers." << endl
          << "7) Consult activities." << endl
          << "8) Consult schedules." << endl
-         << "9) Consult school's information." << endl
+         << "9) Consult Materials." << endl
+         << "10) Consult school's information." << endl
          << "0) Exit" << endl //And save to files
          << endl;
 
@@ -55,7 +56,11 @@ void Menu::mainMenuSelection(int selected) {
         case 8: // Consult schedules
             consultScheduleSelection(showConsultSchedule());
             return;
-        case 9: // Consult school's information
+        case 9:
+            SUPSchool->viewMaterial();
+            pause();
+            return;
+        case 10: // Consult school's information
             cout << *SUPSchool<< endl;
             pause();
             return;
@@ -366,6 +371,53 @@ void Menu::createClient() {
 
     cout << endl;
     pause();
+}
+
+void Menu::createMaterial() {
+    auto *boat = new Boat();
+    auto *board = new Board();
+    auto *suits = new Suits();
+
+
+    string aux, type;
+    stringstream activities;
+
+    do {
+        cout << "What's the type of the new material(boat,suits,board)? " << endl;
+        getline(cin, aux);
+
+        if (aux == "0") {
+            return;
+        } else if (aux == "boat") {
+            type = aux;
+            boat->setType(aux);
+            break;
+        } else if (aux == "suits") {
+            type = aux;
+            suits->setType(aux);
+            break;
+        } else if (aux == "board") {
+            type = aux;
+            board->setType(aux);
+            break;
+        } else {
+            cout << "Invalid input!";
+        }
+
+        cout << endl;
+    } while (true);
+
+    if (aux == "boat") {
+        SUPSchool->Materials.push_back(boat);
+    } else if (aux == "suits") {
+        SUPSchool->Materials.push_back(suits);
+    } else if (aux == "board") {
+        SUPSchool->Materials.push_back(board);
+
+
+        cout << endl;
+        pause();
+    }
 }
 
 void Menu::monthlyReport(Client* C) {
