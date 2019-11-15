@@ -167,8 +167,6 @@ int Menu::showManageClients() {
     return readOption(0, 7);
 }
 
-
-
 void Menu::manageClientsSelection(int selected) {
     int selected_client, selected_activity;
     double amount;
@@ -428,7 +426,7 @@ void Menu::manageTeachersSelection(int selected) {
 
                 if(selected_teacher == 0)
                     return;
-            }while(SUPSchool->teacherIndex(selected_teacher) == -1);
+            } while(SUPSchool->teacherIndex(selected_teacher) == -1);
 
             changeTeachers(selected_teacher); //Needs to catch exception in client index inside function
 
@@ -813,6 +811,10 @@ void Menu::consultScheduleSelection(int selected) {
                 SUPSchool->viewClients(false);
 
                 selected_client = readOption(0, Client::getLastID() - 1);
+
+                if (!selected_client)
+                    return;;
+
                 client_index = SUPSchool->clientIndex(selected_client);
 
                 SelectedClient = SUPSchool->Clients[client_index];

@@ -6,7 +6,12 @@
 #include "Teacher.h"
 #include "Time.h"
 
+#include <algorithm>
 #include <map>
+
+/** @defgroup group_school School */
+
+/** @ingroup group_school */
 
 class School {
     friend class Menu;
@@ -29,7 +34,7 @@ class School {
 
         int materialIndex(unsigned int id);
 
-    /*! @name Getters */
+        /*! @name Getters */
         ///@{
         Activity* getActivity(unsigned int id) const;
         vector<Teacher *> getTeachers() const;
@@ -38,7 +43,7 @@ class School {
         ///@}
 
         /** @name Read Functions
-         * This functions from the data files to internal data structures of the program.
+         * This functions read from the data files to internal data structures of the program.
          */
         ///@{
         void readClients();
@@ -47,12 +52,15 @@ class School {
         void readMaterials();
         ///@}
 
+        /** @brief Enrolls a client with clientId on an activity with activityId. */
+        /** @throws NonExistentClient The client does not exist in the School.*/
+        /** @throws clientAlreadHasActivity The client already is enrolled in that activity */
         void enroll(const unsigned int clientId, const unsigned int activityId);
         void readClientsActivities(stringstream* activities, Client* c);
         void readTeachersActivities(stringstream* planned_activities, Teacher* t);
         void readMaterialActivities(stringstream* activities, Material* m);
+        /** @brief Assigns a designated activity to a teacher. */
         void assign(const unsigned int teacherId, const unsigned int activityId);
-        //Verifica pouca coisa
         void rent(const unsigned int materialId,const unsigned int clientId, Time startTime, Time endTime);
 
         /** @name Save Functions
@@ -74,9 +82,26 @@ class School {
          * This functions display information about the School elements.
          */
         ///@{
-        void viewClients(bool detailed = true);
+
+        /**
+        * @param detailed States whether the output includes all of the information about the activities or only the strictly necessary to distinguish them (mainly used
+        * in selection menus).
+        */
         void viewActivities(bool detailed = true);
+        /**
+         * @param detailed States whether the output includes all of the information about the clients or only the strictly necessary to distinguish them (mainly used
+         * in selection menus).
+         */
+        void viewClients(bool detailed = true);
+        /**
+         * @param detailed States whether the output includes all of the information about the material or only the strictly necessary to distinguish them (mainly used
+         * in selection menus).
+         */
         void viewMaterial(bool detailed = true);
+        /**
+         * @param detailed States whether the output includes all of the information about the teachers or only the strictly necessary to distinguish them (mainly used
+         * in selection menus).
+         */
         void viewTeachers(bool detailed = true);
         void viewDates(vector <Time> Dates);
         ///@}
@@ -95,8 +120,6 @@ class School {
         vector<Activity*> PastActivities;
         vector<Activity*> ScheduledActivities;
 };
-
-/*! @cond */
 
 class NonExistentClient : exception {
     public:
@@ -137,7 +160,5 @@ public:
 };
 
 ostream & operator <<(ostream &out,const NonExistentMaterial &material);
-
-/*! @endcond */
 
 #endif //SUP_SCHOOL_SCHOOL_H

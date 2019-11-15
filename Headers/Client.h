@@ -8,14 +8,16 @@
 #include "Activity.h"
 #include "Auxiliary.h"
 
-/*! @brief Client of the SUP School */
+/** @defgroup group_client Client */
+
+/** @ingroup group_client */
 
 class Client {
     public:
-        /*! @name Getters */
+        /*! @name Constructors */
         ///@{
         Client();
-        Client(string name, bool has_gold_card,int balance);
+        Client(string name, bool has_gold_card, int balance);
         ///@}
 
         /*! @name Getters */
@@ -25,10 +27,13 @@ class Client {
         unsigned int getId() const;
         bool getGoldMember() const;
         vector<Activity*> getPastActivities() const;
+        /** @returns The IDs of the past activities of the client separated by a space between them. */
         string getPastActivitiesID() const;
         vector<Activity*> getScheduledActivities() const;
         vector<Activity*> getScheduleActivitiesByDate(Time Date) const;
+        /** @returns The scheduled activites of the client that occur on the time period stated in the function parameters. */
         vector<Activity*> getScheduleActivitiesByDate(Time BeginDate, Time EndDate) const;
+        /** @returns The IDs of the scheduled activities of the client separated by a space between them. */
         string getScheduledActivitiesID() const;
         double getBalance() const;
         ///@}
@@ -45,7 +50,7 @@ class Client {
 
         //Misc.
         void addActivity(Activity* activity, bool past);
-        //Amount can be negative(will throw exception if tries to make it negative)
+        /** @throws insufficientFunds if the user tries to make the balance negative.*/
         void addBalance(double amount);
         void purchaseGold();
         bool isGoldMember() const;
@@ -59,10 +64,9 @@ class Client {
         double balance;
         string name;
         bool gold_member;
+        /** @returns True, if the client has as an activity in the time period stated in the function parameters. */
         bool isOcuppied(const Time startTime,const Time endTime);
 };
-
-/*! \cond */
 
 class alreadyGoldMember : std::exception {
     public:
@@ -99,7 +103,5 @@ public:
 };
 
 std::ostream & operator <<(std::ostream &out,const insufficientFunds &info);
-
-/*! \endcond */
 
 #endif //SUP_SCHOOL_CLIENT_H

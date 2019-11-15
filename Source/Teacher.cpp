@@ -24,18 +24,17 @@ void Teacher::setName(string name) {
 }
 
 ostream &operator<<(ostream &out, const Teacher &T) {
-
     out << "ID: " << T.id << endl;
     out << "Name: " << T.name << endl;
 
-    if(T.ScheduledActivities.size() == 0)
-        out << "No activities associated" << endl;
-    else {
-        out << "Associated activities: ";
+    if (T.ScheduledActivities.empty())
+        out << "No activities associated";
 
-        for (auto a : T.ScheduledActivities){
+    else {
+        out << "Scheduled activities: ";
+
+        for (auto a : T.ScheduledActivities)
             out << a->getId() << " ";
-        }
     }
     out << endl;
 

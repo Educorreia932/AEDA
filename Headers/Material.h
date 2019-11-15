@@ -60,9 +60,9 @@ public:
     static unsigned int maxCapacity;
 };
 
-/*! \cond */
+/** @ingroup group_exceptions */
 
-class alreadyInUse : std::exception {
+class alreadyInUse : exception {
 public:
     unsigned int materialId;
     Time startTime;
@@ -70,7 +70,7 @@ public:
     alreadyInUse(unsigned materialId, Time startTime, Time endTime){this->materialId = materialId; this->startTime = startTime;this->endTime = endTime;};
 };
 
-std::ostream & operator <<(std::ostream &out,const alreadyInUse &info);
+ostream & operator <<(ostream &out, const alreadyInUse &info);
 
 class materialAlreadyHasActivity : std::exception {
 public:
@@ -79,8 +79,6 @@ public:
     materialAlreadyHasActivity(unsigned int materialId,unsigned int activityId){this->materialId = materialId;this->activityId = activityId;};
 };
 
-ostream & operator <<(std::ostream &out,const materialAlreadyHasActivity &ids);
-
-/*! \endcond */
+ostream & operator <<(ostream &out, const materialAlreadyHasActivity &ids);
 
 #endif //SUP_SCHOOL_MATERIAL_H

@@ -5,6 +5,10 @@
 
 #include <vector>
 
+/** @defgroup group_teacher Teacher */
+
+/** @ingroup group_teacher */
+
 class Teacher {
 public:
     Teacher();

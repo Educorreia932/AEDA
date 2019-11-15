@@ -1,6 +1,5 @@
 #include "../Headers/School.h"
 #include "../Headers/Menu.h"
-#include <Algorithm>
 
 //Price of gold card
 double School::goldCardPrice = 40;

@@ -40,13 +40,13 @@ class Activity {
         virtual unsigned int CalcCost() const = 0;
         virtual void print(ostream& out) const = 0;
 
-
-
         void setStartTime(Time time);
         void setEndTime(Time time);
         friend ostream& operator<<(ostream& out, const Activity& A);
 };
+
 ostream& operator<<(ostream& out, const Activity& A);
+
 class Ride : public Activity {
     protected:
         unsigned int cost;
@@ -64,7 +64,9 @@ class Ride : public Activity {
         //void setStartTime(Time time);
         //void setEndTime(Time time);
 };
+
 ostream& operator<<(ostream& out, const Ride& R);
+
 class Lesson : public Activity {
     public:
     Lesson();
@@ -78,7 +80,9 @@ class Lesson : public Activity {
     //void setEndTime(Time time);
 
 };
+
 ostream& operator<<(ostream& out, const Lesson& L);
+
 class StandUpPaddle : public Lesson {
     public:
     unsigned int CalcCost() const;
@@ -92,12 +96,12 @@ class Surf : public Lesson {
 
 class Windsurf : public Lesson {
     unsigned int CalcCost() const;
-        Windsurf(Time startTime,Time endTime,string name) : Lesson(startTime,endTime,name){};
+    Windsurf(Time startTime,Time endTime,string name) : Lesson(startTime,endTime,name){};
 };
 
 vector<Activity*> eraseAndReturnVectorActivity(vector<Activity*> vec,unsigned int i);
 
-/*! @cond */
+/** @ingroup group_exceptions */
 
 class activityNonExistent : exception {
 public:
@@ -106,7 +110,5 @@ public:
 };
 
 ostream & operator <<(ostream &out, const activityNonExistent &activity);
-
-/*! @endcond */
 
 #endif //SUP_SCHOOL_ACTIVITY_H
