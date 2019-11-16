@@ -33,6 +33,7 @@ class School {
         int activityIndex(unsigned int id, bool past);
 
         int materialIndex(unsigned int id);
+        void removeMaterial(unsigned int id);
 
         /*! @name Getters */
         ///@{

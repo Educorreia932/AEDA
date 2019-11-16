@@ -47,6 +47,9 @@ class Menu {
         void changeTeachers(int teacherId);
 
         //Material relateed
+        void createMaterial();
+        int showManageMaterials();
+        void manageMaterialsSelection(int selected);
         void rentMaterial();
         
         // Schedule related

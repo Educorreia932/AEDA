@@ -13,15 +13,17 @@ int Menu::showMainMenu() {
          << "2) Manage clients." << endl
          << "3) Manage teachers." << endl
          << "4) Manage activities." << endl
-         << "5) Consult clients." << endl
-         << "6) Consult teachers." << endl
-         << "7) Consult activities." << endl
-         << "8) Consult schedules." << endl
-         << "9) Consult school's information." << endl
+         << "5) Manage Materials." << endl
+         << "6) Consult clients." << endl
+         << "7) Consult teachers." << endl
+         << "8) Consult activities." << endl
+         << "9) Consult schedules." << endl
+         << "10) Consult Materials." << endl
+         << "11) Consult school's information." << endl
          << "0) Exit" << endl //And save to files
          << endl;
 
-    return readOption(0, 9);
+    return readOption(0, 11);
 }
 
 void Menu::mainMenuSelection(int selected) {
@@ -40,22 +42,29 @@ void Menu::mainMenuSelection(int selected) {
         case 4: //Manage activities
             manageActivitiesSelection(showManageActivities());
             return;
-        case 5: // Consult clients
+        case 5:
+            manageMaterialsSelection(showManageMaterials());
+            return;
+        case 6: // Consult clients
             SUPSchool->viewClients();
             pause();
             return;
-        case 6: // Consult teachers
+        case 7: // Consult teachers
             SUPSchool->viewTeachers();
             pause();
             return;
-        case 7: // Consult activities
+        case 8: // Consult activities
             SUPSchool->viewActivities();
             pause();
             return;
-        case 8: // Consult schedules
+        case 9: // Consult schedules
             consultScheduleSelection(showConsultSchedule());
             return;
-        case 9: // Consult school's information
+        case 10:
+            SUPSchool->viewMaterial();
+            pause();
+            return;
+        case 11: // Consult school's information
             cout << *SUPSchool<< endl;
             pause();
             return;
@@ -93,7 +102,7 @@ void Menu::rentMaterial() {
 
 
     do {
-        selected_material = readOption(0, Material::getLastID() - 1);
+        selected_material = readOption(0, Material::getLastID());
 
         if(selected_material == 0)
             return;
@@ -166,6 +175,76 @@ int Menu::showManageClients() {
 
     return readOption(0, 7);
 }
+
+int Menu::showManageMaterials() {
+    clearScreen();
+
+    cout << "What do you want to do? Insert the corresponding key." << endl
+         << endl
+         << "1) Create a new material." << endl
+         << "2) Change the information of a material." << endl
+         << "3) Remove a material." << endl
+         << "4) Assign to activity" << endl
+         << "0) Go back" << endl
+         << endl;
+
+    return readOption(0, 4);
+}
+
+void Menu::manageMaterialsSelection(int selected) {
+    int selected_material, selected_activity;
+    Material* SelectedMaterial;
+
+    clearScreen();
+
+    switch (selected) {
+        case 1:
+            createMaterial();
+            return;
+            //Not implemented yet
+        case 2:
+            cout << "Which material do you wish to change the information of? Insert the corresponding key." << endl
+                 << endl;
+
+            SUPSchool->viewMaterial(false);
+
+            cout << endl;
+
+            selected_material = readOption(0, Material::getLastID() - 1);
+
+            pause();
+            return;
+        case 3:
+            cout << "Which material do you want to remove?" << endl
+                 << endl;
+
+            SUPSchool->viewMaterial(false);
+
+            cout << endl;
+
+            do {
+                selected_material = readOption(0, Material::getLastID() - 1);
+
+                if(selected_material == 0)
+                    return;
+            } while(SUPSchool->materialIndex(selected_material) == -1);
+
+            try {
+                SUPSchool->removeMaterial(selected_material);
+
+            } catch(NonExistentMaterial &e){
+                cerr << e;
+            }
+
+            pause();
+            return;
+        case 0:
+            return;
+    }
+}
+
+
+
 
 void Menu::manageClientsSelection(int selected) {
     int selected_client, selected_activity;
@@ -364,6 +443,47 @@ void Menu::createClient() {
 
     cout << endl;
     pause();
+}
+
+void Menu::createMaterial() {
+
+    string aux, type;
+    stringstream activities;
+
+    do {
+        cout << "What's the type of the new material(boat,suits,board)? " << endl;
+        getline(cin, aux);
+
+        if (aux == "0") {
+            return;
+        } else if (aux == "boat") {
+            auto *boat = new Boat();
+            type = aux;
+            boat->setType(aux);
+            SUPSchool->Materials.push_back(boat);
+            break;
+        } else if (aux == "suits") {
+            auto *suits = new Suits();
+            type = aux;
+            suits->setType(aux);
+            SUPSchool->Materials.push_back(suits);
+            break;
+        } else if (aux == "board") {
+            auto *board = new Board();
+            type = aux;
+            board->setType(aux);
+            SUPSchool->Materials.push_back(board);
+            break;
+        } else {
+            cout << "Invalid input!";
+        }
+
+        cout << endl;
+    } while (true);
+
+
+    pause();
+
 }
 
 void Menu::monthlyReport(Client* C) {
