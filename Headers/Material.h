@@ -48,17 +48,17 @@ private:
 
 class Boat : public Material {
 public:
-    static unsigned int cost;
+    static double cost;
 };
 
 class Suits : public Material {
 public:
-    static unsigned int cost;
+    static double cost;
 };
 
 class Board : public Material {
 public:
-    static unsigned int cost;
+    static double cost;
 };
 
 /*! \cond */

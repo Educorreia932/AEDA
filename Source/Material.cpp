@@ -3,9 +3,9 @@
 
 using namespace std;
 
-unsigned int Boat::cost = 250;
-unsigned int Suits::cost = 80;
-unsigned int Board::cost = 30;
+double Boat::cost = 250;
+double Suits::cost = 80;
+double Board::cost = 30;
 unsigned int Material::last_id = 0;
 
 bool Material::beingUsed(Time startTime, Time endTime){
