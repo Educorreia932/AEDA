@@ -102,7 +102,7 @@ void Menu::rentMaterial() {
 
 
     do {
-        selected_material = readOption(0, Material::getLastID() - 1);
+        selected_material = readOption(0, Material::getLastID());
 
         if(selected_material == 0)
             return;

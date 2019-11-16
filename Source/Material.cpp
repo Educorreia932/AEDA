@@ -51,6 +51,12 @@ ostream &operator<<(ostream &out, Material material) {
         if(i != material.getActivities().size() - 1)
             cout << ", ";
     }
+
+    cout << endl;
+
+    for(const auto &c : material.Clients){
+        out << "Client with ID: " << c.first->getId() << " From: " << c.second[0] << " To: " << c.second[1] << endl;
+    }
     return out;
 }
 
@@ -118,6 +124,9 @@ void Material::setActivities(vector <Activity*> activities) {
     this->Activities = activities;
 }
 
+void Material::setClients(map<Client*,vector<Time>> clients) {
+    this->Clients = clients;
+}
 
 std::ostream &operator<<(std::ostream &out, const alreadyInUse &info) {
     out << "Material with ID \"" << info.materialId << "\" is already being used between " << info.startTime << " and " << info.endTime << endl;

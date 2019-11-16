@@ -25,7 +25,7 @@ public:
     static unsigned int getLastID();
     vector<Activity*> getActivities() const;
     string getActivitiesID() const;
-    map<Client* ,vector<Time>>* getClients();
+    map<Client*,vector<Time>>* getClients();
     ///@}
 
     /*! @name Setters */
@@ -34,6 +34,7 @@ public:
     void setType(string type);
     static void setLastID(const unsigned int id);
     void setActivities(vector <Activity*> activities);
+    void setClients(map<Client*,vector<Time>> clients);
     ///@}
 private:
     string type;  //The type of material
