@@ -4,7 +4,6 @@
 using namespace std;
 
 unsigned int Activity::last_id = 0;
-
 Activity::Activity() {
     this->id = Activity::last_id++;
 }
@@ -13,7 +12,7 @@ Activity::Activity(Time startTime, Time endTime, string name) {
     this->name = name;
     this->startTime = startTime;
     this->endTime = endTime;
-    this->id = Activity::last_id++;
+    this->id = ++Activity::last_id;
 }
 
 string Activity::getName() const {
@@ -40,6 +39,14 @@ void Activity::setID(unsigned int id) {
     this->id = id;
 }
 
+void Activity::setStartTime(Time time) {
+    this->startTime = time;
+}
+
+void Activity::setEndTime(Time time) {
+    this->endTime = time;
+}
+
 void Activity::setStartTime(string time) {
     startTime = Time(time);
 }
@@ -52,44 +59,85 @@ unsigned int Activity::CalcCost() const {
     return 0;
 }
 
-ostream &operator<<(ostream &out, const Activity &A) {
-    cout << "Name: " << A.name << endl;
-    cout << "ID: " << A.id << endl;
-    cout << "Start Time: " << A.startTime << endl;
-    cout << "End Time: " << A.endTime << endl;
-    return out;
-}
-
 unsigned int Activity::getLastID() {
     return last_id;
 }
+ostream& operator<<(ostream& out, const Activity& A){
+    A.print(out);
+    return out;
+}
+Lesson::Lesson() {
+    this->id = Activity::last_id;
+}
 
-char Activity::getType() const {
-    return 'A';
+Lesson::Lesson(unsigned int id){
+    this->id = id;
+    if(id > Activity::last_id){
+        Activity::last_id = id;
+    }
+}
+
+string Lesson::getType() const {
+    return "L";
 }
 
 unsigned int Lesson::CalcCost() const {
     return 0;
 }
 
-char Lesson::getType() const {
-    return 'L';
+void Lesson::print(ostream& out) const{
+    cout << "Name: " << name << endl;
+    cout << "ID: " << id << endl;
+    cout << "Start Time: " << startTime << endl;
+    cout << "End Time: " << endTime << endl;
 }
 
-Lesson::Lesson() {
+ostream &operator<<(ostream &out, const Ride &R){
+    R.print(out);
+    return out;
+}
 
+Ride::Ride() {
+    this->id = Activity::last_id;
+}
+
+Ride::Ride(unsigned int id){
+    this->id = id;
+    if(id > Activity::last_id){
+        Activity::last_id = id;
+    }
+}
+
+string Ride::getType() const{
+    return "R";
+}
+void Ride::SetCost(unsigned int cost){
+    this->cost = cost;
 }
 
 unsigned int Ride::CalcCost() const {
     return cost;
 }
 
-char Ride::getType() const {
-    return 'R';
+void Ride::setCost(unsigned int i) {
+    this->cost = i;
 }
 
-Ride::Ride() {
+bool Ride::operator>(Ride r){
+    return this->id > r.id;
+}
 
+ostream &operator<<(ostream &out, const Lesson &L){
+    L.print(out);
+    return out;
+}
+
+void Ride::print(ostream& out) const{
+    cout << "Name: " << name << endl;
+    cout << "ID: " << id << endl;
+    cout << "Start Time: " << startTime << endl;
+    cout << "End Time: " << endTime << endl;
+    cout << "Cost: " << cost << endl;
 }
 
 std::ostream &operator<<(std::ostream &out, const activityNonExistent &activity) {
@@ -98,7 +146,7 @@ std::ostream &operator<<(std::ostream &out, const activityNonExistent &activity)
 }
 
 
-vector<Activity*> eraseAndReturnVector(vector<Activity*> vec,unsigned int i){
+vector<Activity*> eraseAndReturnVectorActivity(vector<Activity*> vec,unsigned int i){
     vec.erase(vec.begin() + i);
     return vec;
 }

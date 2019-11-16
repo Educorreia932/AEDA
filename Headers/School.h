@@ -5,8 +5,9 @@
 #include "Material.h"
 #include "Teacher.h"
 #include "Time.h"
-
+#include <algorithm>
 #include <map>
+
 
 class School {
     friend class Menu;
@@ -28,12 +29,14 @@ class School {
         int activityIndex(unsigned int id, bool past);
 
         int materialIndex(unsigned int id);
+        void removeMaterial(unsigned int id);
 
     /*! @name Getters */
         ///@{
         Activity* getActivity(unsigned int id) const;
         vector<Teacher *> getTeachers() const;
         vector<Client *> getClients() const;
+        vector<Material *> getMaterials() const;
         ///@}
 
         /** @name Read Functions
@@ -75,7 +78,7 @@ class School {
         ///@{
         void viewClients(bool detailed = true);
         void viewActivities(bool detailed = true);
-        void viewMaterial();
+        void viewMaterial(bool detailed = true);
         void viewTeachers(bool detailed = true);
         void viewDates(vector <Time> Dates);
         ///@}
