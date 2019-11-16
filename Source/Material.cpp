@@ -90,7 +90,7 @@ map<Client *, vector<Time>>* Material::getClients() {
 }
 
 Material::Material() {
-    this->ID = last_id++;
+    this->ID = ++last_id;
     map<Client* ,vector<Time>> Clients;
 
 }
@@ -112,6 +112,10 @@ string Material::getActivitiesID() const {
         result << a->getId() << " ";
 
     return result.str();
+}
+
+void Material::setActivities(vector <Activity*> activities) {
+    this->Activities = activities;
 }
 
 

@@ -280,13 +280,11 @@ void School::readMaterials() {
     string line;
     ifstream File("../Data/" + Files["Materials"]);
     int counter = 0;
-    auto* auxBoat = new Boat();
-    auto* auxSuits = new Suits();
-    auto* auxBoard = new Board();
 
     auto* activities = new stringstream;
 
     string type;
+    unsigned id;
 
     if (File.is_open()) {
         while (getline(File, line)) {
@@ -295,41 +293,45 @@ void School::readMaterials() {
                     type = line;
                     break;
                 case 1:
-
-                    if(type == "boat"){
-                        auxBoat->setType(type);
-                        auxBoat->setID(stoi(line));
-                    } else if (type == "suits"){
-                        auxSuits->setType(type);
-                        auxSuits->setID(stoi(line));
-                    } else if (type == "board"){
-                        auxBoard->setType(type);
-                        auxBoard->setID(stoi(line));
-                    }
-
-                    if (stoi(line) > Material::getLastID())
-                        Material::setLastID(stoi(line));
-
+                    id = stoi(line);
                     break;
                 case 2:
                     *activities << line;
                     break;
                 case 3:
                     if(type == "boat"){
+                        Boat* auxBoat = new Boat();
+                        auxBoat->setType(type);
+                        auxBoat->setID(id);
+
+                        if (id > Material::getLastID())
+                            Material::setLastID(id);
+
                         Materials.push_back(auxBoat);
                         readMaterialActivities(activities, auxBoat);
                     } else if (type == "suits"){
+                        Suits* auxSuits = new Suits();
+                        auxSuits->setType(type);
+                        auxSuits->setID(id);
+
+                        if (id > Material::getLastID())
+                            Material::setLastID(id);
+
                         Materials.push_back(auxSuits);
                         readMaterialActivities(activities, auxSuits);
                     } else if (type == "board"){
+                        Board* auxBoard = new Board();
+                        auxBoard->setType(type);
+                        auxBoard->setID(id);
+
+                        if (id > Material::getLastID())
+                            Material::setLastID(id);
+
                         Materials.push_back(auxBoard);
                         readMaterialActivities(activities, auxBoard);
                     }
 
                     activities->clear();
-                    auxBoard = new Board();
-                    auxSuits = new Suits();
-                    auxBoat  = new Boat();
                     break;
             }
 

@@ -17,6 +17,7 @@ public:
     bool beingUsed(Time startTime, Time endTime);
     void addActivity(Activity* activity);
 
+
     /*! @name Getters */
     ///@{
     unsigned int getID() const;
@@ -32,6 +33,7 @@ public:
     void setID(int ID);
     void setType(string type);
     static void setLastID(const unsigned int id);
+    void setActivities(vector <Activity*> activities);
     ///@}
 private:
     string type;  //The type of material
