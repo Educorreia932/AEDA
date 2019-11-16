@@ -1,10 +1,10 @@
 #include "../Headers/Material.h"
 
-
 using namespace std;
-unsigned int Boat::maxCapacity = 10;
-unsigned int Suits::maxCapacity = 6;
-unsigned int Board::maxCapacity = 4;
+
+unsigned int Boat::cost = 250;
+unsigned int Suits::cost = 80;
+unsigned int Board::cost = 30;
 unsigned int Material::last_id = 0;
 
 bool Material::beingUsed(Time startTime, Time endTime){
@@ -21,10 +21,23 @@ bool Material::beingUsed(Time startTime, Time endTime){
         return true;
 
     for(int i = 0; i < Activities.size(); i++){
-        //if(*(activity[i]))
         if(!(endTime < Activities[i]->getStartTime() || startTime > Activities[i]->getEndTime())){
              return true;
         }
+    }
+
+    for(const auto &m :  Clients){
+        if(m.second[0] == startTime)
+            return true;
+
+        if(m.second[1] == endTime)
+            return true;
+
+        if(m.second[0] < startTime && startTime < m.second[1])
+            return true;
+
+        if(endTime > m.second[0] && endTime < m.second[1])
+            return true;
     }
 
     return false;
@@ -54,9 +67,6 @@ void Material::setLastID(unsigned int id) {
     last_id = id;
 }
 
-void Material::setCapacity(unsigned int capacity){
-    capacity = capacity;
-}
 //Getters
 unsigned int Material::getID() const{
     return ID;
@@ -74,9 +84,6 @@ unsigned int Material::getLastID(){
     return last_id;
 }
 
-unsigned int Material::getCapacity(){
-    return capacity;
-}
 
 map<Client *, vector<Time>>* Material::getClients() {
     return &Clients;

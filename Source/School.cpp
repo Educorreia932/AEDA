@@ -729,7 +729,7 @@ Activity * School::getActivity(unsigned int id) const {
 }
 
 
-//Doesnt check if a client already is using it
+//A client can only rent it once
 void School::rent(const unsigned int materialId, const unsigned int clientId, Time startTime, Time endTime) {
 
     if(clientIndex(clientId) == -1)
@@ -738,9 +738,20 @@ void School::rent(const unsigned int materialId, const unsigned int clientId, Ti
     if (materialIndex(materialId) == -1)
         throw NonExistentMaterial(materialId);
 
+
     if(Materials[materialIndex(materialId)]->beingUsed(startTime,endTime))
         throw alreadyInUse(materialId,startTime,endTime);
 
+    try{
+        if(Materials[materialIndex(materialId)]->getType() == "boat")
+            Clients[clientIndex(clientId)]->addBalance(-Boat::cost);
+        else if (Materials[materialIndex(materialId)]->getType() == "suits")
+            Clients[clientIndex(clientId)]->addBalance(-Suits::cost);
+        else if (Materials[materialIndex(materialId)]->getType() == "board")
+            Clients[clientIndex(clientId)]->addBalance(-Board::cost);
+    } catch (insufficientFunds &e){
+        cerr << e;
+    }
 
 
     Materials[materialIndex(materialId)]->Clients[Clients[clientIndex(clientId)]] = {startTime,endTime};

@@ -15,7 +15,6 @@ public:
     Material();
     //Miscellaneous
     bool beingUsed(Time startTime, Time endTime);
-    string getObjectType() const;
     void addActivity(Activity* activity);
 
     /*! @name Getters */
@@ -25,7 +24,6 @@ public:
     static unsigned int getLastID();
     vector<Activity*> getActivities() const;
     string getActivitiesID() const;
-    unsigned int getCapacity();
     map<Client* ,vector<Time>>* getClients();
     ///@}
 
@@ -34,32 +32,30 @@ public:
     void setID(int ID);
     void setType(string type);
     static void setLastID(const unsigned int id);
-    static void setCapacity(unsigned int capacity);
     ///@}
 private:
     string type;  //The type of material
     vector<Activity*> Activities;
     map<Client* ,vector<Time>> Clients;
     unsigned int ID;
-    unsigned int capacity;
     static unsigned int last_id;
 
-    friend ostream &operator<<(ostream out, Material material);
+    friend ostream &operator<<(ostream &out, Material material);
 };
 
 class Boat : public Material {
 public:
-    static unsigned int maxCapacity;
+    static unsigned int cost;
 };
 
 class Suits : public Material {
 public:
-    static unsigned int maxCapacity;
+    static unsigned int cost;
 };
 
 class Board : public Material {
 public:
-    static unsigned int maxCapacity;
+    static unsigned int cost;
 };
 
 /*! \cond */
