@@ -113,7 +113,6 @@ class Lesson : public Activity {
     /*! Wihtout it, ostream calls would have a different syntax (Ex: lesson << cout instead of cout << lesson).!*/
     void print(ostream& out) const;
     ///@}
-
 };
 
 ostream& operator<<(ostream& out, const Lesson& L);

@@ -121,6 +121,8 @@ class School {
         vector<Activity*> ScheduledActivities;
 };
 
+/** @ingroup group_exceptions */
+
 class NonExistentClient : exception {
     public:
         unsigned int id;

@@ -8,6 +8,10 @@
 
 #include <map>
 
+/** @defgroup group_schedule Schedule */
+
+/** @ingroup group_schedule */
+
 /** @brief Characters used on the schedule output formatting */
 
 struct CharacterCodes {
