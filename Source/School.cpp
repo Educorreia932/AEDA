@@ -1,6 +1,5 @@
 #include "../Headers/School.h"
 #include "../Headers/Menu.h"
-#include <Algorithm>
 
 //Price of gold card
 double School::goldCardPrice = 40;
@@ -45,8 +44,8 @@ School::School(const string& filename) {
         File.close();
 
         readActivities();
-        readMaterials();
         readClients();
+        readMaterials();
         readTeachers();
     }
 
@@ -69,6 +68,18 @@ void School::removeClient(unsigned int id) {
             break;
         }
 }
+
+void School::removeMaterial(unsigned int id) {
+    if(Materials[materialIndex(id)]->getID() == -1)
+        throw NonExistentMaterial(id);
+
+    for(size_t i = 0; i < Materials.size() ; i++)
+        if (Materials.at(i)->getID() == id) {
+            Materials.erase(Materials.begin()+i);
+            break;
+        }
+}
+
 
 void School::addClient(Client* client) {
     if (clientIndex(client->getId()) != -1)
@@ -269,65 +280,119 @@ void School::readMaterials() {
     string line;
     ifstream File("../Data/" + Files["Materials"]);
     int counter = 0;
-    auto* auxBoat = new Boat();
-    auto* auxSuits = new Suits();
-    auto* auxBoard = new Board();
+    map<Client*,vector<Time>> client_map;
+    unsigned client_id;
+    Time startTime;
+    Time endTime;
 
     auto* activities = new stringstream;
+    auto* clients = new stringstream;
+
+    bool leaveCase = false;
 
     string type;
+    unsigned id;
 
     if (File.is_open()) {
         while (getline(File, line)) {
-            switch (counter % 4) {
-                case 0:
-                    type = line;
-                    break;
-                case 1:
+                switch (counter % 5) {
+                    case 0:
+                        type = line;
+                        break;
+                    case 1:
+                        id = stoi(line);
+                        break;
+                    case 2:
+                        *activities << line;
+                        break;
+                    case 3:
+                        if (line == "::::::::::" || line == "---END---") {
+                            leaveCase = true;
+                            counter++;
+                        } else {
+                            *clients << line;
+                            *clients >> client_id;
+                            string auxgdfgd = clients->str().substr(2, 16);
+                            string auxgdfghfghgd = clients->str().substr(19, 16);
+                            startTime = Time(clients->str().substr(2, 16));
+                            endTime = Time(clients->str().substr(19, 16));
 
-                    if(type == "boat"){
-                        auxBoat->setType(type);
-                        auxBoat->setID(stoi(line));
-                    } else if (type == "suits"){
-                        auxSuits->setType(type);
-                        auxSuits->setID(stoi(line));
-                    } else if (type == "board"){
-                        auxBoard->setType(type);
-                        auxBoard->setID(stoi(line));
-                    }
+                            client_map[Clients[clientIndex(client_id)]] = {startTime, endTime};
+                            clients->clear();
+                        }
+                        if (!leaveCase) {
+                            while (getline(File, line)) {
+                                if (line == "::::::::::" || line == "---END---") {
+                                    leaveCase = true;
+                                    counter++;
+                                    break;
+                                } else {
+                                    *clients << line;
+                                    *clients >> client_id;
+                                    startTime = Time(clients->str().substr(0, 16));
+                                    endTime = Time(clients->str().substr(17, 16));
 
-                    if (stoi(line) > Material::getLastID())
-                        Material::setLastID(stoi(line));
+                                    client_map[Clients[clientIndex(client_id)]] = {startTime, endTime};
+                                    clients->clear();
+                                }
+                            }
+                        }
 
-                    break;
-                case 2:
-                    *activities << line;
-                    break;
-                case 3:
-                    if(type == "boat"){
-                        Materials.push_back(auxBoat);
-                        readMaterialActivities(activities, auxBoat);
-                    } else if (type == "suits"){
-                        Materials.push_back(auxSuits);
-                        readMaterialActivities(activities, auxSuits);
-                    } else if (type == "board"){
-                        Materials.push_back(auxBoard);
-                        readMaterialActivities(activities, auxBoard);
-                    }
 
-                    activities->clear();
-                    auxBoard = new Board();
-                    auxSuits = new Suits();
-                    auxBoat  = new Boat();
-                    break;
+
+
+                    case 4:
+                        if (type == "boat") {
+                            Boat *auxBoat = new Boat();
+                            auxBoat->setType(type);
+                            auxBoat->setID(id);
+
+                            if (id > Material::getLastID())
+                                Material::setLastID(id);
+
+
+                            readMaterialActivities(activities, auxBoat);
+                            auxBoat->setClients(client_map);
+                            Materials.push_back(auxBoat);
+                        } else if (type == "suits") {
+                            Suits *auxSuits = new Suits();
+                            auxSuits->setType(type);
+                            auxSuits->setID(id);
+
+                            if (id > Material::getLastID())
+                                Material::setLastID(id);
+
+
+                            readMaterialActivities(activities, auxSuits);
+                            auxSuits->setClients(client_map);
+                            Materials.push_back(auxSuits);
+                        } else if (type == "board") {
+                            Board *auxBoard = new Board();
+                            auxBoard->setType(type);
+                            auxBoard->setID(id);
+
+                            if (id > Material::getLastID())
+                                Material::setLastID(id);
+
+
+                            readMaterialActivities(activities, auxBoard);
+                            auxBoard->setClients(client_map);
+                            Materials.push_back(auxBoard);
+                        }
+
+                        activities->clear();
+                        client_map.clear();
+                        break;
+                }
+            leaveCase = false;
+            counter++;
             }
 
-            counter++;
         }
 
         File.close();
-    }
 }
+
 
 void School::enroll(const unsigned int clientId, const unsigned int activityId) {
     //Time needs to be checked if is ahead of the set current time
@@ -509,7 +574,7 @@ void School::viewClients(bool detailed) {
 void School::viewMaterial(bool detailed){
     if (detailed)
         for (auto & Material : Materials)
-            cout << *Material << endl
+            cout << *Material
                  << "---------------------" << endl;
 
     else
@@ -640,10 +705,13 @@ void School::saveMaterials() {
             f << m->getType() << endl
               << m->getID() << endl
               << m->getActivitiesID() << endl;
+            for (const auto &client: m->Clients){
+                f << client.first->getId() << " " << client.second[0] << " " << client.second[1] << endl;
+            }
+
 
             if (counter == size(Materials) - 1)
                 f << "---END---";
-
             else
                 f << "::::::::::" << endl;
 
@@ -770,7 +838,6 @@ Activity * School::getActivity(unsigned int id) const {
 }
 
 
-//Doesnt check if a client already is using it
 void School::rent(const unsigned int materialId, const unsigned int clientId, Time startTime, Time endTime) {
 
     if(clientIndex(clientId) == -1)
@@ -779,9 +846,20 @@ void School::rent(const unsigned int materialId, const unsigned int clientId, Ti
     if (materialIndex(materialId) == -1)
         throw NonExistentMaterial(materialId);
 
+
     if(Materials[materialIndex(materialId)]->beingUsed(startTime,endTime))
         throw alreadyInUse(materialId,startTime,endTime);
 
+    try{
+        if(Materials[materialIndex(materialId)]->getType() == "boat")
+            Clients[clientIndex(clientId)]->addBalance(-Boat::cost);
+        else if (Materials[materialIndex(materialId)]->getType() == "suits")
+            Clients[clientIndex(clientId)]->addBalance(-Suits::cost);
+        else if (Materials[materialIndex(materialId)]->getType() == "board")
+            Clients[clientIndex(clientId)]->addBalance(-Board::cost);
+    } catch (insufficientFunds &e){
+        cerr << e;
+    }
 
 
     Materials[materialIndex(materialId)]->Clients[Clients[clientIndex(clientId)]] = {startTime,endTime};

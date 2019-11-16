@@ -7,9 +7,13 @@
 class Activity {
     protected:
         string name;
+        /*! @brief This activity's ID !*/
         unsigned int id;
+        /*! @brief Highest ID for any activity currently !*/
         static unsigned int last_id;
+        /*! @brief When the activity begins (DD/MM/YY HH:MM) !*/
         Time startTime;
+        /*! @brief When the activity ends (DD/MM/YY HH:MM) !*/
         Time endTime;
     public:
         /*! @name Constructors */
@@ -32,72 +36,90 @@ class Activity {
         /*! @name Setters */
         ///@{
         void setName(string name);
-        void setID(unsigned int id);
         void setStartTime(string time);
         void setEndTime(string time);
+        void setStartTime(Time time);
+        void setEndTime(Time time);
         ///@}
 
         virtual unsigned int CalcCost() const = 0;
         virtual void print(ostream& out) const = 0;
 
 
-
-        void setStartTime(Time time);
-        void setEndTime(Time time);
         friend ostream& operator<<(ostream& out, const Activity& A);
 };
+
 ostream& operator<<(ostream& out, const Activity& A);
+
 class Ride : public Activity {
     protected:
         unsigned int cost;
     public:
+        /*! @name Constructors */
+        ///@{
+        /*! Used when adding a new ride.!*/
         Ride(); //DO NOT USE WHEN READING
+        /*! Used when reading an activity from a file.!*/
+        /*! @param id the ride as stated in the file it's read from.!*/
         Ride(unsigned int id); //For use when reading
-        Ride(Time startTime,Time endTime,string name) : Activity(startTime,endTime,name){this->cost = cost;}
-        void SetCost(unsigned int cost);
-        unsigned int CalcCost() const;
-        void setCost(unsigned int cost);
-        string getType() const;
-        bool operator>(Ride b);
-        void print(ostream& out) const;
+    ///@}
 
-        //void setStartTime(Time time);
-        //void setEndTime(Time time);
+        /*! @name Setters */
+        ///@{
+        void setCost(unsigned int cost);
+        ///@}
+
+        /*! @name Getters */
+        ///@{
+        /*! @returns The total cost of the ride. */
+        unsigned int CalcCost() const;
+        /*! @returns The type of activity, either Ride (R) or Lesson (L). */
+        string getType() const;
+        ///@}
+
+        /*! @name Others */
+        ///@{
+        /*! Used to call operator<< for ride.!*/
+        /*! Wihtout it, ostream calls would have a different syntax (Ex: ride << cout instead of cout << ride).!*/
+        void print(ostream& out) const;
+        /*!Necessary for sorting purposes when saving the activity file.!*/
+        bool operator>(Ride b);
+        ///@}
 };
+
 ostream& operator<<(ostream& out, const Ride& R);
+
 class Lesson : public Activity {
     public:
+    /*! @name Constructors */
+    ///@{
+    /*! Used when adding a new lesson.!*/
     Lesson();
+    /*! Used when reading an activity from a file.!*/
+    /*! @param id the ride as stated in the file it's read from.!*/
     Lesson(unsigned int id);
     Lesson(Time startTime, Time endTime, string name) : Activity(startTime, endTime, name){};
+    ///@}
+    /*! @name Getters */
+    ///@{
+    /*! @returns The total cost of the ride. */
     unsigned int CalcCost() const;
+    /*! @returns The type of activity, either Ride (R) or Lesson (L). */
     string getType() const;
+    ///@}
+    /*! @name Others */
+    ///@{
+    /*! Used to call operator<< for ride.!*/
+    /*! Wihtout it, ostream calls would have a different syntax (Ex: lesson << cout instead of cout << lesson).!*/
     void print(ostream& out) const;
-
-    //void setStartTime(Time time);
-    //void setEndTime(Time time);
-
+    ///@}
 };
+
 ostream& operator<<(ostream& out, const Lesson& L);
-class StandUpPaddle : public Lesson {
-    public:
-    unsigned int CalcCost() const;
-    StandUpPaddle(Time startTime,Time endTime,string name) : Lesson(startTime,endTime,name){};
-};
-
-class Surf : public Lesson {
-    public:
-        Surf(Time startTime,Time endTime,string name) : Lesson(startTime,endTime,name){};
-};
-
-class Windsurf : public Lesson {
-    unsigned int CalcCost() const;
-        Windsurf(Time startTime,Time endTime,string name) : Lesson(startTime,endTime,name){};
-};
 
 vector<Activity*> eraseAndReturnVectorActivity(vector<Activity*> vec,unsigned int i);
 
-/*! @cond */
+/** @ingroup group_exceptions */
 
 class activityNonExistent : exception {
 public:
@@ -106,7 +128,5 @@ public:
 };
 
 ostream & operator <<(ostream &out, const activityNonExistent &activity);
-
-/*! @endcond */
 
 #endif //SUP_SCHOOL_ACTIVITY_H

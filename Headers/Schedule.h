@@ -8,7 +8,11 @@
 
 #include <map>
 
-/*! \cond */
+/** @defgroup group_schedule Schedule */
+
+/** @ingroup group_schedule */
+
+/** @brief Characters used on the schedule output formatting */
 
 struct CharacterCodes {
     unsigned char topRight = 187, //╗
@@ -24,13 +28,12 @@ struct CharacterCodes {
             centreSeparation = 206; //╬
 };
 
-/*! \endcond */
-
-/*! @brief Timetable of a teacher or a client with its schedule activities */
+/*! @brief Timetable of a teacher or a client with its scheduled activities */
 
 template <class T>
 class Schedule {
     public:
+
         Schedule();
         Schedule(Time BeginDate, Time EndDate, const T *c);
         vector<map <Time, Activity*>> getActivities() const;

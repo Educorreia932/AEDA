@@ -2,9 +2,10 @@
 
 
 using namespace std;
-unsigned int Boat::maxCapacity = 10;
-unsigned int Suits::maxCapacity = 6;
-unsigned int Board::maxCapacity = 4;
+
+double Boat::cost = 250;
+double Suits::cost = 80;
+double Board::cost = 30;
 unsigned int Material::last_id = 0;
 
 bool Material::beingUsed(Time startTime, Time endTime){
@@ -21,21 +22,40 @@ bool Material::beingUsed(Time startTime, Time endTime){
         return true;
 
     for(int i = 0; i < Activities.size(); i++){
-        //if(*(activity[i]))
         if(!(endTime < Activities[i]->getStartTime() || startTime > Activities[i]->getEndTime())){
              return true;
         }
+    }
+
+    for(const auto &m :  Clients){
+        if(m.second[0] == startTime)
+            return true;
+
+        if(m.second[1] == endTime)
+            return true;
+
+        if(m.second[0] < startTime && startTime < m.second[1])
+            return true;
+
+        if(endTime > m.second[0] && endTime < m.second[1])
+            return true;
     }
 
     return false;
 }
 
 ostream &operator<<(ostream &out, Material material) {
-    out << "This is a" <<  material.getType() << ", which is going to be used by:\n";
+    out << "This is a " <<  material.getType() << "(ID: " << material.getID() << ")" << ", which is going to be used by:\n";
     for(int i= 0; i < material.Activities.size(); i++){
         cout << (material.getActivities())[i]->getName();
         if(i != material.getActivities().size() - 1)
             cout << ", ";
+    }
+
+    cout << endl;
+
+    for(const auto &c : material.Clients){
+        out << "Client with ID: " << c.first->getId() << " From: " << c.second[0] << " To: " << c.second[1] << endl;
     }
     return out;
 }
@@ -51,13 +71,6 @@ void Material::setType(string type){
 
 void Material::setLastID(unsigned int id) {
     last_id = id;
-}
-
-void Material::setCapacity(unsigned int capacity){
-    capacity = capacity;
-}
-void Material::setActivities(vector<Activity *> activities){
-    this->Activities = activities;
 }
 
 //Getters
@@ -77,16 +90,13 @@ unsigned int Material::getLastID(){
     return last_id;
 }
 
-unsigned int Material::getCapacity(){
-    return capacity;
-}
 
 map<Client *, vector<Time>>* Material::getClients() {
     return &Clients;
 }
 
 Material::Material() {
-    this->ID = last_id++;
+    this->ID = ++last_id;
     map<Client* ,vector<Time>> Clients;
 
 }
@@ -110,6 +120,13 @@ string Material::getActivitiesID() const {
     return result.str();
 }
 
+void Material::setActivities(vector <Activity*> activities) {
+    this->Activities = activities;
+}
+
+void Material::setClients(map<Client*,vector<Time>> clients) {
+    this->Clients = clients;
+}
 
 std::ostream &operator<<(std::ostream &out, const alreadyInUse &info) {
     out << "Material with ID \"" << info.materialId << "\" is already being used between " << info.startTime << " and " << info.endTime << endl;

@@ -4,10 +4,16 @@
 #include "Schedule.h"
 #include "School.h"
 
+/** @defgroup group_menu Menu */
+
+/** @ingroup group_menu */
+
 class Menu {
     public:
-        //Constructors
+        /** @name Constructor */
+        ///@{
         Menu(School* SUPSchool);
+        ///@}
 
         static int showMainMenu();
         void mainMenuSelection(int selected);
@@ -18,12 +24,14 @@ class Menu {
     private:
         School* SUPSchool;
 
-        // Client related        
+        /** @name Client related */
+        ///@{
         static int showManageClients();
         void manageClientsSelection(int selected);
         void createClient();
         void changeClient(int client_id);
         void monthlyReport(Client* C);
+        ///@}
 
         //Activity related
         static int showManageActivities();
@@ -32,7 +40,6 @@ class Menu {
         void removeActivity();
         void changeActivity();
 
-
         // Teacher related
         static int showManageTeachers();
         void manageTeachersSelection(int selected);
@@ -40,6 +47,9 @@ class Menu {
         void changeTeachers(int teacherId);
 
         //Material relateed
+        void createMaterial();
+        int showManageMaterials();
+        void manageMaterialsSelection(int selected);
         void rentMaterial();
         
         // Schedule related
@@ -47,7 +57,9 @@ class Menu {
         void consultScheduleSelection(int selected);
 };
 
-/*! \cond */
+/** @defgroup group_exceptions Exceptions */
+
+/** @ingroup group_exceptions */
 
 class ImproperString: std::exception{
     string msg;
@@ -71,6 +83,5 @@ public:
     string getMsg() const{return msg;}
 };
 
-/*! \endcond */
 
 #endif //SUP_SCHOOL_MENU_H

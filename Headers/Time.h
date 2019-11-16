@@ -53,7 +53,7 @@ class Time{
         friend Time operator -(Time const startTime, Time const endTime);
 };
 
-/*! @cond */
+/** @ingroup group_exceptions */
 
 class InvalidDate : exception {
     string msg;
@@ -77,7 +77,5 @@ public:
         return endTime;
     }
 };
-
-/*! @endcond */
 
 #endif

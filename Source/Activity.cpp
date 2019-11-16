@@ -35,10 +35,6 @@ void Activity::setName(string name) {
     this->name = name;
 }
 
-void Activity::setID(unsigned int id) {
-    this->id = id;
-}
-
 void Activity::setStartTime(Time time) {
     this->startTime = time;
 }
@@ -110,9 +106,6 @@ Ride::Ride(unsigned int id){
 
 string Ride::getType() const{
     return "R";
-}
-void Ride::SetCost(unsigned int cost){
-    this->cost = cost;
 }
 
 unsigned int Ride::CalcCost() const {
