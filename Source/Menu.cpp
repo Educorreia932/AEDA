@@ -13,12 +13,12 @@ int Menu::showMainMenu() {
          << "2) Manage clients." << endl
          << "3) Manage teachers." << endl
          << "4) Manage activities." << endl
-         << "5) Manage materials." << endl
+         << "5) Manage Materials." << endl
          << "6) Consult clients." << endl
          << "7) Consult teachers." << endl
          << "8) Consult activities." << endl
          << "9) Consult schedules." << endl
-         << "10) Consult materials." << endl
+         << "10) Consult Materials." << endl
          << "11) Consult school's information." << endl
          << "0) Exit" << endl //And save to files
          << endl;
@@ -242,6 +242,9 @@ void Menu::manageMaterialsSelection(int selected) {
             return;
     }
 }
+
+
+
 
 void Menu::manageClientsSelection(int selected) {
     int selected_client, selected_activity;
@@ -950,7 +953,6 @@ void Menu::consultScheduleSelection(int selected) {
 
             begin_date = readOption(0, PossibleDates.size());
 
-            // Go back
             if (!begin_date)
                 return;
 
@@ -1010,11 +1012,6 @@ void Menu::consultScheduleSelection(int selected) {
             cout << endl;
 
             begin_date = readOption(0, PossibleDates.size());
-
-            // Go back
-            if (!begin_date)
-                return;
-
             beginDate = PossibleDates[begin_date - 1];
 
             clearScreen();
@@ -1027,11 +1024,6 @@ void Menu::consultScheduleSelection(int selected) {
             cout << endl;
 
             end_date = readOption(1, PossibleDates.size());
-
-            // Go back
-            if (!end_date)
-                return;
-
             endDate = PossibleDates[end_date - 1];
 
             clearScreen();

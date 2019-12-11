@@ -38,6 +38,7 @@ class School {
         /*! @name Getters */
         ///@{
         Activity* getActivity(unsigned int id) const;
+        vector<Teacher *> getTeachers() const;
         vector<Client *> getClients() const;
         vector<Material *> getMaterials() const;
         ///@}
@@ -82,6 +83,7 @@ class School {
          * This functions display information about the School elements.
          */
         ///@{
+
         /**
         * @param detailed States whether the output includes all of the information about the activities or only the strictly necessary to distinguish them (mainly used
         * in selection menus).
