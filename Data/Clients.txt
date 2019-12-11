@@ -1,7 +1,7 @@
 Eduardo da Costa Correia
 1
-true
-500
+false
+0
 1 2 4 
 ::::::::::
 Ana Ines Oliveira Barros
