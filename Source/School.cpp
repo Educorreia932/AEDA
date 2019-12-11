@@ -80,7 +80,6 @@ void School::removeMaterial(unsigned int id) {
         }
 }
 
-
 void School::addClient(Client* client) {
     if (clientIndex(client->getId()) != -1)
         throw ClientAlreadyExists(client->getId());
@@ -110,10 +109,6 @@ int School::materialIndex(unsigned int id) {
 
 vector<Client *> School::getClients() const{
     return this->Clients;
-}
-
-vector<Teacher *> School::getTeachers() const{
-    return this->Teachers;
 }
 
 vector<Material *> School::getMaterials() const{
@@ -393,7 +388,6 @@ void School::readMaterials() {
         File.close();
 }
 
-
 void School::enroll(const unsigned int clientId, const unsigned int activityId) {
     //Time needs to be checked if is ahead of the set current time
 
@@ -647,6 +641,7 @@ void School::saveActivities() {
     Activities.insert(Activities.end(), PastActivities.begin(), PastActivities.end());
     Activities.insert(Activities.end(), ScheduledActivities.begin(), ScheduledActivities. end());
     sort(Activities.begin(), Activities.end());
+
     if (f.is_open())
         for (auto c : Activities) {
             f << c->getId() << endl
@@ -837,34 +832,27 @@ Activity * School::getActivity(unsigned int id) const {
     return nullptr;
 }
 
-
 void School::rent(const unsigned int materialId, const unsigned int clientId, Time startTime, Time endTime) {
-
     if(clientIndex(clientId) == -1)
         throw NonExistentClient(clientId);
-
     if (materialIndex(materialId) == -1)
         throw NonExistentMaterial(materialId);
-
 
     if(Materials[materialIndex(materialId)]->beingUsed(startTime,endTime))
         throw alreadyInUse(materialId,startTime,endTime);
 
-    try{
+    try {
         if(Materials[materialIndex(materialId)]->getType() == "boat")
             Clients[clientIndex(clientId)]->addBalance(-Boat::cost);
         else if (Materials[materialIndex(materialId)]->getType() == "suits")
             Clients[clientIndex(clientId)]->addBalance(-Suits::cost);
         else if (Materials[materialIndex(materialId)]->getType() == "board")
             Clients[clientIndex(clientId)]->addBalance(-Board::cost);
-    } catch (insufficientFunds &e){
+    }
+
+    catch (insufficientFunds &e){
         cerr << e;
     }
 
-
     Materials[materialIndex(materialId)]->Clients[Clients[clientIndex(clientId)]] = {startTime,endTime};
-
-
 }
-
-
