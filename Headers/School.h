@@ -37,6 +37,7 @@ class School {
 
         /*! @name Getters */
         ///@{
+        string getLocality() const;
         Activity* getActivity(unsigned int id) const;
         vector<Teacher *> getTeachers() const;
         vector<Client *> getClients() const;
@@ -99,7 +100,7 @@ class School {
          * in selection menus).
          */
         void viewMaterial(bool detailed = true);
-        /**
+         /**
          * @param detailed States whether the output includes all of the information about the teachers or only the strictly necessary to distinguish them (mainly used
          * in selection menus).
          */
@@ -112,7 +113,8 @@ class School {
         friend ostream& operator<<(ostream& out, const School& S);
     private:
         string name;
-        unsigned int id;
+        string locality;
+        string director;
         Time currentTime;
         map<string, string> Files;
         vector<Client*> Clients;

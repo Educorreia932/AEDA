@@ -1,6 +1,7 @@
 #include "../Headers/Activity.h"
 
 #include <vector>
+
 using namespace std;
 
 unsigned int Activity::last_id = 0;

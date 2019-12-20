@@ -20,18 +20,24 @@ School::School(const string& filename) {
                     name = line;
                     break;
                 case 1:
-                    currentTime = Time(line);
+                    locality = line;
                     break;
                 case 2:
-                    Files["Clients"] = line;
+                    director = line;
                     break;
                 case 3:
-                    Files["Materials"] = line;
+                    currentTime = Time(line);
                     break;
                 case 4:
-                    Files["Activities"] = line;
+                    Files["Clients"] = line;
                     break;
                 case 5:
+                    Files["Materials"] = line;
+                    break;
+                case 6:
+                    Files["Activities"] = line;
+                    break;
+                case 7:
                     Files["Teachers"] = line;
                     break;
                 default:
@@ -80,7 +86,6 @@ void School::removeMaterial(unsigned int id) {
         }
 }
 
-
 void School::addClient(Client* client) {
     if (clientIndex(client->getId()) != -1)
         throw ClientAlreadyExists(client->getId());
@@ -122,7 +127,7 @@ vector<Material *> School::getMaterials() const{
 
 void School::readActivities() {
     string line;
-    ifstream File("../Data/" + Files["Activities"]);
+    ifstream File("../Data/1/" + Files["Activities"]);
     int counter = 0, activity_id;
 
     //Things for the new activity
@@ -132,7 +137,6 @@ void School::readActivities() {
     string startTime;
     string endTime;
     //int cost; //N é preciso pois é a linha atual
-
 
     if (File.is_open()) {
         while (getline(File, line)) {
@@ -192,7 +196,7 @@ void School::readActivities() {
 
 void School::readClients() {
     string line;
-    ifstream File("../Data/" + Files["Clients"]);
+    ifstream File("../Data/1/" + Files["Clients"]); //TODO Change number
     int counter = 0;
     auto* auxClient = new Client();
     auto* activities = new stringstream;
@@ -238,7 +242,7 @@ void School::readClients() {
 
 void School::readTeachers() {
     string line;
-    ifstream File("../Data/" + Files["Teachers"]);
+    ifstream File("../Data/1/" + Files["Teachers"]);
     int counter = 0;
     auto* auxTeacher = new Teacher();
     auto* activities = new stringstream;
@@ -278,7 +282,7 @@ void School::readTeachers() {
 
 void School::readMaterials() {
     string line;
-    ifstream File("../Data/" + Files["Materials"]);
+    ifstream File("../Data/1/" + Files["Materials"]);
     int counter = 0;
     map<Client*,vector<Time>> client_map;
     unsigned client_id;
@@ -392,7 +396,6 @@ void School::readMaterials() {
 
         File.close();
 }
-
 
 void School::enroll(const unsigned int clientId, const unsigned int activityId) {
     //Time needs to be checked if is ahead of the set current time
@@ -837,7 +840,6 @@ Activity * School::getActivity(unsigned int id) const {
     return nullptr;
 }
 
-
 void School::rent(const unsigned int materialId, const unsigned int clientId, Time startTime, Time endTime) {
 
     if(clientIndex(clientId) == -1)
@@ -861,10 +863,16 @@ void School::rent(const unsigned int materialId, const unsigned int clientId, Ti
         cerr << e;
     }
 
-
     Materials[materialIndex(materialId)]->Clients[Clients[clientIndex(clientId)]] = {startTime,endTime};
-
-
 }
 
+string School::getLocality() const {
+    return locality;
+}
 
+bool operator <(const School s1, const School s2)  {
+    if (s1.getClients().size() == s2.getClients().size())
+        return s1.getLocality() < s2.getLocality();
+
+    return s1.getClients().size() < s2.getClients().size();
+}

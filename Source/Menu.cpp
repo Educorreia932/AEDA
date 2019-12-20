@@ -18,7 +18,7 @@ int Menu::showMainMenu() {
          << "7) Consult teachers." << endl
          << "8) Consult activities." << endl
          << "9) Consult schedules." << endl
-         << "10) Consult Materials." << endl
+         << "10) Consult materials." << endl
          << "11) Consult school's information." << endl
          << "0) Exit" << endl //And save to files
          << endl;
