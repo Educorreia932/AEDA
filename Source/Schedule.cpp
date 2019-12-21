@@ -41,6 +41,10 @@ ostream &operator<<(ostream &out, const Schedule<T1> &s) {
     CharacterCodes Chars;
     int width = 35;
 
+    /*for (auto a : s.getActivities())
+        if (a.second->getName().size() > width)
+            width = a.second->getName().size();*/
+
     for (int i = 0; i <= 40; i++) {
         Time CurrentDate = s.getBeginDate();
 

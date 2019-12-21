@@ -1,12 +1,15 @@
 #include "../Headers/Menu.h"
 
+#include <set>
+
 using namespace std;
 
 int main() {
-
-    auto* PortoSUPSchool = new School("../Data/School.txt");
+    auto* PortoSUPSchool = new School("../Data/1/School.txt");
     Menu SUPMenu(PortoSUPSchool);
     int selected;
+
+    set<School> Schools;
 
     while (true) {
         if((selected = Menu::showMainMenu()))
