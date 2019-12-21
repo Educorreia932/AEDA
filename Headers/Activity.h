@@ -54,6 +54,7 @@ ostream& operator<<(ostream& out, const Activity& A);
 class Ride : public Activity {
     protected:
         unsigned int cost;
+        const char acType;
     public:
         /*! @name Constructors */
         ///@{
@@ -90,6 +91,8 @@ class Ride : public Activity {
 ostream& operator<<(ostream& out, const Ride& R);
 
 class Lesson : public Activity {
+    protected:
+        const char acType;
     public:
     /*! @name Constructors */
     ///@{
@@ -98,7 +101,7 @@ class Lesson : public Activity {
     /*! Used when reading an activity from a file.!*/
     /*! @param id the ride as stated in the file it's read from.!*/
     Lesson(unsigned int id);
-    Lesson(Time startTime, Time endTime, string name) : Activity(startTime, endTime, name){};
+    Lesson(Time startTime, Time endTime, string name) : acType('L'), Activity(startTime, endTime, name){};
     ///@}
     /*! @name Getters */
     ///@{

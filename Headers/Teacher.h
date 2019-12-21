@@ -9,7 +9,24 @@
 
 /** @ingroup group_teacher */
 
-class Teacher {
+class Staff {
+protected:
+    string name;
+    unsigned int id;
+    static unsigned int last_id;
+    vector<Activity *> PastActivities;
+    vector<Activity *> ScheduledActivities;
+};
+
+class Technician : Staff{
+public:
+    Technician();
+    Technician(string name);
+
+
+
+};
+class Teacher: Staff {
 public:
     Teacher();
     Teacher(string name);
@@ -29,11 +46,11 @@ public:
 
     friend ostream& operator<<(ostream& out, const Teacher& C);
 private:
-    string name;
-    unsigned int id;
-    static unsigned int last_id;
-    vector<Activity *> PastActivities;
-    vector<Activity *> ScheduledActivities;
+    //string name;
+    //unsigned int id;
+    //static unsigned int last_id;
+    //vector<Activity *> PastActivities;
+    //vector<Activity *> ScheduledActivities;
 };
 
 /*! \cond */

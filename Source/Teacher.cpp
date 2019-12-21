@@ -1,6 +1,13 @@
 #include "../Headers/Teacher.h"
 
-unsigned int Teacher::last_id = 0;
+unsigned int Staff::last_id = 0;
+
+
+Technician::Technician(){
+    this->id = last_id++;
+    PastActivities = {};
+    ScheduledActivities = {};
+}
 
 Teacher::Teacher(){
     this->id = last_id++;

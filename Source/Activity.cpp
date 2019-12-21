@@ -63,11 +63,11 @@ ostream& operator<<(ostream& out, const Activity& A){
     A.print(out);
     return out;
 }
-Lesson::Lesson() {
+Lesson::Lesson(): acType('L'){
     this->id = Activity::last_id;
 }
 
-Lesson::Lesson(unsigned int id){
+Lesson::Lesson(unsigned int id): acType('L'){
     this->id = id;
     if(id > Activity::last_id){
         Activity::last_id = id;
@@ -94,11 +94,11 @@ ostream &operator<<(ostream &out, const Ride &R){
     return out;
 }
 
-Ride::Ride() {
+Ride::Ride(): acType('R'){
     this->id = Activity::last_id;
 }
 
-Ride::Ride(unsigned int id){
+Ride::Ride(unsigned int id): acType('R'){
     this->id = id;
     if(id > Activity::last_id){
         Activity::last_id = id;
