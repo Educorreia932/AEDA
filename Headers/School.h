@@ -37,6 +37,7 @@ class School {
 
         /*! @name Getters */
         ///@{
+        string getName() const;
         string getLocality() const;
         Activity* getActivity(unsigned int id) const;
         vector<Teacher *> getTeachers() const;

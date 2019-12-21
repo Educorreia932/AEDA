@@ -13,7 +13,7 @@ int Menu::showMainMenu() {
          << "2) Manage clients." << endl
          << "3) Manage teachers." << endl
          << "4) Manage activities." << endl
-         << "5) Manage Materials." << endl
+         << "5) Manage materials." << endl
          << "6) Consult clients." << endl
          << "7) Consult teachers." << endl
          << "8) Consult activities." << endl
@@ -242,9 +242,6 @@ void Menu::manageMaterialsSelection(int selected) {
             return;
     }
 }
-
-
-
 
 void Menu::manageClientsSelection(int selected) {
     int selected_client, selected_activity;

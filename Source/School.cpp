@@ -56,7 +56,7 @@ School::School(const string& filename) {
     }
 
     else
-        cerr << "ERROR: Couldn't read file";
+        cerr << "ERROR: Couldn't read file with name " << filename << endl;
 }
 
 void School::removeClient(unsigned int id) {
@@ -111,6 +111,10 @@ int School::materialIndex(unsigned int id) {
     }
 
     return -1;
+}
+
+string School::getName() const {
+    return name;
 }
 
 vector<Client *> School::getClients() const{

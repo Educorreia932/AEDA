@@ -4,23 +4,51 @@
 
 using namespace std;
 
-int main() {
-    auto* PortoSUPSchool = new School("../Data/1/School.txt");
-    Menu SUPMenu(PortoSUPSchool);
-    int selected;
+set<School*> loadSchools() {
+    set<School*> result;
+    School* aux;
 
-    set<School> Schools;
+    for (int i = 1; i < 5; i++) {
+        aux = new School("../Data/" + to_string(i) + "/School.txt");
+        result.insert(aux);
+    }
+
+    return result;
+}
+
+School* chooseSchool(set<School*> &Schools) {
+    cout << "Choose the school:" << endl;
+    vector<School*> aux;
+    int selected, counter = 0;
+
+    for (auto s : Schools) {
+        cout << counter << ") " << s->getName() << endl;
+        aux.push_back(s);
+        counter++;
+    }
+
+    selected = readOption(0, Schools.size() - 1);
+
+    return aux[selected];
+}
+
+int main() {
+    set<School*> Schools = loadSchools();
+
+    auto* SelectedSchool = chooseSchool(Schools);
+    Menu SUPMenu(SelectedSchool);
+    int selected;
 
     while (true) {
         if((selected = Menu::showMainMenu()))
             SUPMenu.mainMenuSelection(selected);
 
         else {
-            PortoSUPSchool->saveActivities();
-            PortoSUPSchool->saveClients();
-            PortoSUPSchool->saveTeachers();
-            PortoSUPSchool->saveMaterials();
-            PortoSUPSchool->saveActivities();
+            SelectedSchool->saveActivities();
+            SelectedSchool->saveClients();
+            SelectedSchool->saveTeachers();
+            SelectedSchool->saveMaterials();
+            SelectedSchool->saveActivities();
             break;
         }
     }
