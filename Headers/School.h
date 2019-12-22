@@ -90,7 +90,11 @@ class School {
         * @param detailed States whether the output includes all of the information about the activities or only the strictly necessary to distinguish them (mainly used
         * in selection menus).
         */
-        void viewActivities(bool detailed = true);
+        void viewActivities(bool detailed = true);/**
+        * @param detailed States whether the output includes all of the information about the activities or only the strictly necessary to distinguish them (mainly used
+        * in selection menus).
+        */
+        void viewFixes(bool detailed = true);
         /**
          * @param detailed States whether the output includes all of the information about the clients or only the strictly necessary to distinguish them (mainly used
          * in selection menus).
@@ -123,6 +127,9 @@ class School {
         vector<Teacher*> Teachers;
         vector<Activity*> PastActivities;
         vector<Activity*> ScheduledActivities;
+
+        vector<Fixing *> PastFixes;
+        vector<Fixing *> ScheduledFixes;
 };
 
 /** @ingroup group_exceptions */

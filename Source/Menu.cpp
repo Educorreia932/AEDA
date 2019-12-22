@@ -17,13 +17,14 @@ int Menu::showMainMenu() {
          << "6) Consult clients." << endl
          << "7) Consult teachers." << endl
          << "8) Consult activities." << endl
-         << "9) Consult schedules." << endl
-         << "10) Consult materials." << endl
-         << "11) Consult school's information." << endl
+         << "9) Consult repairs." << endl
+         << "10) Consult schedules." << endl
+         << "11) Consult materials." << endl
+         << "12) Consult school's information." << endl
          << "0) Exit" << endl //And save to files
          << endl;
 
-    return readOption(0, 11);
+    return readOption(0, 12);
 }
 
 void Menu::mainMenuSelection(int selected) {
@@ -57,14 +58,18 @@ void Menu::mainMenuSelection(int selected) {
             SUPSchool->viewActivities();
             pause();
             return;
-        case 9: // Consult schedules
+        case 9:
+            SUPSchool->viewFixes();
+            pause();
+            return;
+        case 10: // Consult schedules
             consultScheduleSelection(showConsultSchedule());
             return;
-        case 10:
+        case 11:
             SUPSchool->viewMaterial();
             pause();
             return;
-        case 11: // Consult school's information
+        case 12: // Consult school's information
             cout << *SUPSchool<< endl;
             pause();
             return;

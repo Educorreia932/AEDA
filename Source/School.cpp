@@ -187,8 +187,19 @@ void School::readActivities() {
                         else
                             ScheduledActivities.push_back((AuxActivity));
                     }
+                    else if (type == "F"){
+                        Fixing * auxFixing = new Fixing(id);
+                        auxFixing->setName(acName);
+                        auxFixing->setStartTime(startTime);
+                        auxFixing->setEndTime(endTime);
+
+                        if (auxFixing->getStartTime() < currentTime)
+                            PastFixes.push_back(auxFixing);
+                        else
+                            ScheduledFixes.push_back((auxFixing));
+                    }
                     else{
-                        cerr << "Non activity and non file found whilst reading activities" << endl;
+                        cerr << "Non activity, ride or repair found whilst reading activities" << endl;
                     }
                     break;
             }
@@ -631,6 +642,18 @@ void School::viewActivities(bool detailed) {
     else
         for (auto & activity : ScheduledActivities)
             cout << activity->getName() << " - " << activity->getId() << endl;
+}
+
+void School::viewFixes(bool detailed){
+    if (detailed) {
+        cout << "Scheduled Repairs:\n";
+        cout << "---------------------" << endl;
+
+        for (const auto &Fixing : ScheduledFixes) {
+            cout << *Fixing;
+            cout << "---------------------" << endl;
+        }
+    }
 }
 
 void School::viewTeachers(bool detailed) {

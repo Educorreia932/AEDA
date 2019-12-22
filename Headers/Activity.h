@@ -54,7 +54,6 @@ ostream& operator<<(ostream& out, const Activity& A);
 class Ride : public Activity {
     protected:
         unsigned int cost;
-        const char acType;
     public:
         /*! @name Constructors */
         ///@{
@@ -92,7 +91,6 @@ ostream& operator<<(ostream& out, const Ride& R);
 
 class Lesson : public Activity {
     protected:
-        const char acType;
     public:
     /*! @name Constructors */
     ///@{
@@ -101,7 +99,7 @@ class Lesson : public Activity {
     /*! Used when reading an activity from a file.!*/
     /*! @param id the ride as stated in the file it's read from.!*/
     Lesson(unsigned int id);
-    Lesson(Time startTime, Time endTime, string name) : acType('L'), Activity(startTime, endTime, name){};
+    Lesson(Time startTime, Time endTime, string name) :  Activity(startTime, endTime, name){};
     ///@}
     /*! @name Getters */
     ///@{
@@ -116,6 +114,20 @@ class Lesson : public Activity {
     /*! Wihtout it, ostream calls would have a different syntax (Ex: lesson << cout instead of cout << lesson).!*/
     void print(ostream& out) const;
     ///@}
+};
+
+class Fixing : public Activity {
+protected:
+    unsigned int fixid;
+    static unsigned int last_fixid;
+public:
+    Fixing();
+    Fixing(unsigned int fixid);
+    //Fixing(Time startTime, Time endTime, string name) : Activity(startTime, endTime, name){};
+    Fixing(Time startTime, Time endTime, string name);
+    unsigned int CalcCost() const;
+    string getType() const;
+    void print(ostream & out) const;
 };
 
 ostream& operator<<(ostream& out, const Lesson& L);
