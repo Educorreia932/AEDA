@@ -161,6 +161,23 @@ vector<Activity *> Client::getScheduleActivitiesByDate(Time BeginDate, Time EndD
     return result;
 }
 
+//Repairs/Fixes
+vector<Fixing *> Client::getPastFixes() const {
+    return this->PastFixes;
+}
+
+vector<Fixing *> Client::getScheduledFixes() const {
+    return this->ScheduledFixes;
+}
+
+
+void Client::setPastFixes(const vector<Fixing *>& Fixes){
+    PastFixes= Fixes;
+}
+void Client::setScheduledFixes(const vector<Fixing *>& Fixes){
+    ScheduledFixes = Fixes;
+}
+
 string Client::getPastActivitiesID() const {
     stringstream result;
 

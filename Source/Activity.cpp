@@ -138,17 +138,20 @@ void Ride::print(ostream& out) const{
 }
 
 Fixing::Fixing(){
-    this->fixid = Fixing::last_fixid;
+    this->id = 0;
+    this->fixid = ++Fixing::last_fixid;
 }
 
 Fixing::Fixing(unsigned int fixid){
-    this->fixid = id;
+    this->id = 0;
+    this->fixid = fixid;
     if(fixid > Fixing::last_fixid){
         Fixing::last_fixid = fixid;
     }
 }
 
 Fixing::Fixing(Time startTime, Time endTime, string name){
+    this->id = 0;
     this->name = name;
     this->startTime = startTime;
     this->endTime = endTime;
@@ -165,7 +168,7 @@ string Fixing::getType() const {
 
 void Fixing::print(ostream& out) const{
     cout << "Name: " << name << endl;
-    cout << "ID: " << id << endl;
+    cout << "ID: " << fixid << endl;
     cout << "Start Time: " << startTime << endl;
     cout << "End Time: " << endTime << endl;
 }
@@ -185,3 +188,7 @@ vector<Activity*> eraseAndReturnVectorActivity(vector<Activity*> vec,unsigned in
     return vec;
 }
 
+vector<Fixing *> eraseAndReturnVectorFixing(vector<Fixing *> vec, unsigned int i){
+    vec.erase(vec.begin() + i);
+    return vec;
+}

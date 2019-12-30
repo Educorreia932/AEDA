@@ -40,6 +40,12 @@ class Menu {
         void removeActivity();
         void changeActivity();
 
+        //Fixes section
+        static int showManageFixes();
+        void manageFixesSelection(int selected);
+        void createFixing();
+        void removeFixing();
+
         // Teacher related
         static int showManageTeachers();
         void manageTeachersSelection(int selected);

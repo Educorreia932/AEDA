@@ -32,6 +32,9 @@ class School {
         void addActivity(Activity* activity, bool past);
         int activityIndex(unsigned int id, bool past);
 
+        void addFixing(Fixing* fixing, bool past);
+
+
         int materialIndex(unsigned int id);
         void removeMaterial(unsigned int id);
 

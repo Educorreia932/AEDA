@@ -133,6 +133,7 @@ public:
 ostream& operator<<(ostream& out, const Lesson& L);
 
 vector<Activity*> eraseAndReturnVectorActivity(vector<Activity*> vec,unsigned int i);
+vector<Fixing *> eraseAndReturnVectorFixing(vector<Fixing *> vec, unsigned int i);
 
 /** @ingroup group_exceptions */
 

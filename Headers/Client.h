@@ -46,6 +46,14 @@ class Client {
         vector<Activity*> getScheduleActivitiesByDate(Time BeginDate, Time EndDate) const;
         /** @returns The IDs of the scheduled activities of the client separated by a space between them. */
         string getScheduledActivitiesID() const;
+
+
+        /** @returns The past repairs of the client. */
+        vector<Fixing *> getPastFixes() const;
+        /** @returns The scheduled repairs of the client. */
+        vector<Fixing *> getScheduledFixes() const;
+
+
         /** @returns The balance of the client. */
         double getBalance() const;
         ///@}
@@ -56,8 +64,10 @@ class Client {
         static void setLastID(const unsigned int id);
         void setID(const unsigned int id);
         void setGoldMember(const bool gold_member);
-        void setScheduledActivities(const vector<Activity *>& Activities);
         void setPastActivities(const vector<Activity *>& Activities);
+        void setScheduledActivities(const vector<Activity *>& Activities);
+        void setPastFixes(const vector<Fixing *>& Fixes);
+        void setScheduledFixes(const vector<Fixing *>& Fixes);
         ///@}
 
         //Misc.
@@ -73,6 +83,10 @@ class Client {
         vector<Activity*> PastActivities;
         /** Activities in which the client is yet to participate */
         vector<Activity*> ScheduledActivities;
+        /** Repairs that the technician has already done */
+        vector<Fixing *> PastFixes;
+        /** Repairs that the technician has yet to complete */
+        vector<Fixing *> ScheduledFixes;
         static unsigned int last_id;
         /** Identification number of the client. Starts in 1 and is incremented by one each time a new client is added to the school. */
         unsigned int id;

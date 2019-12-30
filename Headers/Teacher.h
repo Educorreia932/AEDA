@@ -23,7 +23,8 @@ public:
     Technician();
     Technician(string name);
 
-
+    vector<Fixing *> PastFixes;
+    vector<Fixing *> ScheduledFixes;
 
 };
 class Teacher: Staff {

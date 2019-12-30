@@ -5,8 +5,8 @@ unsigned int Staff::last_id = 0;
 
 Technician::Technician(){
     this->id = last_id++;
-    PastActivities = {};
-    ScheduledActivities = {};
+    PastFixes = {};
+    ScheduledFixes = {};
 }
 
 Teacher::Teacher(){

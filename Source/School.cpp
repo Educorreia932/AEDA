@@ -130,6 +130,8 @@ vector<Material *> School::getMaterials() const{
 }
 
 void School::readActivities() {
+    static int a = 0;
+    a++;
     string line;
     ifstream File("../Data/1/" + Files["Activities"]);
     int counter = 0, activity_id;
@@ -188,6 +190,7 @@ void School::readActivities() {
                             ScheduledActivities.push_back((AuxActivity));
                     }
                     else if (type == "F"){
+                        cout << a << endl;
                         Fixing * auxFixing = new Fixing(id);
                         auxFixing->setName(acName);
                         auxFixing->setStartTime(startTime);
@@ -830,6 +833,14 @@ void School::addActivity(Activity* activity, bool past) {
 
     else
         ScheduledActivities.push_back(activity);
+}
+
+void School::addFixing(Fixing* fixing, bool past) {
+    if (past)
+        PastFixes.push_back(fixing);
+
+    else
+        ScheduledFixes.push_back(fixing);
 }
 
 void School::removeTeacher(unsigned id) {
