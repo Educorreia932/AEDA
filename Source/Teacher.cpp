@@ -2,6 +2,21 @@
 
 unsigned int Staff::last_id = 0;
 
+void Staff::setID(const unsigned int id) {
+    this->id = id;
+}
+
+void Staff::setLastID(unsigned int id) {
+    last_id = id;
+}
+
+unsigned int Staff::getLastID() {
+    return last_id;
+}
+
+unsigned Staff::getID() const {
+    return id;
+}
 
 Technician::Technician(){
     this->id = last_id++;
@@ -13,6 +28,7 @@ Teacher::Teacher(){
     this->id = last_id++;
     PastActivities = {};
     ScheduledActivities = {};
+    this->currentlyEmployed = true;
 }
 
 Teacher::Teacher(string name){
@@ -20,10 +36,7 @@ Teacher::Teacher(string name){
     this->name = name;
     ScheduledActivities = {};
     PastActivities = {};
-}
-
-void Teacher::setID(const unsigned int id) {
-    this->id = id;
+    this->currentlyEmployed = true;
 }
 
 void Teacher::setName(string name) {
@@ -46,14 +59,6 @@ ostream &operator<<(ostream &out, const Teacher &T) {
     out << endl;
 
     return out;
-}
-
-unsigned int Teacher::getLastID() {
-    return last_id;
-}
-
-void Teacher::setLastID(unsigned int id) {
-    last_id = id;
 }
 
 bool Teacher::isOcuppied(const Time startTime, const Time endTime) {
@@ -90,8 +95,8 @@ void Teacher::addActivity(Activity* activity, bool past) {
     }
 }
 
-unsigned Teacher::getID() const {
-    return id;
+bool Teacher::getCurrentlyEmployed() const {
+    return currentlyEmployed;
 }
 
 string Teacher::getName() const {
@@ -130,12 +135,16 @@ vector<Activity *> Teacher::getScheduleActivitiesByDate(Time Date) const {
     return result;
 }
 
+void Teacher::setCurrentlyEmployed(bool currentlyEmployed) {
+    this->currentlyEmployed = currentlyEmployed;
+}
+
 ostream &operator<<(ostream &out, const teacherHasActivityAtSameTime &ids) {
     out << "Teacher with ID \"" << ids.teacherId << "\" already has an activity at the same time as activity with ID \"" << ids.activityId << "\"." << endl;
     return out;
 }
 
-ostream &operator<<(std::ostream &out, const teacherAlreadHasActivity &ids) {
+ostream &operator<<(ostream &out, const teacherAlreadHasActivity &ids) {
     out << "Teacher with ID \"" << ids.teacherId << "\" already is already enrolled in activity with ID \"" << ids.activityId << "\"." << endl;
     return out;
 }

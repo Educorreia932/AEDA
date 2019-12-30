@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 boat
 1
 
@@ -9,4 +10,17 @@ suits
 board
 3
 
+=======
+boat
+1
+
+::::::::::
+suits
+2
+
+::::::::::
+board
+3
+
+>>>>>>> Ricardo
 ---END---

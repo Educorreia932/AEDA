@@ -571,12 +571,12 @@ void Menu::manageTeachersSelection(int selected) {
 
             cout << endl;
 
-            do {
-                selected_teacher = readOption(0, Teacher::getLastID() - 1);
 
-                if(selected_teacher == 0)
-                    return;
-            } while(SUPSchool->teacherIndex(selected_teacher) == -1);
+            selected_teacher = readOption(0, Teacher::getLastID() - 1);
+
+            if(selected_teacher == 0)
+                return;
+
 
             changeTeachers(selected_teacher); //Needs to catch exception in client index inside function
 
@@ -590,12 +590,10 @@ void Menu::manageTeachersSelection(int selected) {
 
             cout << endl;
 
-            do {
-                selected_teacher = readOption(0, Teacher::getLastID() - 1);
+            selected_teacher = readOption(0, Teacher::getLastID() - 1);
 
-                if(selected_teacher == 0)
-                    return;
-            } while(SUPSchool->teacherIndex(selected_teacher) == -1);
+            if(selected_teacher == 0)
+                return;
 
             try {
                 SUPSchool->removeTeacher(selected_teacher);
@@ -610,12 +608,10 @@ void Menu::manageTeachersSelection(int selected) {
 
             SUPSchool->viewTeachers(false);
 
-            do {
-                selected_teacher = readOption(0, Teacher::getLastID() - 1);
+            selected_teacher = readOption(0, Teacher::getLastID() - 1);
 
-                if(selected_teacher == 0)
-                    return;
-            } while(SUPSchool->teacherIndex(selected_teacher) == -1);
+            if(selected_teacher == 0)
+                return;
 
             cout << "Insert the activity ID: " << endl;
             SUPSchool->viewActivities(false);
@@ -690,12 +686,21 @@ void Menu::changeTeachers(int teacherId) {
 
     int selected_option = readOption(0, 4);
     string aux;
+    Teacher* auxT;
 
     switch (selected_option) {
         case 1:
             cout << "What's the name of the new teacher? " << endl;
             getline(cin, aux);
-            SUPSchool->Teachers[SUPSchool->teacherIndex(teacherId)]->setName(aux);
+            for(const auto &t : SUPSchool->Teachers){
+                if(t->getID() == teacherId){
+                    auxT = t;
+                    break;
+                }
+            }
+            SUPSchool->Teachers.erase(auxT);
+            auxT->setName(aux);
+            SUPSchool->Teachers.insert(auxT);
             cout << endl;
             break;
         case 0:
@@ -1111,6 +1116,7 @@ void Menu::consultScheduleSelection(int selected) {
     vector<Time> PossibleDates;
     Time beginDate, endDate;
     bool first = true;
+    Teacher* auxT;
 
     clearScreen();
 
@@ -1198,11 +1204,21 @@ void Menu::consultScheduleSelection(int selected) {
             cout << endl;
 
             selected_teacher = readOption(0, Teacher::getLastID() - 1);
-            teacher_index = SUPSchool->teacherIndex(selected_teacher);
+            //teacher_index = SUPSchool->teacherIndex(selected_teacher);
+
+
 
             clearScreen();
 
-            PossibleDates = SUPSchool->getDatesFromActivicties(SUPSchool->Teachers[teacher_index]->getScheduledActivities());
+            for(const auto &t : SUPSchool->Teachers){
+                if(t->getID() == selected_teacher){
+                    auxT = t;
+                    PossibleDates = SUPSchool->getDatesFromActivicties(t->getScheduledActivities());
+                    break;
+                }
+            }
+
+
 
             if (PossibleDates.empty()) {
                 cerr << "The selected teacher doesn't have scheduled activities." << endl;
@@ -1233,10 +1249,10 @@ void Menu::consultScheduleSelection(int selected) {
 
             clearScreen();
 
-            cout << "You're seeing the schedule of " << SUPSchool->Teachers[teacher_index]->getName() << '.' << endl
+            cout << "You're seeing the schedule of " << auxT->getName() << '.' << endl
                  << endl;
 
-            s2 = new Schedule<Teacher>(beginDate, endDate, SUPSchool->Teachers[teacher_index]);
+            s2 = new Schedule<Teacher>(beginDate, endDate, auxT);
             cout << *s2 << endl;
 
             pause();

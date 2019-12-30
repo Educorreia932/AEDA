@@ -10,6 +10,8 @@
 
 /** @ingroup group_menu */
 
+School* chooseSchool(set<School*> &Schools); //static
+
 class Menu {
 public:
     /** @name Constructors */
