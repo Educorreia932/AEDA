@@ -117,7 +117,7 @@ vector<Client *> School::getClients() const{
     return this->Clients;
 }
 
-vector<Teacher *> School::getTeachers() const{
+TeacherHashTable School::getTeachers() const{
     return this->Teachers;
 }
 
@@ -264,7 +264,7 @@ void School::readTeachers() {
                     *activities << line;
                     break;
                 case 3:
-                    Teachers.push_back(auxTeacher);
+                    Teachers.insert(auxTeacher);
 
                     readTeachersActivities(activities, auxTeacher); ///ERROR
 
@@ -437,6 +437,8 @@ void School::assign(const unsigned int teacherId, const unsigned int activityId)
     //Time needs to be checked if is ahead of the set current time
 
     Teacher* teacher;
+
+
     bool teacherExists = false;
 
     for (const auto &t : this->Teachers) {
@@ -449,6 +451,8 @@ void School::assign(const unsigned int teacherId, const unsigned int activityId)
 
     if(!teacherExists)
         throw NonExistentTeacher(teacherId);
+
+    Teachers.erase(teacher);
 
     bool activityExists = false;
 
@@ -467,6 +471,8 @@ void School::assign(const unsigned int teacherId, const unsigned int activityId)
             }
         }
     }
+
+    Teachers.insert(teacher);
 
     if(!activityExists)
         throw activityNonExistent(activityId);
@@ -510,8 +516,11 @@ void School::readTeachersActivities(stringstream* activities, Teacher* t) {
     while (*activities >> activity_id) {
         Activity* AuxActivity = getActivity(activity_id);
 
-        if (AuxActivity->getEndTime() < currentTime)
+        if (AuxActivity->getEndTime() < currentTime) {
+            Teachers.erase(t);
             t->addActivity(AuxActivity, true);
+            Teachers.insert(t);
+        }
 
         else {
             try {
@@ -781,13 +790,20 @@ void School::saveTeachers() {
 }
 
 void School::addTeacher(Teacher* teacher) {
-    if (teacherIndex(teacher->getID()) != -1)
-        throw TeacherAlreadyExists(teacher->getID());
 
-    Teachers.push_back(teacher);
+    for(const auto &t : Teachers){
+        if(t->getID() == teacher->getID()){
+            throw TeacherAlreadyExists(teacher->getID());
+        }
+    }
+
+    Teachers.insert(teacher);
 }
 
+/*
 int School::teacherIndex(unsigned int id) {
+
+
     for (size_t i = 0; i < Teachers.size();i++){
         if (Teachers.at(i)->getID() == id){
             return i;
@@ -796,20 +812,35 @@ int School::teacherIndex(unsigned int id) {
 
     return -1;
 }
+ */
 
 void School::addActivity(Activity* activity, bool past) {
     if (past)
         PastActivities.push_back(activity);
-
     else
         ScheduledActivities.push_back(activity);
 }
 
 void School::removeTeacher(unsigned id) {
-    if (teacherIndex(id) == -1)
+
+    Teacher* auxT;
+    bool found = false;
+
+    for(const auto &t : Teachers){
+        if(t->getID() == id){
+            auxT = t;
+            found = true;
+            break;
+        }
+    }
+
+    Teachers.erase(auxT);
+    auxT->setCurrentlyEmployed(false);
+    Teachers.insert(auxT);
+
+    if (!found)
         throw NonExistentTeacher(id);
 
-    Teachers.erase(Teachers.begin()+teacherIndex(id));
 }
 
 int School::activityIndex(unsigned int id, bool past) {

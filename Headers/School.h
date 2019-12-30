@@ -39,7 +39,7 @@ class School {
         ///@{
         string getLocality() const;
         Activity* getActivity(unsigned int id) const;
-        vector<Teacher *> getTeachers() const;
+        TeacherHashTable getTeachers() const;
         vector<Client *> getClients() const;
         vector<Material *> getMaterials() const;
         ///@}
@@ -119,7 +119,7 @@ class School {
         map<string, string> Files;
         vector<Client*> Clients;
         vector<Material*> Materials;
-        vector<Teacher*> Teachers;
+        TeacherHashTable Teachers;
         vector<Activity*> PastActivities;
         vector<Activity*> ScheduledActivities;
 };

@@ -4,6 +4,9 @@
 #include "Activity.h"
 
 #include <vector>
+#include <unordered_set>
+
+
 
 /** @defgroup group_teacher Teacher */
 
@@ -16,6 +19,8 @@ public:
 
     void setID(const unsigned int id);
     unsigned getID()const ;
+    bool getCurrentlyEmployed() const;
+    void setCurrentlyEmployed(bool currentlyEmployed);
     static unsigned int getLastID( );
     static void setLastID(const unsigned int id);
     void setName(string name);
@@ -34,9 +39,26 @@ private:
     static unsigned int last_id;
     vector<Activity *> PastActivities;
     vector<Activity *> ScheduledActivities;
+    bool currentlyEmployed;
 };
 
 /*! \cond */
+
+struct teacherHash
+{
+    int operator() (const Teacher * t) const
+    {
+        return t->getID();
+    }
+
+    bool operator() (const Teacher * t1, const Teacher * t2) const
+    {
+        return t1->getID() == t2->getID();
+    }
+};
+
+typedef unordered_set<Teacher*, teacherHash, teacherHash> TeacherHashTable;
+
 
 class teacherHasActivityAtSameTime : std::exception {
 public:

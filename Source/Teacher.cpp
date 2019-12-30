@@ -6,6 +6,7 @@ Teacher::Teacher(){
     this->id = last_id++;
     PastActivities = {};
     ScheduledActivities = {};
+    this->currentlyEmployed = true;
 }
 
 Teacher::Teacher(string name){
@@ -13,6 +14,7 @@ Teacher::Teacher(string name){
     this->name = name;
     ScheduledActivities = {};
     PastActivities = {};
+    this->currentlyEmployed = true;
 }
 
 void Teacher::setID(const unsigned int id) {
@@ -87,6 +89,10 @@ unsigned Teacher::getID() const {
     return id;
 }
 
+bool Teacher::getCurrentlyEmployed() const {
+    return currentlyEmployed;
+}
+
 string Teacher::getName() const {
     return name;
 }
@@ -121,6 +127,10 @@ vector<Activity *> Teacher::getScheduleActivitiesByDate(Time Date) const {
             result.push_back(a);
 
     return result;
+}
+
+void Teacher::setCurrentlyEmployed(bool currentlyEmployed) {
+    this->currentlyEmployed = currentlyEmployed;
 }
 
 ostream &operator<<(ostream &out, const teacherHasActivityAtSameTime &ids) {
