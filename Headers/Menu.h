@@ -4,41 +4,52 @@
 #include "Schedule.h"
 #include "School.h"
 
+#include <set>
+
 /** @defgroup group_menu Menu */
 
 /** @ingroup group_menu */
 
+School* chooseSchool(set<School*> &Schools); //static
+
 class Menu {
-    public:
-        /** @name Constructor */
-        ///@{
-        Menu(School* SUPSchool);
-        ///@}
+public:
+    /** @name Constructors */
+    ///@{
+    Menu();
+    Menu(School* SUPSchool);
+    ///@}
 
-        static int showMainMenu();
-        void mainMenuSelection(int selected);
+    static int showMainMenu();
+    void mainMenuSelection(int selected);
 
-        //Utils
-        static void clearScreen();
-        static void pause();
-    private:
-        School* SUPSchool;
+    //Utils
+    static void clearScreen();
+    static void pause();
+private:
+    School* SUPSchool;
 
-        /** @name Client related */
-        ///@{
-        static int showManageClients();
-        void manageClientsSelection(int selected);
-        void createClient();
-        void changeClient(int client_id);
-        void monthlyReport(Client* C);
-        ///@}
+    /** @name Client related */
+    ///@{
+    static int showManageClients();
+    void manageClientsSelection(int selected);
+    void createClient();
+    void changeClient(int client_id);
+    void monthlyReport(Client* C);
+    ///@}
 
-        //Activity related
-        static int showManageActivities();
-        void manageActivitiesSelection(int selected);
-        void createActivity();
-        void removeActivity();
-        void changeActivity();
+    //Activity related
+    static int showManageActivities();
+    void manageActivitiesSelection(int selected);
+    void createActivity();
+    void removeActivity();
+    void changeActivity();
+
+        //Fixes section
+        static int showManageFixes();
+        void manageFixesSelection(int selected);
+        void createFixing();
+        void removeFixing();
 
         // Teacher related
         static int showManageTeachers();
@@ -46,41 +57,41 @@ class Menu {
         void createTeacher();
         void changeTeachers(int teacherId);
 
-        //Material relateed
-        void createMaterial();
-        int showManageMaterials();
-        void manageMaterialsSelection(int selected);
-        void rentMaterial();
-        
-        // Schedule related
-        static int showConsultSchedule();
-        void consultScheduleSelection(int selected);
+    //Material relateed
+    void createMaterial();
+    int showManageMaterials();
+    void manageMaterialsSelection(int selected);
+    void rentMaterial();
+
+    // Schedule related
+    static int showConsultSchedule();
+    void consultScheduleSelection(int selected);
 };
 
 /** @defgroup group_exceptions Exceptions */
 
 /** @ingroup group_exceptions */
 
-class ImproperString: std::exception{
-    string msg;
-public:
-    ImproperString(std::string msg){this->msg = msg;}
-    string getMsg() const{return msg;}
+class ImproperString : exception{
+        string msg;
+    public:
+        ImproperString(std::string msg){this->msg = msg;}
+        string getMsg() const{return msg;}
 };
 
-class IdAlreadyExists: std::exception{
-public:
-    IdAlreadyExists(){};
+class IdAlreadyExists : exception{
+    public:
+        IdAlreadyExists(){};
 };
 
 class InvalidActivity{
-private:
-    string msg;
-public:
-    InvalidActivity(string msg){
-        this->msg = msg;
-    }
-    string getMsg() const{return msg;}
+    private:
+        string msg;
+    public:
+        InvalidActivity(string msg){
+            this->msg = msg;
+        }
+        string getMsg() const{return msg;}
 };
 
 

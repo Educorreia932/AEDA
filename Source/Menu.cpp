@@ -1,5 +1,25 @@
 #include "../Headers/Menu.h"
 
+School* chooseSchool(set<School*> &Schools) {
+    cout << "Choose the school:" << endl;
+    vector<School*> aux;
+    int selected, counter = 0;
+
+    for (auto s : Schools) {
+        cout << counter << ") " << s->getName() << endl;
+        aux.push_back(s);
+        counter++;
+    }
+
+    selected = readOption(0, Schools.size() - 1);
+
+    return aux[selected];
+}
+
+Menu::Menu() {
+
+}
+
 Menu::Menu(School* SUPSchool) {
     this->SUPSchool = SUPSchool;
 }
@@ -13,17 +33,19 @@ int Menu::showMainMenu() {
          << "2) Manage clients." << endl
          << "3) Manage teachers." << endl
          << "4) Manage activities." << endl
-         << "5) Manage Materials." << endl
-         << "6) Consult clients." << endl
-         << "7) Consult teachers." << endl
-         << "8) Consult activities." << endl
-         << "9) Consult schedules." << endl
-         << "10) Consult materials." << endl
-         << "11) Consult school's information." << endl
+         << "5) Manage repairs." << endl
+         << "6) Manage materials." << endl
+         << "7) Consult clients." << endl
+         << "8) Consult teachers." << endl
+         << "9) Consult activities." << endl
+         << "10) Consult repairs." << endl
+         << "11) Consult schedules." << endl
+         << "12) Consult materials." << endl
+         << "13) Consult school's information." << endl
          << "0) Exit" << endl //And save to files
          << endl;
 
-    return readOption(0, 11);
+    return readOption(0, 13);
 }
 
 void Menu::mainMenuSelection(int selected) {
@@ -42,29 +64,36 @@ void Menu::mainMenuSelection(int selected) {
         case 4: //Manage activities
             manageActivitiesSelection(showManageActivities());
             return;
-        case 5:
+        case 5: //Manage repairs
+            manageFixesSelection(showManageFixes());
+            return;
+        case 6: //Manage materials
             manageMaterialsSelection(showManageMaterials());
             return;
-        case 6: // Consult clients
+        case 7: // Consult clients
             SUPSchool->viewClients();
             pause();
             return;
-        case 7: // Consult teachers
+        case 8: // Consult teachers
             SUPSchool->viewTeachers();
             pause();
             return;
-        case 8: // Consult activities
+        case 9: // Consult activities
             SUPSchool->viewActivities();
             pause();
             return;
-        case 9: // Consult schedules
+        case 10:
+            SUPSchool->viewFixes();
+            pause();
+            return;
+        case 11: // Consult schedules
             consultScheduleSelection(showConsultSchedule());
             return;
-        case 10:
+        case 12:
             SUPSchool->viewMaterial();
             pause();
             return;
-        case 11: // Consult school's information
+        case 13: // Consult school's information
             cout << *SUPSchool<< endl;
             pause();
             return;
@@ -243,9 +272,6 @@ void Menu::manageMaterialsSelection(int selected) {
     }
 }
 
-
-
-
 void Menu::manageClientsSelection(int selected) {
     int selected_client, selected_activity;
     double amount;
@@ -257,7 +283,7 @@ void Menu::manageClientsSelection(int selected) {
         case 1:
             createClient();
             return;
-        case 2:
+        case 2: //TODO: Incomplete
             cout << "Which client do you wish to change the information of? Insert the corresponding key." << endl
                  << endl;
 
@@ -311,7 +337,6 @@ void Menu::manageClientsSelection(int selected) {
 
             try{
                 SUPSchool->Clients[SUPSchool->clientIndex(selected_client)]->purchaseGold();
-
             }
 
             catch(insufficientFunds &e){
@@ -456,34 +481,39 @@ void Menu::createMaterial() {
 
         if (aux == "0") {
             return;
-        } else if (aux == "boat") {
+        }
+
+        else if (aux == "boat") {
             auto *boat = new Boat();
             type = aux;
             boat->setType(aux);
             SUPSchool->Materials.push_back(boat);
             break;
-        } else if (aux == "suits") {
+        }
+
+        else if (aux == "suits") {
             auto *suits = new Suits();
             type = aux;
             suits->setType(aux);
             SUPSchool->Materials.push_back(suits);
             break;
-        } else if (aux == "board") {
+        }
+
+        else if (aux == "board") {
             auto *board = new Board();
             type = aux;
             board->setType(aux);
             SUPSchool->Materials.push_back(board);
             break;
-        } else {
-            cout << "Invalid input!";
         }
+
+        else
+            cout << "Invalid input!";
 
         cout << endl;
     } while (true);
 
-
     pause();
-
 }
 
 void Menu::monthlyReport(Client* C) {
@@ -541,12 +571,12 @@ void Menu::manageTeachersSelection(int selected) {
 
             cout << endl;
 
-            do {
-                selected_teacher = readOption(0, Teacher::getLastID() - 1);
 
-                if(selected_teacher == 0)
-                    return;
-            } while(SUPSchool->teacherIndex(selected_teacher) == -1);
+            selected_teacher = readOption(0, Teacher::getLastID() - 1);
+
+            if(selected_teacher == 0)
+                return;
+
 
             changeTeachers(selected_teacher); //Needs to catch exception in client index inside function
 
@@ -560,12 +590,10 @@ void Menu::manageTeachersSelection(int selected) {
 
             cout << endl;
 
-            do {
-                selected_teacher = readOption(0, Teacher::getLastID() - 1);
+            selected_teacher = readOption(0, Teacher::getLastID() - 1);
 
-                if(selected_teacher == 0)
-                    return;
-            } while(SUPSchool->teacherIndex(selected_teacher) == -1);
+            if(selected_teacher == 0)
+                return;
 
             try {
                 SUPSchool->removeTeacher(selected_teacher);
@@ -580,12 +608,10 @@ void Menu::manageTeachersSelection(int selected) {
 
             SUPSchool->viewTeachers(false);
 
-            do {
-                selected_teacher = readOption(0, Teacher::getLastID() - 1);
+            selected_teacher = readOption(0, Teacher::getLastID() - 1);
 
-                if(selected_teacher == 0)
-                    return;
-            } while(SUPSchool->teacherIndex(selected_teacher) == -1);
+            if(selected_teacher == 0)
+                return;
 
             cout << "Insert the activity ID: " << endl;
             SUPSchool->viewActivities(false);
@@ -660,12 +686,21 @@ void Menu::changeTeachers(int teacherId) {
 
     int selected_option = readOption(0, 4);
     string aux;
+    Teacher* auxT;
 
     switch (selected_option) {
         case 1:
             cout << "What's the name of the new teacher? " << endl;
             getline(cin, aux);
-            SUPSchool->Teachers[SUPSchool->teacherIndex(teacherId)]->setName(aux);
+            for(const auto &t : SUPSchool->Teachers){
+                if(t->getID() == teacherId){
+                    auxT = t;
+                    break;
+                }
+            }
+            SUPSchool->Teachers.erase(auxT);
+            auxT->setName(aux);
+            SUPSchool->Teachers.insert(auxT);
             cout << endl;
             break;
         case 0:
@@ -686,7 +721,7 @@ int Menu::showManageActivities(){
          << "0) Go back" << endl
          << endl;
 
-    return readOption(0, 3);
+    return readOption(0, 2);
 }
 
 void Menu::manageActivitiesSelection(int selected) {
@@ -784,7 +819,7 @@ void Menu::createActivity() {
             a->setStartTime(startTime);
             a->setEndTime(endTime);
             SUPSchool->addActivity(a, false);
-        }
+    }
         catch(exception &e){
             cerr << e.what();
             return;
@@ -882,6 +917,181 @@ void Menu::removeActivity() {
 
 }
 
+//Fixes
+
+int Menu::showManageFixes() {
+    clearScreen();
+    cout << "What do you want to do? Insert the corresponding key." << endl
+         << endl
+         << "1) Create a new repair." << endl
+         << "2) Remove an existent repair." << endl //Remove from everything
+         << "0) Go back" << endl
+         << endl;
+
+    return readOption(0, 2);
+}
+
+void Menu::manageFixesSelection(int selected) {
+    clearScreen();
+
+    switch (selected) {
+        case 1:
+            createFixing();
+            return;
+        case 3:
+            removeFixing();
+            return;
+        case 0:
+            return;
+    }
+}
+
+void Menu::createFixing(){
+    //auto *a = new Activity();
+    string aux;
+
+    string name;
+    string type;
+    Time startTime;
+    Time endTime;
+
+    //Ask for name
+    cout << "What's the name of the new repair? ";
+
+    getline(cin, name);
+    if(name[0] >= 97 && name[0] <= 122){
+        name[0] -= 32;
+    }
+
+    //Ask for the type of activity
+    //cout << "Is it a ride (R) or a Lesson (L)? ";
+
+
+
+    //Ask for start date
+    cout << endl << "What's the start date (DD/MM/YYYY HH:MM) of the activity? ";
+    getline(cin, aux);
+
+    try {
+        startTime = Time(aux);
+    }
+    catch(InvalidDate &d){
+        cerr << d.getMsg();
+        return;
+    }
+
+
+    //Ask for end date
+    cout << endl << "What's the end date (HH:MM) of the repair? ";
+    getline(cin, aux);
+    try {
+        endTime = Time(aux);
+    }
+    catch(InvalidDate &d){
+        cerr << d.getMsg();
+        return;
+    }
+
+
+    Fixing *a = new Fixing();
+    a->setName(name);
+    a->setStartTime(startTime);
+    a->setEndTime(endTime);
+    SUPSchool->addFixing(a, false);
+
+}
+
+void Menu::removeFixing() {
+        string IDstring;
+        cout << "Insert ID of the repair:\n";
+        cin >> IDstring;
+
+        //Checking if IDstring is a number
+        try{
+            for(int i = 0; i < IDstring.size(); i++){
+                if(!isdigit(IDstring[i])){
+                    throw(ImproperString("Not a number.\n"));
+                }
+            }
+        }
+        catch(ImproperString &e){
+            cerr << e.getMsg();
+        }
+
+        //Convert IDstring to int
+        int ID = stoi(IDstring);
+
+
+        bool scheduled;
+
+        int index = -1;
+        //Check if ID exists
+        try {
+            for(int i = 0; i < SUPSchool->ScheduledFixes.size(); i++){
+                if(SUPSchool->ScheduledFixes[i]->getId() == ID){
+                    index = i;
+                    scheduled = true;
+                }
+            }
+            for(int e = 0; e < SUPSchool->PastFixes.size(); e++) {
+                if (SUPSchool->PastFixes[e]->getId() == ID){
+                    index = e;
+                    scheduled = false;
+                }
+            }
+            if(index == -1){
+                throw IdAlreadyExists();
+            }
+        }
+        catch(IdAlreadyExists &e){
+            cerr << "ID doesn't exists.\n";
+            return;
+        }
+        //Removing the activity from every client
+        for(int i = 0; i < SUPSchool->getClients().size(); i++){
+            if(!scheduled) {
+                for (int e = 0; e < SUPSchool->getClients()[i]->getPastFixes().size(); e++) //Itera pelas atividades passadas dos clientes, remove-as a adiciona o dinheiro de volta se for uma ride
+                    if (SUPSchool->getClients()[i]->getPastFixes()[e]->getId() == ID) {
+                        //SUPSchool->getClients()[i]->setActivities(eraseAndReturnVectorClient(SUPSchool->getClients()[i]->getScheduledActivities(), i));
+                        //Make the materials used by the client unused
+                        SUPSchool->getClients()[i]->setPastFixes(eraseAndReturnVectorFixing(SUPSchool->getClients()[i]->getPastFixes(), e)); //Algo está mal
+
+                        //Add balance back to client, if and only if it's a ride (Don't do it if it's a past activity
+                        //if(SUPSchool->PastActivities[index]->getType() == "R") {
+                        //    SUPSchool->getClients()[i]->addBalance(SUPSchool->PastActivities[index]->CalcCost());
+                        //}
+                    }
+            }
+            for(int j = 0; j < SUPSchool->getClients()[i]->getScheduledFixes().size(); j++){
+                if(SUPSchool->getClients()[i]->getScheduledFixes()[j]->getId() == ID){
+                    SUPSchool->getClients()[i]->setScheduledFixes(eraseAndReturnVectorFixing(SUPSchool->getClients()[i]->getScheduledFixes(), j)); //Algo está mal
+
+                    //Add balance back to client, if and only if it's a ride
+                    if(SUPSchool->PastFixes[index]->getType() == "R") {
+                        SUPSchool->getClients()[i]->addBalance(SUPSchool->PastFixes[index]->CalcCost());
+                    }
+                }
+            }
+
+        }
+        for(int mat = 0; mat < SUPSchool->getMaterials().size(); mat++){
+            for(int ac = 0; ac < SUPSchool->getMaterials()[mat]->getActivities().size(); ac++){
+                if(SUPSchool->getMaterials()[mat]->getActivities()[ac]->getId() == ID){
+                    SUPSchool->getMaterials()[mat]->setActivities(eraseAndReturnVectorActivity(SUPSchool->getMaterials()[mat]->getActivities(), ac));
+                }
+            }
+        }
+        if(scheduled){
+            SUPSchool->ScheduledFixes.erase(SUPSchool->ScheduledFixes.begin() + index);
+        }
+        else{
+            SUPSchool->PastFixes.erase(SUPSchool->PastFixes.begin() + index);
+        }
+
+
+
+}
+
 // Schedule --------------------
 
 int Menu::showConsultSchedule() {
@@ -906,6 +1116,7 @@ void Menu::consultScheduleSelection(int selected) {
     vector<Time> PossibleDates;
     Time beginDate, endDate;
     bool first = true;
+    Teacher* auxT;
 
     clearScreen();
 
@@ -993,11 +1204,21 @@ void Menu::consultScheduleSelection(int selected) {
             cout << endl;
 
             selected_teacher = readOption(0, Teacher::getLastID() - 1);
-            teacher_index = SUPSchool->teacherIndex(selected_teacher);
+            //teacher_index = SUPSchool->teacherIndex(selected_teacher);
+
+
 
             clearScreen();
 
-            PossibleDates = SUPSchool->getDatesFromActivicties(SUPSchool->Teachers[teacher_index]->getScheduledActivities());
+            for(const auto &t : SUPSchool->Teachers){
+                if(t->getID() == selected_teacher){
+                    auxT = t;
+                    PossibleDates = SUPSchool->getDatesFromActivicties(t->getScheduledActivities());
+                    break;
+                }
+            }
+
+
 
             if (PossibleDates.empty()) {
                 cerr << "The selected teacher doesn't have scheduled activities." << endl;
@@ -1028,10 +1249,10 @@ void Menu::consultScheduleSelection(int selected) {
 
             clearScreen();
 
-            cout << "You're seeing the schedule of " << SUPSchool->Teachers[teacher_index]->getName() << '.' << endl
+            cout << "You're seeing the schedule of " << auxT->getName() << '.' << endl
                  << endl;
 
-            s2 = new Schedule<Teacher>(beginDate, endDate, SUPSchool->Teachers[teacher_index]);
+            s2 = new Schedule<Teacher>(beginDate, endDate, auxT);
             cout << *s2 << endl;
 
             pause();

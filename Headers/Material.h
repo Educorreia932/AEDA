@@ -47,37 +47,37 @@ private:
 };
 
 class Boat : public Material {
-public:
-    static double cost;
+    public:
+        static double cost;
 };
 
 class Suits : public Material {
-public:
-    static double cost;
+    public:
+        static double cost;
 };
 
 class Board : public Material {
-public:
-    static double cost;
+    public:
+        static double cost;
 };
 
 /** @ingroup group_exceptions */
 
 class alreadyInUse : exception {
-public:
-    unsigned int materialId;
-    Time startTime;
-    Time endTime;
-    alreadyInUse(unsigned materialId, Time startTime, Time endTime){this->materialId = materialId; this->startTime = startTime;this->endTime = endTime;};
+    public:
+        unsigned int materialId;
+        Time startTime;
+        Time endTime;
+        alreadyInUse(unsigned materialId, Time startTime, Time endTime){this->materialId = materialId; this->startTime = startTime;this->endTime = endTime;};
 };
 
 ostream & operator <<(ostream &out, const alreadyInUse &info);
 
 class materialAlreadyHasActivity : std::exception {
-public:
-    unsigned materialId;
-    unsigned int activityId;
-    materialAlreadyHasActivity(unsigned int materialId,unsigned int activityId){this->materialId = materialId;this->activityId = activityId;};
+    public:
+        unsigned materialId;
+        unsigned int activityId;
+        materialAlreadyHasActivity(unsigned int materialId,unsigned int activityId){this->materialId = materialId;this->activityId = activityId;};
 };
 
 ostream & operator <<(ostream &out, const materialAlreadyHasActivity &ids);

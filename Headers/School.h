@@ -32,14 +32,18 @@ class School {
         void addActivity(Activity* activity, bool past);
         int activityIndex(unsigned int id, bool past);
 
+        void addFixing(Fixing* fixing, bool past);
+
+
         int materialIndex(unsigned int id);
         void removeMaterial(unsigned int id);
 
         /*! @name Getters */
         ///@{
+        string getName() const;
         string getLocality() const;
         Activity* getActivity(unsigned int id) const;
-        vector<Teacher *> getTeachers() const;
+        TeacherHashTable getTeachers() const;
         vector<Client *> getClients() const;
         vector<Material *> getMaterials() const;
         ///@}
@@ -89,7 +93,11 @@ class School {
         * @param detailed States whether the output includes all of the information about the activities or only the strictly necessary to distinguish them (mainly used
         * in selection menus).
         */
-        void viewActivities(bool detailed = true);
+        void viewActivities(bool detailed = true);/**
+        * @param detailed States whether the output includes all of the information about the activities or only the strictly necessary to distinguish them (mainly used
+        * in selection menus).
+        */
+        void viewFixes(bool detailed = true);
         /**
          * @param detailed States whether the output includes all of the information about the clients or only the strictly necessary to distinguish them (mainly used
          * in selection menus).
@@ -119,9 +127,12 @@ class School {
         map<string, string> Files;
         vector<Client*> Clients;
         vector<Material*> Materials;
-        vector<Teacher*> Teachers;
+        TeacherHashTable Teachers;
         vector<Activity*> PastActivities;
         vector<Activity*> ScheduledActivities;
+
+        vector<Fixing *> PastFixes;
+        vector<Fixing *> ScheduledFixes;
 };
 
 /** @ingroup group_exceptions */
@@ -132,36 +143,36 @@ class NonExistentClient : exception {
         NonExistentClient(unsigned int id){this->id = id;};
 };
 
-std::ostream & operator <<(ostream &out,const NonExistentClient &client);
+ostream & operator <<(ostream &out,const NonExistentClient &client);
 
 class NonExistentTeacher : exception {
-public:
-    unsigned int id;
-    NonExistentTeacher(unsigned int id){this->id = id;};
+    public:
+        unsigned int id;
+        NonExistentTeacher(unsigned int id){this->id = id;};
 };
 
-ostream & operator <<(std::ostream &out,const NonExistentTeacher &teacher);
+ostream & operator <<(ostream &out,const NonExistentTeacher &teacher);
 
 class ClientAlreadyExists : exception {
-public:
-    unsigned int id;
-    ClientAlreadyExists(unsigned int id){this->id = id;};
+    public:
+        unsigned int id;
+        ClientAlreadyExists(unsigned int id){this->id = id;};
 };
 
-ostream & operator <<(std::ostream &out, const ClientAlreadyExists &client);
+ostream & operator <<(ostream &out, const ClientAlreadyExists &client);
 
 class TeacherAlreadyExists : exception {
-        public:
-            unsigned int id;
-            TeacherAlreadyExists(unsigned int id){this->id = id;};
+    public:
+        unsigned int id;
+        TeacherAlreadyExists(unsigned int id){this->id = id;};
 };
 
-ostream & operator <<(std::ostream &out, const TeacherAlreadyExists &client);
+ostream & operator <<(ostream &out, const TeacherAlreadyExists &client);
 
 class NonExistentMaterial : exception {
-public:
-    unsigned int id;
-    NonExistentMaterial(unsigned int id){this->id = id;};
+    public:
+        unsigned int id;
+        NonExistentMaterial(unsigned int id){this->id = id;};
 };
 
 ostream & operator <<(ostream &out,const NonExistentMaterial &material);

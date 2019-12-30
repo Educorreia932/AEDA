@@ -1,0 +1,34 @@
+<<<<<<< HEAD
+Jaime Villate
+1
+1 3 4 
+::::::::::
+Pedro Souto
+2
+1 5 7 
+::::::::::
+Joao Canas Ferreira
+3
+2 3 
+::::::::::
+Rosaldo Rossetti
+4
+2 5 
+=======
+Rosaldo Rossetti
+4
+2 5 
+::::::::::
+Joao Canas Ferreira
+3
+2 3 
+::::::::::
+Jaime Villate
+1
+1 3 4 
+::::::::::
+Pedro Souto
+2
+1 5 7 
+>>>>>>> Ricardo
+---END---

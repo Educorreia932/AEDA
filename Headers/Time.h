@@ -56,26 +56,26 @@ class Time{
 /** @ingroup group_exceptions */
 
 class InvalidDate : exception {
-    string msg;
-public:
-    InvalidDate(string msg){this->msg = msg;}
-    string getMsg() const{return msg;}
+        string msg;
+    public:
+        InvalidDate(string msg){this->msg = msg;}
+        string getMsg() const{return msg;}
 };
 
-class ImpossibleTimeDifference: std::exception{
-    Time startTime;
-    Time endTime;
-public:
-    ImpossibleTimeDifference(Time startTime, Time endTime){
-        this->startTime = startTime;
-        this->endTime = endTime;
-    }
-    Time getStartTime() const{
-        return startTime;
-    }
-    Time getEndTime() const{
-        return endTime;
-    }
+class ImpossibleTimeDifference : exception{
+        Time startTime;
+        Time endTime;
+    public:
+        ImpossibleTimeDifference(Time startTime, Time endTime){
+            this->startTime = startTime;
+            this->endTime = endTime;
+        }
+        Time getStartTime() const{
+            return startTime;
+        }
+        Time getEndTime() const{
+            return endTime;
+        }
 };
 
 #endif

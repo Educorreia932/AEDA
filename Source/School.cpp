@@ -56,7 +56,7 @@ School::School(const string& filename) {
     }
 
     else
-        cerr << "ERROR: Couldn't read file";
+        cerr << "ERROR: Couldn't read file with name " << filename << endl;
 }
 
 void School::removeClient(unsigned int id) {
@@ -113,11 +113,15 @@ int School::materialIndex(unsigned int id) {
     return -1;
 }
 
+string School::getName() const {
+    return name;
+}
+
 vector<Client *> School::getClients() const{
     return this->Clients;
 }
 
-vector<Teacher *> School::getTeachers() const{
+TeacherHashTable School::getTeachers() const{
     return this->Teachers;
 }
 
@@ -126,6 +130,8 @@ vector<Material *> School::getMaterials() const{
 }
 
 void School::readActivities() {
+    static int a = 0;
+    a++;
     string line;
     ifstream File("../Data/1/" + Files["Activities"]);
     int counter = 0, activity_id;
@@ -183,8 +189,20 @@ void School::readActivities() {
                         else
                             ScheduledActivities.push_back((AuxActivity));
                     }
+                    else if (type == "F"){
+                        cout << a << endl;
+                        Fixing * auxFixing = new Fixing(id);
+                        auxFixing->setName(acName);
+                        auxFixing->setStartTime(startTime);
+                        auxFixing->setEndTime(endTime);
+
+                        if (auxFixing->getStartTime() < currentTime)
+                            PastFixes.push_back(auxFixing);
+                        else
+                            ScheduledFixes.push_back((auxFixing));
+                    }
                     else{
-                        cerr << "Non activity and non file found whilst reading activities" << endl;
+                        cerr << "Non activity, ride or repair found whilst reading activities" << endl;
                     }
                     break;
             }
@@ -264,7 +282,7 @@ void School::readTeachers() {
                     *activities << line;
                     break;
                 case 3:
-                    Teachers.push_back(auxTeacher);
+                    Teachers.insert(auxTeacher);
 
                     readTeachersActivities(activities, auxTeacher); ///ERROR
 
@@ -437,6 +455,8 @@ void School::assign(const unsigned int teacherId, const unsigned int activityId)
     //Time needs to be checked if is ahead of the set current time
 
     Teacher* teacher;
+
+
     bool teacherExists = false;
 
     for (const auto &t : this->Teachers) {
@@ -449,6 +469,8 @@ void School::assign(const unsigned int teacherId, const unsigned int activityId)
 
     if(!teacherExists)
         throw NonExistentTeacher(teacherId);
+
+    Teachers.erase(teacher);
 
     bool activityExists = false;
 
@@ -467,6 +489,8 @@ void School::assign(const unsigned int teacherId, const unsigned int activityId)
             }
         }
     }
+
+    Teachers.insert(teacher);
 
     if(!activityExists)
         throw activityNonExistent(activityId);
@@ -510,8 +534,11 @@ void School::readTeachersActivities(stringstream* activities, Teacher* t) {
     while (*activities >> activity_id) {
         Activity* AuxActivity = getActivity(activity_id);
 
-        if (AuxActivity->getEndTime() < currentTime)
+        if (AuxActivity->getEndTime() < currentTime) {
+            Teachers.erase(t);
             t->addActivity(AuxActivity, true);
+            Teachers.insert(t);
+        }
 
         else {
             try {
@@ -627,6 +654,18 @@ void School::viewActivities(bool detailed) {
     else
         for (auto & activity : ScheduledActivities)
             cout << activity->getName() << " - " << activity->getId() << endl;
+}
+
+void School::viewFixes(bool detailed){
+    if (detailed) {
+        cout << "Scheduled Repairs:\n";
+        cout << "---------------------" << endl;
+
+        for (const auto &Fixing : ScheduledFixes) {
+            cout << *Fixing;
+            cout << "---------------------" << endl;
+        }
+    }
 }
 
 void School::viewTeachers(bool detailed) {
@@ -781,13 +820,20 @@ void School::saveTeachers() {
 }
 
 void School::addTeacher(Teacher* teacher) {
-    if (teacherIndex(teacher->getID()) != -1)
-        throw TeacherAlreadyExists(teacher->getID());
 
-    Teachers.push_back(teacher);
+    for(const auto &t : Teachers){
+        if(t->getID() == teacher->getID()){
+            throw TeacherAlreadyExists(teacher->getID());
+        }
+    }
+
+    Teachers.insert(teacher);
 }
 
+/*
 int School::teacherIndex(unsigned int id) {
+
+
     for (size_t i = 0; i < Teachers.size();i++){
         if (Teachers.at(i)->getID() == id){
             return i;
@@ -796,20 +842,43 @@ int School::teacherIndex(unsigned int id) {
 
     return -1;
 }
+ */
 
 void School::addActivity(Activity* activity, bool past) {
     if (past)
         PastActivities.push_back(activity);
-
     else
         ScheduledActivities.push_back(activity);
 }
 
+void School::addFixing(Fixing* fixing, bool past) {
+    if (past)
+        PastFixes.push_back(fixing);
+
+    else
+        ScheduledFixes.push_back(fixing);
+}
+
 void School::removeTeacher(unsigned id) {
-    if (teacherIndex(id) == -1)
+
+    Teacher* auxT;
+    bool found = false;
+
+    for(const auto &t : Teachers){
+        if(t->getID() == id){
+            auxT = t;
+            found = true;
+            break;
+        }
+    }
+
+    Teachers.erase(auxT);
+    auxT->setCurrentlyEmployed(false);
+    Teachers.insert(auxT);
+
+    if (!found)
         throw NonExistentTeacher(id);
 
-    Teachers.erase(Teachers.begin()+teacherIndex(id));
 }
 
 int School::activityIndex(unsigned int id, bool past) {

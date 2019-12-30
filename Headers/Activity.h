@@ -90,6 +90,7 @@ class Ride : public Activity {
 ostream& operator<<(ostream& out, const Ride& R);
 
 class Lesson : public Activity {
+    protected:
     public:
     /*! @name Constructors */
     ///@{
@@ -98,7 +99,7 @@ class Lesson : public Activity {
     /*! Used when reading an activity from a file.!*/
     /*! @param id the ride as stated in the file it's read from.!*/
     Lesson(unsigned int id);
-    Lesson(Time startTime, Time endTime, string name) : Activity(startTime, endTime, name){};
+    Lesson(Time startTime, Time endTime, string name) :  Activity(startTime, endTime, name){};
     ///@}
     /*! @name Getters */
     ///@{
@@ -115,9 +116,24 @@ class Lesson : public Activity {
     ///@}
 };
 
+class Fixing : public Activity {
+protected:
+    unsigned int fixid;
+    static unsigned int last_fixid;
+public:
+    Fixing();
+    Fixing(unsigned int fixid);
+    //Fixing(Time startTime, Time endTime, string name) : Activity(startTime, endTime, name){};
+    Fixing(Time startTime, Time endTime, string name);
+    unsigned int CalcCost() const;
+    string getType() const;
+    void print(ostream & out) const;
+};
+
 ostream& operator<<(ostream& out, const Lesson& L);
 
 vector<Activity*> eraseAndReturnVectorActivity(vector<Activity*> vec,unsigned int i);
+vector<Fixing *> eraseAndReturnVectorFixing(vector<Fixing *> vec, unsigned int i);
 
 /** @ingroup group_exceptions */
 

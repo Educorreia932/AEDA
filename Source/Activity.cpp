@@ -5,6 +5,7 @@
 using namespace std;
 
 unsigned int Activity::last_id = 0;
+unsigned int Fixing::last_fixid = 0;
 Activity::Activity() {
     this->id = Activity::last_id++;
 }
@@ -63,7 +64,7 @@ ostream& operator<<(ostream& out, const Activity& A){
     A.print(out);
     return out;
 }
-Lesson::Lesson() {
+Lesson::Lesson(){
     this->id = Activity::last_id;
 }
 
@@ -94,7 +95,7 @@ ostream &operator<<(ostream &out, const Ride &R){
     return out;
 }
 
-Ride::Ride() {
+Ride::Ride(){
     this->id = Activity::last_id;
 }
 
@@ -121,6 +122,8 @@ bool Ride::operator>(Ride r){
     return this->id > r.id;
 }
 
+
+
 ostream &operator<<(ostream &out, const Lesson &L){
     L.print(out);
     return out;
@@ -134,14 +137,58 @@ void Ride::print(ostream& out) const{
     cout << "Cost: " << cost << endl;
 }
 
+Fixing::Fixing(){
+    this->id = 0;
+    this->fixid = ++Fixing::last_fixid;
+}
+
+Fixing::Fixing(unsigned int fixid){
+    this->id = 0;
+    this->fixid = fixid;
+    if(fixid > Fixing::last_fixid){
+        Fixing::last_fixid = fixid;
+    }
+}
+
+Fixing::Fixing(Time startTime, Time endTime, string name){
+    this->id = 0;
+    this->name = name;
+    this->startTime = startTime;
+    this->endTime = endTime;
+    this->fixid = ++Fixing::last_fixid;
+}
+
+unsigned int Fixing::CalcCost() const{
+    return 0;
+}
+
+string Fixing::getType() const {
+    return "F";
+}
+
+void Fixing::print(ostream& out) const{
+    cout << "Name: " << name << endl;
+    cout << "ID: " << fixid << endl;
+    cout << "Start Time: " << startTime << endl;
+    cout << "End Time: " << endTime << endl;
+}
+
 std::ostream &operator<<(std::ostream &out, const activityNonExistent &activity) {
     out << "Activity with ID \"" << activity.id << "\" does not exist." << endl;
     return out;
 }
 
+ostream &operator<<(ostream &out, const Fixing &F){
+    F.print(out);
+    return out;
+}
 
 vector<Activity*> eraseAndReturnVectorActivity(vector<Activity*> vec,unsigned int i){
     vec.erase(vec.begin() + i);
     return vec;
 }
 
+vector<Fixing *> eraseAndReturnVectorFixing(vector<Fixing *> vec, unsigned int i){
+    vec.erase(vec.begin() + i);
+    return vec;
+}
