@@ -16,20 +16,12 @@ set<School*> loadSchools() {
     return result;
 }
 
-School* chooseSchool(set<School*> &Schools) {
-    cout << "Choose the school:" << endl;
-    vector<School*> aux;
-    int selected, counter = 0;
-
+void printSchools(set<School*> &Schools) {
     for (auto s : Schools) {
-        cout << counter << ") " << s->getName() << endl;
-        aux.push_back(s);
-        counter++;
+        cout << s->getName() << endl
+             << "\tNumber of Clients: " << s->getClients().size() << endl
+             << "\tLocality: " << s->getLocality() << endl;
     }
-
-    selected = readOption(0, Schools.size() - 1);
-
-    return aux[selected];
 }
 
 int main() {
@@ -39,6 +31,8 @@ int main() {
     Menu SUPMenu(SelectedSchool);
     int selected;
 
+    printSchools(Schools);
+    Menu::pause();
     while (true) {
         if((selected = Menu::showMainMenu()))
             SUPMenu.mainMenuSelection(selected);

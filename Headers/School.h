@@ -143,36 +143,36 @@ class NonExistentClient : exception {
         NonExistentClient(unsigned int id){this->id = id;};
 };
 
-std::ostream & operator <<(ostream &out,const NonExistentClient &client);
+ostream & operator <<(ostream &out,const NonExistentClient &client);
 
 class NonExistentTeacher : exception {
-public:
-    unsigned int id;
-    NonExistentTeacher(unsigned int id){this->id = id;};
+    public:
+        unsigned int id;
+        NonExistentTeacher(unsigned int id){this->id = id;};
 };
 
-ostream & operator <<(std::ostream &out,const NonExistentTeacher &teacher);
+ostream & operator <<(ostream &out,const NonExistentTeacher &teacher);
 
 class ClientAlreadyExists : exception {
-public:
-    unsigned int id;
-    ClientAlreadyExists(unsigned int id){this->id = id;};
+    public:
+        unsigned int id;
+        ClientAlreadyExists(unsigned int id){this->id = id;};
 };
 
-ostream & operator <<(std::ostream &out, const ClientAlreadyExists &client);
+ostream & operator <<(ostream &out, const ClientAlreadyExists &client);
 
 class TeacherAlreadyExists : exception {
-        public:
-            unsigned int id;
-            TeacherAlreadyExists(unsigned int id){this->id = id;};
+    public:
+        unsigned int id;
+        TeacherAlreadyExists(unsigned int id){this->id = id;};
 };
 
-ostream & operator <<(std::ostream &out, const TeacherAlreadyExists &client);
+ostream & operator <<(ostream &out, const TeacherAlreadyExists &client);
 
 class NonExistentMaterial : exception {
-public:
-    unsigned int id;
-    NonExistentMaterial(unsigned int id){this->id = id;};
+    public:
+        unsigned int id;
+        NonExistentMaterial(unsigned int id){this->id = id;};
 };
 
 ostream & operator <<(ostream &out,const NonExistentMaterial &material);

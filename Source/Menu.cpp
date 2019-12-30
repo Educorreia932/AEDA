@@ -1,5 +1,25 @@
 #include "../Headers/Menu.h"
 
+School* chooseSchool(set<School*> &Schools) {
+    cout << "Choose the school:" << endl;
+    vector<School*> aux;
+    int selected, counter = 0;
+
+    for (auto s : Schools) {
+        cout << counter << ") " << s->getName() << endl;
+        aux.push_back(s);
+        counter++;
+    }
+
+    selected = readOption(0, Schools.size() - 1);
+
+    return aux[selected];
+}
+
+Menu::Menu() {
+
+}
+
 Menu::Menu(School* SUPSchool) {
     this->SUPSchool = SUPSchool;
 }
@@ -263,7 +283,7 @@ void Menu::manageClientsSelection(int selected) {
         case 1:
             createClient();
             return;
-        case 2:
+        case 2: //TODO: Incomplete
             cout << "Which client do you wish to change the information of? Insert the corresponding key." << endl
                  << endl;
 
@@ -317,7 +337,6 @@ void Menu::manageClientsSelection(int selected) {
 
             try{
                 SUPSchool->Clients[SUPSchool->clientIndex(selected_client)]->purchaseGold();
-
             }
 
             catch(insufficientFunds &e){
@@ -462,34 +481,39 @@ void Menu::createMaterial() {
 
         if (aux == "0") {
             return;
-        } else if (aux == "boat") {
+        }
+
+        else if (aux == "boat") {
             auto *boat = new Boat();
             type = aux;
             boat->setType(aux);
             SUPSchool->Materials.push_back(boat);
             break;
-        } else if (aux == "suits") {
+        }
+
+        else if (aux == "suits") {
             auto *suits = new Suits();
             type = aux;
             suits->setType(aux);
             SUPSchool->Materials.push_back(suits);
             break;
-        } else if (aux == "board") {
+        }
+
+        else if (aux == "board") {
             auto *board = new Board();
             type = aux;
             board->setType(aux);
             SUPSchool->Materials.push_back(board);
             break;
-        } else {
-            cout << "Invalid input!";
         }
+
+        else
+            cout << "Invalid input!";
 
         cout << endl;
     } while (true);
 
-
     pause();
-
 }
 
 void Menu::monthlyReport(Client* C) {
