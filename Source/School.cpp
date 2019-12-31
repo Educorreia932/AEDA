@@ -249,7 +249,7 @@ void School::readTeachers() {
 
     if (File.is_open()) {
         while (getline(File, line)) {
-            switch (counter % 4) {
+            switch (counter % 5) {
                 case 0:
                     auxTeacher->setName(line);
                     break;
@@ -264,6 +264,14 @@ void School::readTeachers() {
                     *activities << line;
                     break;
                 case 3:
+                    if(line == "false"){
+                        auxTeacher->setCurrentlyEmployed(false);
+                    } else {
+                        auxTeacher->setCurrentlyEmployed(true);
+                    }
+
+                    break;
+                case 4:
                     Teachers.insert(auxTeacher);
 
                     readTeachersActivities(activities, auxTeacher); ///ERROR
@@ -271,6 +279,7 @@ void School::readTeachers() {
                     activities->clear();
                     auxTeacher = new Teacher();
                     break;
+
             }
 
             counter++;
@@ -638,14 +647,25 @@ void School::viewActivities(bool detailed) {
             cout << activity->getName() << " - " << activity->getId() << endl;
 }
 
+bool sortRule(Teacher * t1, Teacher * t2) {
+    return t1->getID() < t2->getID();
+}
+
 void School::viewTeachers(bool detailed) {
+
+    vector<Teacher*> auxVec;
+    for (auto & teacher : Teachers){
+        auxVec.push_back(teacher);
+    }
+    sort(auxVec.begin(),auxVec.end(),sortRule);
+
     if (detailed)
-        for (auto & teacher : Teachers)
+        for (auto & teacher : auxVec)
             cout << *teacher
                  << "---------------------" << endl;
 
     else
-        for (auto & teacher : Teachers)
+        for (auto & teacher : auxVec)
             cout << teacher->getName() << " - " << teacher->getID() << endl;
 }
 
@@ -776,6 +796,12 @@ void School::saveTeachers() {
             f << t->getName() << endl
               << t->getID() << endl
               << t->getPastActivitiesID() << t->getScheduledActivitiesID() << endl;
+
+            if(t->getCurrentlyEmployed()){
+                f << "true" << endl;
+            } else {
+                f << "false" << endl;
+            }
 
             if (counter == size(Teachers) - 1)
                 f << "---END---";

@@ -528,6 +528,7 @@ void Menu::manageTeachersSelection(int selected) {
     clearScreen();
 
     int selected_teacher, selected_activity;
+    bool valid;
 
     switch (selected) {
         case 1:
@@ -542,11 +543,20 @@ void Menu::manageTeachersSelection(int selected) {
             cout << endl;
 
 
-            selected_teacher = readOption(0, Teacher::getLastID() - 1);
+            valid = false;
+            do {
+                selected_teacher = readOption(0, Teacher::getLastID() - 1);
 
-            if(selected_teacher == 0)
-                return;
+                if(selected_teacher == 0)
+                    return;
 
+                for(const auto &t : SUPSchool->Teachers){
+                    if(selected_teacher == t->getID()){
+                        valid = true;
+                    }
+                }
+            }while(!valid);
+            valid = false;
 
             changeTeachers(selected_teacher); //Needs to catch exception in client index inside function
 
@@ -560,10 +570,20 @@ void Menu::manageTeachersSelection(int selected) {
 
             cout << endl;
 
-            selected_teacher = readOption(0, Teacher::getLastID() - 1);
+            valid = false;
+            do {
+                selected_teacher = readOption(0, Teacher::getLastID() - 1);
 
-            if(selected_teacher == 0)
-                return;
+                if(selected_teacher == 0)
+                    return;
+
+                for(const auto &t : SUPSchool->Teachers){
+                    if(selected_teacher == t->getID()){
+                        valid = true;
+                    }
+                }
+            }while(!valid);
+            valid = false;
 
             try {
                 SUPSchool->removeTeacher(selected_teacher);
@@ -577,11 +597,21 @@ void Menu::manageTeachersSelection(int selected) {
             cout << "Insert the teacher ID: " << endl; //Make function to display the clients
 
             SUPSchool->viewTeachers(false);
+            valid = false;
+            do {
+                selected_teacher = readOption(0, Teacher::getLastID() - 1);
 
-            selected_teacher = readOption(0, Teacher::getLastID() - 1);
+                if(selected_teacher == 0)
+                    return;
 
-            if(selected_teacher == 0)
-                return;
+                for(const auto &t : SUPSchool->Teachers){
+                    if(selected_teacher == t->getID()){
+                        valid = true;
+                    }
+                }
+            }while(!valid);
+            valid = false;
+
 
             cout << "Insert the activity ID: " << endl;
             SUPSchool->viewActivities(false);
@@ -912,6 +942,7 @@ void Menu::consultScheduleSelection(int selected) {
     Time beginDate, endDate;
     bool first = true;
     Teacher* auxT;
+    bool valid;
 
     clearScreen();
 
@@ -998,7 +1029,20 @@ void Menu::consultScheduleSelection(int selected) {
 
             cout << endl;
 
-            selected_teacher = readOption(0, Teacher::getLastID() - 1);
+            valid = false;
+            do {
+                selected_teacher = readOption(0, Teacher::getLastID() - 1);
+
+                if(selected_teacher == 0)
+                    return;
+
+                for(const auto &t : SUPSchool->Teachers){
+                    if(selected_teacher == t->getID()){
+                        valid = true;
+                    }
+                }
+            }while(!valid);
+            valid = false;
             //teacher_index = SUPSchool->teacherIndex(selected_teacher);
 
 
