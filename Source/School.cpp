@@ -262,41 +262,119 @@ void School::readTeachers() {
     string line;
     ifstream File("../Data/1/" + Files["Teachers"]);
     int counter = 0;
-    auto* auxTeacher = new Teacher();
+//    auto* auxTeacher = new Teacher();
     auto* activities = new stringstream;
 
-    if (File.is_open()) {
-        while (getline(File, line)) {
-            switch (counter % 4) {
-                case 0:
-                    auxTeacher->setName(line);
-                    break;
-                case 1:
-                    auxTeacher->setID((stoi(line)));
+    //bool teacher = true; //If it's a teacher or a technician
 
-                    if (stoi(line) > Teacher::getLastID())
-                        Teacher::setLastID(stoi(line));
+    string name;
+    unsigned int id;
 
-                    break;
-                case 2:
+    if(File.is_open()){
+        while(getline(File, line)){
+            if(counter % 4 == 0){
+                name = line;
+                counter++;
+            }
+            else if (counter % 4 == 1){
+                id = stoul(line);
+                counter++;
+            }
+            else if (counter % 4 == 2){
+                if (line.length() == 0){
+                    auto* auxTeacher = new Teacher();
+                    //auto* activities = new stringstream;
+                    auxTeacher->setName(name);
+                    auxTeacher->setID(id);
                     *activities << line;
-                    break;
-                case 3:
+                    //teacher = true;
+                    getline(File, line);
                     Teachers.insert(auxTeacher);
 
                     readTeachersActivities(activities, auxTeacher); ///ERROR
 
                     activities->clear();
-                    auxTeacher = new Teacher();
-                    break;
+                    //auxTeacher = new Teacher();
+                    counter+=2;
+
+                }
+                else if(line.at(0) == 'T'){
+                    printf("Read teachers not done for technicians.");
+                    //teacher = false;
+                    auto* auxTech = new Technician();
+                    auxTech->setName(name);
+                    auxTech->setID(id);
+                    //line.erase(line[0]);
+                    line.replace(0, 1, "");
+                    *activities << line;
+
+                    getline(File, line);
+                    //readTechniciansActivities(activities, auxTech);
+                    Technicians.push(auxTech);
+                    activities->clear();
+                    counter += 2;
+                }
+                else{
+                    auto* auxTeacher = new Teacher();
+                    //auto* activities = new stringstream;
+                    auxTeacher->setName(name);
+                    auxTeacher->setID(id);
+                    *activities << line;
+                    //teacher = true;
+                    getline(File, line);
+                    Teachers.insert(auxTeacher);
+
+                    readTeachersActivities(activities, auxTeacher); ///ERROR
+
+                    activities->clear();
+                    //auxTeacher = new Teacher();
+                    counter+=2;
+                }
             }
-
-            counter++;
         }
-
-        File.close();
     }
+    File.close();
 }
+
+//void School::readTeachers() {
+//    string line;
+//    ifstream File("../Data/1/" + Files["Teachers"]);
+//    int counter = 0;
+//    auto* auxTeacher = new Teacher();
+//    auto* activities = new stringstream;
+//
+//    if (File.is_open()) {
+//        while (getline(File, line)) {
+//            switch (counter % 4) {
+//                case 0:
+//                    auxTeacher->setName(line);
+//                    break;
+//                case 1:
+//                    auxTeacher->setID((stoi(line)));
+//
+//                    if (stoi(line) > Teacher::getLastID())
+//                        Teacher::setLastID(stoi(line));
+//
+//                    break;
+//                case 2:
+//                    *activities << line;
+//                    break;
+//                case 3:
+//                    Teachers.insert(auxTeacher);
+//
+//                    readTeachersActivities(activities, auxTeacher); ///ERROR
+//
+//                    activities->clear();
+//                    auxTeacher = new Teacher();
+//                    break;
+//            }
+//
+//            counter++;
+//        }
+//
+//        File.close();
+//    }
+//}
 
 void School::readMaterials() {
     string line;
@@ -679,6 +757,40 @@ void School::viewTeachers(bool detailed) {
             cout << teacher->getName() << " - " << teacher->getID() << endl;
 }
 
+ostream &operator<<(ostream &out, const Technician &T) {
+    out << "ID: " << T.getID() << endl;
+    out << "Name: " << T.getName() << endl;
+
+    if (T.ScheduledFixes.empty())
+        out << "No activities associated";
+
+    else {
+        out << "Scheduled activities: ";
+
+        for (auto a : T.ScheduledFixes)
+            out << a->getId() << " ";
+    }
+    out << endl;
+
+    return out;
+}
+
+void School::viewTechnicians(bool detailed){
+    priority_queue<Technician *, vector<Technician *>, TechnicianCompare> aux = Technicians;
+    if (detailed) {
+        while(!aux.empty()){
+            cout << *(aux.top())
+                 << "---------------------" << endl;
+            aux.pop();
+        }
+    }
+    else
+        while(!aux.empty()){
+            cout << aux.top()->getName() << " - " << aux.top()->getID() << endl;
+            aux.pop();
+        }
+}
+
 void School::saveActivities() {
     ofstream f;
     int counter = 0;
@@ -944,4 +1056,8 @@ bool operator <(const School s1, const School s2)  {
         return s1.getLocality() < s2.getLocality();
 
     return s1.getClients().size() < s2.getClients().size();
+}
+
+priority_queue<Technician *, vector<Technician *>, TechnicianCompare> School::GetTechnicians() const{
+    return Technicians;
 }

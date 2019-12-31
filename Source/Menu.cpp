@@ -37,6 +37,7 @@ int Menu::showMainMenu() {
          << "6) Manage materials." << endl
          << "7) Consult clients." << endl
          << "8) Consult teachers." << endl
+         << "9) Consult technicians." << endl
          << "9) Consult activities." << endl
          << "10) Consult repairs." << endl
          << "11) Consult schedules." << endl
@@ -78,22 +79,26 @@ void Menu::mainMenuSelection(int selected) {
             SUPSchool->viewTeachers();
             pause();
             return;
-        case 9: // Consult activities
+        case 9: //Consult technicians
+            SUPSchool->viewTechnicians();
+            pause();
+            return;
+        case 10: // Consult activities
             SUPSchool->viewActivities();
             pause();
             return;
-        case 10:
+        case 11:
             SUPSchool->viewFixes();
             pause();
             return;
-        case 11: // Consult schedules
+        case 12: // Consult schedules
             consultScheduleSelection(showConsultSchedule());
             return;
-        case 12:
+        case 13:
             SUPSchool->viewMaterial();
             pause();
             return;
-        case 13: // Consult school's information
+        case 14: // Consult school's information
             cout << *SUPSchool<< endl;
             pause();
             return;

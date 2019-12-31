@@ -30,9 +30,13 @@ class Technician : public Staff {
     public:
         Technician();
         Technician(string name);
+        void setName(string name);
 
+        string getName() const;
         vector<Fixing *> PastFixes;
         vector<Fixing *> ScheduledFixes;
+
+        friend bool operator <(Technician t1, Technician t2);
 };
 
 class Teacher: public Staff {

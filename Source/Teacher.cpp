@@ -43,6 +43,10 @@ void Teacher::setName(string name) {
     this->name = name;
 }
 
+void Technician::setName(string name){
+    this->name = name;
+}
+
 ostream &operator<<(ostream &out, const Teacher &T) {
     out << "ID: " << T.id << endl;
     out << "Name: " << T.name << endl;
@@ -60,6 +64,24 @@ ostream &operator<<(ostream &out, const Teacher &T) {
 
     return out;
 }
+
+//ostream &operator<<(ostream &out, const Technician &T) {
+//    out << "ID: " << T.getID() << endl;
+//    out << "Name: " << T.getName() << endl;
+//
+//    if (T.ScheduledFixes.empty())
+//        out << "No activities associated";
+//
+//    else {
+//        out << "Scheduled activities: ";
+//
+//        for (auto a : T.ScheduledFixes)
+//            out << a->getId() << " ";
+//    }
+//    out << endl;
+//
+//    return out;
+//}
 
 bool Teacher::isOcuppied(const Time startTime, const Time endTime) {
     for (const auto &ac : this->ScheduledActivities) {
@@ -100,6 +122,10 @@ bool Teacher::getCurrentlyEmployed() const {
 }
 
 string Teacher::getName() const {
+    return name;
+}
+
+string Technician::getName() const{
     return name;
 }
 
@@ -147,4 +173,22 @@ ostream &operator<<(ostream &out, const teacherHasActivityAtSameTime &ids) {
 ostream &operator<<(ostream &out, const teacherAlreadHasActivity &ids) {
     out << "Teacher with ID \"" << ids.teacherId << "\" already is already enrolled in activity with ID \"" << ids.activityId << "\"." << endl;
     return out;
+}
+
+bool sortByStartTime(Fixing f1, Fixing f2){
+    return f1.getStartTime() < f2.getStartTime();
+}
+
+bool operator <(Technician t1, Technician t2){ ////TODO
+//    vector<Fixing *> fixes1 = t1.getScheduledFixes();
+//    vector<Fixing *> fixes2 = t2.getScheduledFixes();
+//    sort(fixes1.begin(), fixes1.end(), sortByStartTime);
+//    sort(fixes2.begin(), fixes2.end(), sortByStartTime);
+//
+//    Time a = t1.
+//
+//
+//    if(fixes1[0]->getStartTime() < )
+
+    return t1.getName() < t2.getName();
 }

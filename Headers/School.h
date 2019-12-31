@@ -8,6 +8,15 @@
 
 #include <algorithm>
 #include <map>
+#include <queue>
+
+class TechnicianCompare{
+public:
+    //template<typename T>
+    bool operator()(Technician *a, Technician *b){
+        return (*a) < (*b);
+    }
+};
 
 /** @defgroup group_school School */
 
@@ -46,6 +55,7 @@ class School {
         TeacherHashTable getTeachers() const;
         vector<Client *> getClients() const;
         vector<Material *> getMaterials() const;
+        priority_queue<Technician *, vector<Technician *>, TechnicianCompare> GetTechnicians() const;
         ///@}
 
         /** @name Read Functions
@@ -113,6 +123,7 @@ class School {
          * in selection menus).
          */
         void viewTeachers(bool detailed = true);
+        void viewTechnicians(bool detailed = true);
         void viewDates(vector <Time> Dates);
         ///@}
 
@@ -130,6 +141,7 @@ class School {
         TeacherHashTable Teachers;
         vector<Activity*> PastActivities;
         vector<Activity*> ScheduledActivities;
+        priority_queue<Technician *, vector<Technician *>, TechnicianCompare> Technicians;
 
         vector<Fixing *> PastFixes;
         vector<Fixing *> ScheduledFixes;
