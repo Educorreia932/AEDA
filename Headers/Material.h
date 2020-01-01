@@ -17,7 +17,6 @@ public:
     bool beingUsed(Time startTime, Time endTime);
     void addActivity(Activity* activity);
 
-
     /*! @name Getters */
     ///@{
     unsigned int getID() const;
@@ -39,7 +38,7 @@ public:
 private:
     string type;  //The type of material
     vector<Activity*> Activities;
-    map<Client* ,vector<Time>> Clients;
+    map<Client*, vector<Time>> Clients;
     unsigned int ID;
     static unsigned int last_id;
 

@@ -3,7 +3,7 @@
 
 #include "Client.h"
 #include "Material.h"
-#include "Teacher.h"
+#include "Staff.h"
 #include "Time.h"
 
 #include <algorithm>
@@ -31,7 +31,7 @@ class School {
         /*! @name Constructors */
         ///@{
         School();
-        School(const string& filename);
+        School(const string& filename, unsigned int id);
         ///@}
 
         void addClient(Client* client);
@@ -133,6 +133,7 @@ class School {
 
     private:
         string name;
+        unsigned int id;
         string locality;
         string director;
         Time currentTime;

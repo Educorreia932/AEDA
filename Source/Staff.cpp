@@ -1,4 +1,4 @@
-#include "../Headers/Teacher.h"
+#include "../Headers/Staff.h"
 
 unsigned int Staff::last_id = 0;
 
@@ -10,12 +10,20 @@ void Staff::setLastID(unsigned int id) {
     last_id = id;
 }
 
+void Staff::setName(string name){
+    this->name = name;
+}
+
 unsigned int Staff::getLastID() {
     return last_id;
 }
 
 unsigned Staff::getID() const {
     return id;
+}
+
+string Staff::getName() const {
+    return name;
 }
 
 Technician::Technician(){
@@ -39,26 +47,20 @@ Teacher::Teacher(string name){
     this->currentlyEmployed = true;
 }
 
-void Teacher::setName(string name) {
-    this->name = name;
-}
-
-void Technician::setName(string name){
-    this->name = name;
-}
-
 ostream &operator<<(ostream &out, const Teacher &T) {
     out << "ID: " << T.id << endl;
     out << "Name: " << T.name << endl;
-    out << "Currently employed:";
-    if(T.getCurrentlyEmployed()){
+    out << "Currently employed: ";
+
+    if(T.getCurrentlyEmployed())
         cout << "Yes" << endl;
-    } else {
+
+    else
         cout << "No" << endl;
-    }
 
     if (T.ScheduledActivities.empty())
         out << "No activities associated";
+
     else {
         out << "Scheduled activities: ";
 
@@ -126,13 +128,6 @@ bool Teacher::getCurrentlyEmployed() const {
     return currentlyEmployed;
 }
 
-string Teacher::getName() const {
-    return name;
-}
-
-string Technician::getName() const{
-    return name;
-}
 
 string Teacher::getScheduledActivitiesID() const {
     stringstream result;
@@ -169,7 +164,6 @@ vector<Activity *> Teacher::getScheduleActivitiesByDate(Time Date) const {
 void Teacher::setCurrentlyEmployed(bool currentlyEmployed) {
     this->currentlyEmployed = currentlyEmployed;
 }
-
 
 ostream &operator<<(ostream &out, const teacherHasActivityAtSameTime &ids) {
     out << "Teacher with ID \"" << ids.teacherId << "\" already has an activity at the same time as activity with ID \"" << ids.activityId << "\"." << endl;

@@ -1,6 +1,6 @@
 #include "../Headers/Menu.h"
 
-School* chooseSchool(set<School*> &Schools) {
+School* Menu::chooseSchool(set<School*> &Schools) {
     Menu::clearScreen();
     cout << "Choose the school:" << endl;
     vector<School*> aux;

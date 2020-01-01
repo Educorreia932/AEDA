@@ -9,7 +9,7 @@ set<School*> loadSchools() {
     School* aux;
 
     for (int i = 1; i < 5; i++) {
-        aux = new School("../Data/" + to_string(i) + "/School.txt");
+        aux = new School("../Data/" + to_string(i) + "/School.txt", i);
         result.insert(aux);
     }
 
@@ -27,7 +27,7 @@ void printSchools(set<School*> &Schools) {
 int main() {
     set<School*> Schools = loadSchools();
 
-    auto* SelectedSchool = chooseSchool(Schools);
+    auto* SelectedSchool = Menu::chooseSchool(Schools);
     Menu SUPMenu(SelectedSchool);
     int selected;
 

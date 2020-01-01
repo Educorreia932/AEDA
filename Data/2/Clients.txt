@@ -33,28 +33,4 @@ Davide Castro
 false
 500
 1 2 3 
-::::::::::
-Ricardo Fontao
-7
-true
-500
-3 4 
-::::::::::
-Tiago Duarte Silva
-8
-true
-500
-4 5 
-::::::::::
-Ivo Saavedra
-9
-true
-500
-5 
-::::::::::
-Diogo Guimaraes Rosario
-10
-true
-500
-4 5 7 
 ---END---

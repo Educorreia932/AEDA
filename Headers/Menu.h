@@ -10,8 +10,6 @@
 
 /** @ingroup group_menu */
 
-School* chooseSchool(set<School*> &Schools); //static
-
 class Menu {
     public:
         /** @name Constructors */
@@ -23,12 +21,14 @@ class Menu {
         static int showMainMenu();
         void mainMenuSelection(int selected);
 
-        /** @name Constructors */
+        /** @name Auxiliary */
         ///@{
         static void clearScreen();
         static void pause();
         ///@}
-    private:
+
+        static School* chooseSchool(set<School*> &Schools); //static
+private:
         School* SUPSchool;
 
         /** @name Client related */
