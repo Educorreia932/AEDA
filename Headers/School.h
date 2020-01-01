@@ -11,11 +11,11 @@
 #include <queue>
 
 class TechnicianCompare{
-public:
-    //template<typename T>
-    bool operator()(Technician *a, Technician *b){
-        return (*a) < (*b);
-    }
+    public:
+        //template<typename T>
+        bool operator()(Technician *a, Technician *b){
+            return (*a) < (*b);
+        }
 };
 
 /** @defgroup group_school School */

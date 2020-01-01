@@ -299,7 +299,7 @@ void School::readTeachers() {
 
                 }
                 else if(line.at(0) == 'T'){
-                    printf("Read teachers not done for technicians.");
+                    //printf("Read teachers not done for technicians.");
                     //teacher = false;
                     auto* auxTech = new Technician();
                     auxTech->setName(name);

@@ -13,37 +13,41 @@
 School* chooseSchool(set<School*> &Schools); //static
 
 class Menu {
-public:
-    /** @name Constructors */
-    ///@{
-    Menu();
-    Menu(School* SUPSchool);
-    ///@}
+    public:
+        /** @name Constructors */
+        ///@{
+        Menu();
+        Menu(School* SUPSchool);
+        ///@}
 
-    static int showMainMenu();
-    void mainMenuSelection(int selected);
+        static int showMainMenu();
+        void mainMenuSelection(int selected);
 
-    //Utils
-    static void clearScreen();
-    static void pause();
-private:
-    School* SUPSchool;
+        /** @name Constructors */
+        ///@{
+        static void clearScreen();
+        static void pause();
+        ///@}
+    private:
+        School* SUPSchool;
 
-    /** @name Client related */
-    ///@{
-    static int showManageClients();
-    void manageClientsSelection(int selected);
-    void createClient();
-    void changeClient(int client_id);
-    void monthlyReport(Client* C);
-    ///@}
+        /** @name Client related */
+        ///@{
+        static int showManageClients();
+        void manageClientsSelection(int selected);
+        void createClient();
+        void changeClient(int client_id);
+        void monthlyReport(Client* C);
+        ///@}
 
-    //Activity related
-    static int showManageActivities();
-    void manageActivitiesSelection(int selected);
-    void createActivity();
-    void removeActivity();
-    void changeActivity();
+        /** @name Activity related */
+        ///@{
+        static int showManageActivities();
+        void manageActivitiesSelection(int selected);
+        void createActivity();
+        void removeActivity();
+        void changeActivity();
+        ///@}
 
         //Fixes section
         static int showManageFixes();
@@ -57,15 +61,15 @@ private:
         void createTeacher();
         void changeTeachers(int teacherId);
 
-    //Material relateed
-    void createMaterial();
-    int showManageMaterials();
-    void manageMaterialsSelection(int selected);
-    void rentMaterial();
+        //Material relateed
+        void createMaterial();
+        int showManageMaterials();
+        void manageMaterialsSelection(int selected);
+        void rentMaterial();
 
-    // Schedule related
-    static int showConsultSchedule();
-    void consultScheduleSelection(int selected);
+        // Schedule related
+        static int showConsultSchedule();
+        void consultScheduleSelection(int selected);
 };
 
 /** @defgroup group_exceptions Exceptions */

@@ -31,7 +31,7 @@ int main() {
     Menu SUPMenu(SelectedSchool);
     int selected;
 
-    printSchools(Schools);
+    //printSchools(Schools);
     Menu::pause();
     while (true) {
         if((selected = Menu::showMainMenu()))

@@ -1,6 +1,7 @@
 #include "../Headers/Menu.h"
 
 School* chooseSchool(set<School*> &Schools) {
+    Menu::clearScreen();
     cout << "Choose the school:" << endl;
     vector<School*> aux;
     int selected, counter = 0;
@@ -11,6 +12,7 @@ School* chooseSchool(set<School*> &Schools) {
         counter++;
     }
 
+    cout << endl;
     selected = readOption(0, Schools.size() - 1);
 
     return aux[selected];
@@ -38,15 +40,15 @@ int Menu::showMainMenu() {
          << "7) Consult clients." << endl
          << "8) Consult teachers." << endl
          << "9) Consult technicians." << endl
-         << "9) Consult activities." << endl
-         << "10) Consult repairs." << endl
-         << "11) Consult schedules." << endl
-         << "12) Consult materials." << endl
-         << "13) Consult school's information." << endl
+         << "10) Consult activities." << endl
+         << "11) Consult repairs." << endl
+         << "12) Consult schedules." << endl
+         << "13) Consult materials." << endl
+         << "14) Consult school's information." << endl
          << "0) Exit" << endl //And save to files
          << endl;
 
-    return readOption(0, 13);
+    return readOption(0, 14);
 }
 
 void Menu::mainMenuSelection(int selected) {
@@ -113,7 +115,6 @@ void Menu::rentMaterial() {
     string aux;
     int selected_client,selected_material;
     Time startTime, endTime;
-
 
     cout << "Which client want to rent equipment? Insert the corresponding key." << endl
          << endl;
@@ -297,6 +298,8 @@ void Menu::manageClientsSelection(int selected) {
             cout << endl;
 
             selected_client = readOption(0, Client::getLastID() - 1);
+
+            changeClient(selected_client);
 
             pause();
             return;
@@ -1282,6 +1285,9 @@ void Menu::clearScreen() {
 void Menu::pause() {
     cout << "Press any key to continue ...";
     cin.get();
+}
+
+void Menu::changeClient (int client_id) {
 }
 
 
