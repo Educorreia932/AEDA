@@ -117,17 +117,17 @@ class Lesson : public Activity {
 };
 
 class Fixing : public Activity {
-protected:
-    unsigned int fixid;
-    static unsigned int last_fixid;
-public:
-    Fixing();
-    Fixing(unsigned int fixid);
-    //Fixing(Time startTime, Time endTime, string name) : Activity(startTime, endTime, name){};
-    Fixing(Time startTime, Time endTime, string name);
-    unsigned int CalcCost() const;
-    string getType() const;
-    void print(ostream & out) const;
+    protected:
+        unsigned int fixid;
+        static unsigned int last_fixid;
+    public:
+        Fixing();
+        Fixing(unsigned int fixid);
+        //Fixing(Time startTime, Time endTime, string name) : Activity(startTime, endTime, name){};
+        Fixing(Time startTime, Time endTime, string name);
+        unsigned int CalcCost() const;
+        string getType() const;
+        void print(ostream & out) const;
 };
 
 ostream& operator<<(ostream& out, const Lesson& L);

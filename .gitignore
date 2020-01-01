@@ -58,3 +58,5 @@ Doxyfile
 *.eapx
 
 Relatório/
+
+idea/

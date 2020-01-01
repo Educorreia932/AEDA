@@ -3,11 +3,20 @@
 
 #include "Client.h"
 #include "Material.h"
-#include "Teacher.h"
+#include "Staff.h"
 #include "Time.h"
 
 #include <algorithm>
 #include <map>
+#include <queue>
+
+class TechnicianCompare{
+    public:
+        //template<typename T>
+        bool operator()(Technician *a, Technician *b){
+            return (*a) < (*b);
+        }
+};
 
 /** @defgroup group_school School */
 
@@ -22,7 +31,7 @@ class School {
         /*! @name Constructors */
         ///@{
         School();
-        School(const string& filename);
+        School(const string& filename, unsigned int id);
         ///@}
 
         void addClient(Client* client);
@@ -46,6 +55,7 @@ class School {
         TeacherHashTable getTeachers() const;
         vector<Client *> getClients() const;
         vector<Material *> getMaterials() const;
+        priority_queue<Technician *, vector<Technician *>, TechnicianCompare> GetTechnicians() const;
         ///@}
 
         /** @name Read Functions
@@ -113,14 +123,17 @@ class School {
          * in selection menus).
          */
         void viewTeachers(bool detailed = true);
+        void viewTechnicians(bool detailed = true);
         void viewDates(vector <Time> Dates);
         ///@}
 
         vector<Time> getDatesFromActivicties(vector <Activity*> Activities);
 
         friend ostream& operator<<(ostream& out, const School& S);
+
     private:
         string name;
+        unsigned int id;
         string locality;
         string director;
         Time currentTime;
@@ -130,6 +143,7 @@ class School {
         TeacherHashTable Teachers;
         vector<Activity*> PastActivities;
         vector<Activity*> ScheduledActivities;
+        priority_queue<Technician *, vector<Technician *>, TechnicianCompare> Technicians;
 
         vector<Fixing *> PastFixes;
         vector<Fixing *> ScheduledFixes;

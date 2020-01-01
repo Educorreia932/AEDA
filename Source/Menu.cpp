@@ -1,6 +1,7 @@
 #include "../Headers/Menu.h"
 
-School* chooseSchool(set<School*> &Schools) {
+School* Menu::chooseSchool(set<School*> &Schools) {
+    Menu::clearScreen();
     cout << "Choose the school:" << endl;
     vector<School*> aux;
     int selected, counter = 0;
@@ -11,6 +12,7 @@ School* chooseSchool(set<School*> &Schools) {
         counter++;
     }
 
+    cout << endl;
     selected = readOption(0, Schools.size() - 1);
 
     return aux[selected];
@@ -37,15 +39,16 @@ int Menu::showMainMenu() {
          << "6) Manage materials." << endl
          << "7) Consult clients." << endl
          << "8) Consult teachers." << endl
-         << "9) Consult activities." << endl
-         << "10) Consult repairs." << endl
-         << "11) Consult schedules." << endl
-         << "12) Consult materials." << endl
-         << "13) Consult school's information." << endl
+         << "9) Consult technicians." << endl
+         << "10) Consult activities." << endl
+         << "11) Consult repairs." << endl
+         << "12) Consult schedules." << endl
+         << "13) Consult materials." << endl
+         << "14) Consult school's information." << endl
          << "0) Exit" << endl //And save to files
          << endl;
 
-    return readOption(0, 13);
+    return readOption(0, 14);
 }
 
 void Menu::mainMenuSelection(int selected) {
@@ -78,22 +81,26 @@ void Menu::mainMenuSelection(int selected) {
             SUPSchool->viewTeachers();
             pause();
             return;
-        case 9: // Consult activities
+        case 9: //Consult technicians
+            SUPSchool->viewTechnicians();
+            pause();
+            return;
+        case 10: // Consult activities
             SUPSchool->viewActivities();
             pause();
             return;
-        case 10:
+        case 11:
             SUPSchool->viewFixes();
             pause();
             return;
-        case 11: // Consult schedules
+        case 12: // Consult schedules
             consultScheduleSelection(showConsultSchedule());
             return;
-        case 12:
+        case 13:
             SUPSchool->viewMaterial();
             pause();
             return;
-        case 13: // Consult school's information
+        case 14: // Consult school's information
             cout << *SUPSchool<< endl;
             pause();
             return;
@@ -108,7 +115,6 @@ void Menu::rentMaterial() {
     string aux;
     int selected_client,selected_material;
     Time startTime, endTime;
-
 
     cout << "Which client want to rent equipment? Insert the corresponding key." << endl
          << endl;
@@ -292,6 +298,8 @@ void Menu::manageClientsSelection(int selected) {
             cout << endl;
 
             selected_client = readOption(0, Client::getLastID() - 1);
+
+            changeClient(selected_client);
 
             pause();
             return;
@@ -558,6 +566,7 @@ void Menu::manageTeachersSelection(int selected) {
     clearScreen();
 
     int selected_teacher, selected_activity;
+    bool valid;
 
     switch (selected) {
         case 1:
@@ -572,11 +581,20 @@ void Menu::manageTeachersSelection(int selected) {
             cout << endl;
 
 
-            selected_teacher = readOption(0, Teacher::getLastID() - 1);
+            valid = false;
+            do {
+                selected_teacher = readOption(0, Teacher::getLastID() - 1);
 
-            if(selected_teacher == 0)
-                return;
+                if(selected_teacher == 0)
+                    return;
 
+                for(const auto &t : SUPSchool->Teachers){
+                    if(selected_teacher == t->getID()){
+                        valid = true;
+                    }
+                }
+            }while(!valid);
+            valid = false;
 
             changeTeachers(selected_teacher); //Needs to catch exception in client index inside function
 
@@ -590,10 +608,20 @@ void Menu::manageTeachersSelection(int selected) {
 
             cout << endl;
 
-            selected_teacher = readOption(0, Teacher::getLastID() - 1);
+            valid = false;
+            do {
+                selected_teacher = readOption(0, Teacher::getLastID() - 1);
 
-            if(selected_teacher == 0)
-                return;
+                if(selected_teacher == 0)
+                    return;
+
+                for(const auto &t : SUPSchool->Teachers){
+                    if(selected_teacher == t->getID()){
+                        valid = true;
+                    }
+                }
+            }while(!valid);
+            valid = false;
 
             try {
                 SUPSchool->removeTeacher(selected_teacher);
@@ -607,11 +635,21 @@ void Menu::manageTeachersSelection(int selected) {
             cout << "Insert the teacher ID: " << endl; //Make function to display the clients
 
             SUPSchool->viewTeachers(false);
+            valid = false;
+            do {
+                selected_teacher = readOption(0, Teacher::getLastID() - 1);
 
-            selected_teacher = readOption(0, Teacher::getLastID() - 1);
+                if(selected_teacher == 0)
+                    return;
 
-            if(selected_teacher == 0)
-                return;
+                for(const auto &t : SUPSchool->Teachers){
+                    if(selected_teacher == t->getID()){
+                        valid = true;
+                    }
+                }
+            }while(!valid);
+            valid = false;
+
 
             cout << "Insert the activity ID: " << endl;
             SUPSchool->viewActivities(false);
@@ -1117,6 +1155,7 @@ void Menu::consultScheduleSelection(int selected) {
     Time beginDate, endDate;
     bool first = true;
     Teacher* auxT;
+    bool valid;
 
     clearScreen();
 
@@ -1203,7 +1242,20 @@ void Menu::consultScheduleSelection(int selected) {
 
             cout << endl;
 
-            selected_teacher = readOption(0, Teacher::getLastID() - 1);
+            valid = false;
+            do {
+                selected_teacher = readOption(0, Teacher::getLastID() - 1);
+
+                if(selected_teacher == 0)
+                    return;
+
+                for(const auto &t : SUPSchool->Teachers){
+                    if(selected_teacher == t->getID()){
+                        valid = true;
+                    }
+                }
+            }while(!valid);
+            valid = false;
             //teacher_index = SUPSchool->teacherIndex(selected_teacher);
 
 
@@ -1277,6 +1329,9 @@ void Menu::clearScreen() {
 void Menu::pause() {
     cout << "Press any key to continue ...";
     cin.get();
+}
+
+void Menu::changeClient (int client_id) {
 }
 
 

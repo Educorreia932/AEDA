@@ -1,5 +1,5 @@
-#ifndef SUP_SCHOOL_TEACHER_H
-#define SUP_SCHOOL_TEACHER_H
+#ifndef SUP_SCHOOL_STAFF_H
+#define SUP_SCHOOL_STAFF_H
 
 #include "Activity.h"
 
@@ -15,15 +15,13 @@ class Staff {
         void setID(const unsigned int id);
         unsigned getID()const ;
         static unsigned int getLastID( );
+        string getName() const;
         static void setLastID(const unsigned int id);
+        void setName(string name);
     protected:
         string name;
         unsigned int id;
         static unsigned int last_id;
-
-        vector<Activity *> PastActivities;
-        vector<Activity *> ScheduledActivities;
-        bool currentlyEmployed;
 };
 
 class Technician : public Staff {
@@ -33,6 +31,8 @@ class Technician : public Staff {
 
         vector<Fixing *> PastFixes;
         vector<Fixing *> ScheduledFixes;
+
+        friend bool operator <(Technician t1, Technician t2);
 };
 
 class Teacher: public Staff {
@@ -40,8 +40,6 @@ class Teacher: public Staff {
         Teacher();
         Teacher(string name);
 
-        void setName(string name);
-        string getName() const;
         void addActivity(Activity* activity, bool past);
         bool isOcuppied(const Time startTime, const Time endTime);
         string getPastActivitiesID() const;
@@ -53,12 +51,11 @@ class Teacher: public Staff {
 
         void setCurrentlyEmployed(bool currentlyEmployed);
 
+        bool getCurrentlyEmployed() const;
     private:
-            string name;
-            vector<Activity *> PastActivities;
-            vector<Activity *> ScheduledActivities;
-            bool currentlyEmployed;
-            bool getCurrentlyEmployed() const;
+        vector<Activity *> PastActivities;
+        vector<Activity *> ScheduledActivities;
+        bool currentlyEmployed;
 };
 
 /*! \cond */
@@ -75,7 +72,6 @@ struct teacherHash
 };
 
 typedef unordered_set<Teacher*, teacherHash, teacherHash> TeacherHashTable;
-
 
 class teacherHasActivityAtSameTime : exception {
 public:
@@ -97,4 +93,4 @@ ostream & operator <<(ostream &out,const teacherAlreadHasActivity &ids);
 
 /*! \endcond */
 
-#endif //SUP_SCHOOL_TEACHER_H
+#endif //SUP_SCHOOL_STAFF_H

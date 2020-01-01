@@ -4,7 +4,7 @@
 #include "Activity.h"
 #include "Auxiliary.h"
 #include "Client.h"
-#include "Teacher.h"
+#include "Staff.h"
 
 #include <map>
 
@@ -33,7 +33,6 @@ struct CharacterCodes {
 template <class T>
 class Schedule {
     public:
-
         Schedule();
         Schedule(Time BeginDate, Time EndDate, const T *c);
         vector<map <Time, Activity*>> getActivities() const;

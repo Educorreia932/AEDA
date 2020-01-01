@@ -51,10 +51,4 @@ Ivo Saavedra
 true
 500
 5 
-::::::::::
-Diogo Guimaraes Rosario
-10
-true
-500
-4 5 7 
 ---END---

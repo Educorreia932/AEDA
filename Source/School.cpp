@@ -8,12 +8,14 @@ School::School() {
 
 }
 
-School::School(const string& filename) {
+School::School(const string& filename, unsigned int id) {
     string line;
     ifstream File(filename);
     int counter = 0;
 
-    if(File.is_open()) {
+    this->id = id;
+
+    if (File.is_open()) {
         while (getline(File, line)) {
             switch (counter) {
                 case 0:
@@ -133,7 +135,7 @@ void School::readActivities() {
     static int a = 0;
     a++;
     string line;
-    ifstream File("../Data/1/" + Files["Activities"]);
+    ifstream File("../Data/" + to_string(id) + "/" + Files["Activities"]);
     int counter = 0, activity_id;
 
     //Things for the new activity
@@ -142,7 +144,6 @@ void School::readActivities() {
     string acName;
     string startTime;
     string endTime;
-    //int cost; //N é preciso pois é a linha atual
 
     if (File.is_open()) {
         while (getline(File, line)) {
@@ -164,8 +165,8 @@ void School::readActivities() {
                     break;
                 case 5:
                     //Check if it's a lesson "L" or ride "R"
-                    if(type == "L"){
-                        Lesson* AuxLesson = new Lesson(id);
+                    if(type == "L") {
+                        auto* AuxLesson = new Lesson(id);
                         //AuxLesson->setID(id);
                         AuxLesson->setName(acName);
                         AuxLesson->setStartTime(startTime);
@@ -176,19 +177,22 @@ void School::readActivities() {
                         else
                             ScheduledActivities.push_back((AuxLesson));
                     }
-                    else if(type == "R"){
+
+                    else if (type == "R"){
                         Ride* AuxActivity = new Ride(id);
                         //AuxActivity->setID(id);
                         AuxActivity->setName(acName);
                         AuxActivity->setStartTime(startTime);
                         AuxActivity->setEndTime(endTime);
                         AuxActivity->setCost(stoul(line));
+
                         if (AuxActivity->getStartTime() < currentTime)
                             PastActivities.push_back(AuxActivity);
 
                         else
                             ScheduledActivities.push_back((AuxActivity));
                     }
+
                     else if (type == "F"){
                         cout << a << endl;
                         Fixing * auxFixing = new Fixing(id);
@@ -201,9 +205,10 @@ void School::readActivities() {
                         else
                             ScheduledFixes.push_back((auxFixing));
                     }
-                    else{
+
+                    else
                         cerr << "Non activity, ride or repair found whilst reading activities" << endl;
-                    }
+
                     break;
             }
 
@@ -214,7 +219,7 @@ void School::readActivities() {
 
 void School::readClients() {
     string line;
-    ifstream File("../Data/1/" + Files["Clients"]); //TODO Change number
+    ifstream File("../Data/" + to_string(id) + "/" + Files["Clients"]);
     int counter = 0;
     auto* auxClient = new Client();
     auto* activities = new stringstream;
@@ -260,42 +265,69 @@ void School::readClients() {
 
 void School::readTeachers() {
     string line;
-    ifstream File("../Data/1/" + Files["Teachers"]);
+    ifstream File("../Data/" + to_string(id) + "/" + Files["Teachers"]);
     int counter = 0;
     auto* auxTeacher = new Teacher();
     auto* activities = new stringstream;
 
-    if (File.is_open()) {
-        while (getline(File, line)) {
-            switch (counter % 4) {
-                case 0:
-                    auxTeacher->setName(line);
-                    break;
-                case 1:
-                    auxTeacher->setID((stoi(line)));
+    string name;
+    unsigned int id;
 
-                    if (stoi(line) > Teacher::getLastID())
-                        Teacher::setLastID(stoi(line));
-
-                    break;
-                case 2:
-                    *activities << line;
-                    break;
-                case 3:
-                    Teachers.insert(auxTeacher);
-
-                    readTeachersActivities(activities, auxTeacher); ///ERROR
-
-                    activities->clear();
-                    auxTeacher = new Teacher();
-                    break;
+    if(File.is_open()){
+        while(getline(File, line)) {
+            if (counter % 4 == 0) {
+                name = line;
+                counter++;
             }
 
-            counter++;
-        }
+            else if (counter % 4 == 1) {
+                id = stoul(line);
+                counter++;
+            }
 
-        File.close();
+            else if (counter % 4 == 2) {
+                if (line == "T") {
+                    //printf("Read teachers not done for technicians.");
+
+                    auto* auxTech = new Technician();
+                    auxTech->setName(name);
+                    auxTech->setID(id);
+
+                    line.replace(0, 1, "");
+                    *activities << line;
+
+                    //readTechniciansActivities(activities, auxTech);
+                    Technicians.push(auxTech);
+                    activities->clear();
+                    counter += 2;
+                }
+
+                else {
+                    activities = new stringstream(line);
+
+                    counter++;
+                }
+            }
+
+            else if (counter % 4 == 3) {
+                auxTeacher->setName(name);
+                auxTeacher->setID(id);
+                auxTeacher->setCurrentlyEmployed(stob(line));
+
+                Teachers.insert(auxTeacher);
+
+                readTeachersActivities(activities, auxTeacher); ///ERROR
+
+                getline(File, line);
+
+                auxTeacher = new Teacher();
+
+                counter++;
+            }
+        }
     }
+
+    File.close();
 }
 
 void School::readMaterials() {
@@ -576,6 +608,7 @@ void School::readMaterialActivities(stringstream* activities, Material* m) {
 
 ostream &operator<<(ostream &out, const School& S) {
     out << "Name: " << S.name << endl
+        << "Director" << S.director << endl
         << "Current date: " << S.currentTime << endl
         << "Number of enrolled clients: " << S.Clients.size() << endl
         << "Number of occurred activities: " << S.PastActivities.size() << endl
@@ -613,33 +646,6 @@ void School::viewMaterial(bool detailed){
         }
 }
 
-//Exceptions
-
-std::ostream &operator<<(std::ostream &out, const NonExistentClient &client) {
-    out << "Client with ID " << client.id << " does not exist in school." << endl;
-    return out;
-}
-
-std::ostream &operator<<(std::ostream &out, const ClientAlreadyExists &client) {
-    out << "Client with ID " << client.id << " already exists in school." << endl;
-    return out;
-}
-
-std::ostream &operator<<(std::ostream &out, const NonExistentTeacher &teacher) {
-    out << "Teacher with ID " << teacher.id << " does not exist in school." << endl;
-    return out;
-}
-
-std::ostream &operator<<(std::ostream &out, const TeacherAlreadyExists &teacher) {
-    out << "Teacher with ID " << teacher.id << "already exists in school." << endl;
-    return out;
-}
-
-std::ostream &operator<<(std::ostream &out, const NonExistentMaterial &material) {
-    out << "Material with ID " << material.id << " does not exist in school." << endl;
-    return out;
-}
-
 void School::viewActivities(bool detailed) {
     if (detailed) {
         cout << "Scheduled Activities:\n";
@@ -668,15 +674,60 @@ void School::viewFixes(bool detailed){
     }
 }
 
+bool sortRule(Teacher * t1, Teacher * t2) {
+    return t1->getID() < t2->getID();
+}
+
 void School::viewTeachers(bool detailed) {
+    vector<Teacher*> auxVec;
+    for (auto & teacher : Teachers){
+        auxVec.push_back(teacher);
+    }
+    sort(auxVec.begin(),auxVec.end(),sortRule);
+
     if (detailed)
-        for (auto & teacher : Teachers)
+        for (auto & teacher : auxVec)
             cout << *teacher
                  << "---------------------" << endl;
 
     else
-        for (auto & teacher : Teachers)
+        for (auto & teacher : auxVec)
             cout << teacher->getName() << " - " << teacher->getID() << endl;
+}
+
+ostream &operator<<(ostream &out, const Technician &T) {
+    out << "ID: " << T.getID() << endl;
+    out << "Name: " << T.getName() << endl;
+
+    if (T.ScheduledFixes.empty())
+        out << "No fixes associated";
+
+    else {
+        out << "Scheduled fixes: ";
+
+        for (auto a : T.ScheduledFixes)
+            out << a->getId() << " ";
+    }
+
+    out << endl;
+
+    return out;
+}
+
+void School::viewTechnicians(bool detailed){
+    priority_queue<Technician *, vector<Technician *>, TechnicianCompare> aux = Technicians;
+    if (detailed) {
+        while(!aux.empty()){
+            cout << *(aux.top())
+                 << "---------------------" << endl;
+            aux.pop();
+        }
+    }
+    else
+        while(!aux.empty()){
+            cout << aux.top()->getName() << " - " << aux.top()->getID() << endl;
+            aux.pop();
+        }
 }
 
 void School::saveActivities() {
@@ -806,6 +857,12 @@ void School::saveTeachers() {
             f << t->getName() << endl
               << t->getID() << endl
               << t->getPastActivitiesID() << t->getScheduledActivitiesID() << endl;
+
+            if(t->getCurrentlyEmployed()){
+                f << "true" << endl;
+            } else {
+                f << "false" << endl;
+            }
 
             if (counter == size(Teachers) - 1)
                 f << "---END---";
@@ -944,4 +1001,35 @@ bool operator <(const School s1, const School s2)  {
         return s1.getLocality() < s2.getLocality();
 
     return s1.getClients().size() < s2.getClients().size();
+}
+
+priority_queue<Technician *, vector<Technician *>, TechnicianCompare> School::GetTechnicians() const{
+    return Technicians;
+}
+
+//Exceptions
+
+ostream &operator<<(ostream &out, const NonExistentClient &client) {
+    out << "Client with ID " << client.id << " does not exist in school." << endl;
+    return out;
+}
+
+ostream &operator<<(ostream &out, const ClientAlreadyExists &client) {
+    out << "Client with ID " << client.id << " already exists in school." << endl;
+    return out;
+}
+
+ostream &operator<<(ostream &out, const NonExistentTeacher &teacher) {
+    out << "Teacher with ID " << teacher.id << " does not exist in school." << endl;
+    return out;
+}
+
+ostream &operator<<(ostream &out, const TeacherAlreadyExists &teacher) {
+    out << "Teacher with ID " << teacher.id << "already exists in school." << endl;
+    return out;
+}
+
+ostream &operator<<(ostream &out, const NonExistentMaterial &material) {
+    out << "Material with ID " << material.id << " does not exist in school." << endl;
+    return out;
 }
