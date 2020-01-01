@@ -57,12 +57,13 @@ class Teacher: public Staff {
 
         void setCurrentlyEmployed(bool currentlyEmployed);
 
-    private:
+    bool getCurrentlyEmployed() const;
+
+private:
             string name;
             vector<Activity *> PastActivities;
             vector<Activity *> ScheduledActivities;
             bool currentlyEmployed;
-            bool getCurrentlyEmployed() const;
 };
 
 /*! \cond */

@@ -262,77 +262,66 @@ void School::readTeachers() {
     string line;
     ifstream File("../Data/1/" + Files["Teachers"]);
     int counter = 0;
-//    auto* auxTeacher = new Teacher();
+    auto* auxTeacher = new Teacher();
     auto* activities = new stringstream;
-
-    //bool teacher = true; //If it's a teacher or a technician
 
     string name;
     unsigned int id;
 
     if(File.is_open()){
-        while(getline(File, line)){
-            if(counter % 4 == 0){
+        while(getline(File, line)) {
+            if (counter % 4 == 0) {
                 name = line;
                 counter++;
             }
-            else if (counter % 4 == 1){
+
+            else if (counter % 4 == 1) {
                 id = stoul(line);
                 counter++;
             }
-            else if (counter % 4 == 2){
-                if (line.length() == 0){
-                    auto* auxTeacher = new Teacher();
-                    //auto* activities = new stringstream;
-                    auxTeacher->setName(name);
-                    auxTeacher->setID(id);
-                    *activities << line;
-                    //teacher = true;
-                    getline(File, line);
-                    Teachers.insert(auxTeacher);
 
-                    readTeachersActivities(activities, auxTeacher); ///ERROR
-
-                    activities->clear();
-                    //auxTeacher = new Teacher();
-                    counter+=2;
-
-                }
-                else if(line.at(0) == 'T'){
+            else if (counter % 4 == 2) {
+                if (line == "T") {
                     //printf("Read teachers not done for technicians.");
-                    //teacher = false;
+
                     auto* auxTech = new Technician();
                     auxTech->setName(name);
                     auxTech->setID(id);
-                    //line.erase(line[0]);
+
                     line.replace(0, 1, "");
                     *activities << line;
 
-                    getline(File, line);
                     //readTechniciansActivities(activities, auxTech);
                     Technicians.push(auxTech);
                     activities->clear();
                     counter += 2;
                 }
-                else{
-                    auto* auxTeacher = new Teacher();
-                    //auto* activities = new stringstream;
-                    auxTeacher->setName(name);
-                    auxTeacher->setID(id);
-                    *activities << line;
-                    //teacher = true;
-                    getline(File, line);
-                    Teachers.insert(auxTeacher);
 
-                    readTeachersActivities(activities, auxTeacher); ///ERROR
+                else {
+                    *activities << line;
 
                     activities->clear();
-                    //auxTeacher = new Teacher();
-                    counter+=2;
+
+                    counter++;
                 }
+            }
+
+            else if (counter % 4 == 3) {
+                auxTeacher->setName(name);
+                auxTeacher->setID(id);
+                auxTeacher->setCurrentlyEmployed(stob(line));
+
+                Teachers.insert(auxTeacher);
+
+                readTeachersActivities(activities, auxTeacher); ///ERROR
+
+                getline(File, line);
+
+                counter++;
             }
         }
     }
+
     File.close();
 }
 
@@ -746,14 +735,24 @@ void School::viewFixes(bool detailed){
     }
 }
 
+bool sortRule(Teacher * t1, Teacher * t2) {
+    return t1->getID() < t2->getID();
+}
+
 void School::viewTeachers(bool detailed) {
+    vector<Teacher*> auxVec;
+    for (auto & teacher : Teachers){
+        auxVec.push_back(teacher);
+    }
+    sort(auxVec.begin(),auxVec.end(),sortRule);
+
     if (detailed)
-        for (auto & teacher : Teachers)
+        for (auto & teacher : auxVec)
             cout << *teacher
                  << "---------------------" << endl;
 
     else
-        for (auto & teacher : Teachers)
+        for (auto & teacher : auxVec)
             cout << teacher->getName() << " - " << teacher->getID() << endl;
 }
 
@@ -918,6 +917,12 @@ void School::saveTeachers() {
             f << t->getName() << endl
               << t->getID() << endl
               << t->getPastActivitiesID() << t->getScheduledActivitiesID() << endl;
+
+            if(t->getCurrentlyEmployed()){
+                f << "true" << endl;
+            } else {
+                f << "false" << endl;
+            }
 
             if (counter == size(Teachers) - 1)
                 f << "---END---";

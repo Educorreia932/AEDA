@@ -50,10 +50,15 @@ void Technician::setName(string name){
 ostream &operator<<(ostream &out, const Teacher &T) {
     out << "ID: " << T.id << endl;
     out << "Name: " << T.name << endl;
+    out << "Currently employed:";
+    if(T.getCurrentlyEmployed()){
+        cout << "Yes" << endl;
+    } else {
+        cout << "No" << endl;
+    }
 
     if (T.ScheduledActivities.empty())
         out << "No activities associated";
-
     else {
         out << "Scheduled activities: ";
 
@@ -164,6 +169,7 @@ vector<Activity *> Teacher::getScheduleActivitiesByDate(Time Date) const {
 void Teacher::setCurrentlyEmployed(bool currentlyEmployed) {
     this->currentlyEmployed = currentlyEmployed;
 }
+
 
 ostream &operator<<(ostream &out, const teacherHasActivityAtSameTime &ids) {
     out << "Teacher with ID \"" << ids.teacherId << "\" already has an activity at the same time as activity with ID \"" << ids.activityId << "\"." << endl;

@@ -130,6 +130,7 @@ class School {
         vector<Time> getDatesFromActivicties(vector <Activity*> Activities);
 
         friend ostream& operator<<(ostream& out, const School& S);
+
     private:
         string name;
         string locality;

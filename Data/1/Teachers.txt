@@ -1,18 +1,22 @@
 Jaime Villate
 1
-1 3 4 
+1 3 4
+true
 ::::::::::
 Pedro Souto
 2
-1 5 7 
+1 5 7
+false
 ::::::::::
 Joao Canas Ferreira
 3
-2 3 
+2 3
+true
 ::::::::::
 Rosaldo Rossetti
 4
 2 5
+false
 ::::::::::
 Nome Temp
 5
