@@ -1,0 +1,36 @@
+Eduardo da Costa Correia
+1
+false
+0
+1 2 4 
+::::::::::
+Ana Ines Oliveira Barros
+2
+false
+500
+1 2 3 4 5 6 7 
+::::::::::
+Rodrigo Campos Reis
+3
+false
+500
+1 2 3 4 5 6 7 
+::::::::::
+Joao Alexandre Lobo Cardoso
+4
+false
+500
+7 
+::::::::::
+Henrique Melo Ribeiro
+5
+false
+500
+1 2 
+::::::::::
+Davide Castro
+6
+false
+500
+1 2 3 
+---END---
